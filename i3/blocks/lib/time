@@ -1,0 +1,25 @@
+#!/usr/bin/python3
+
+import datetime
+
+
+# Settings
+
+## Template
+TMPL = "%H:%M %a %m-%d"
+
+
+# Get formatted string
+
+def get_output():
+    """Get current time and date."""
+    return datetime.datetime.now().strftime(TMPL)
+
+
+# Print
+
+if __name__ == "__main__":
+    try:
+        print(get_output())
+    except KeyboardInterrupt:
+        pass

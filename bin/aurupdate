@@ -1,0 +1,54 @@
+#!/bin/bash
+
+set -e
+
+aur_dir="$HOME/.local/aurpkg"
+
+update_pkg() {
+  # Fetch from remote
+  local pkg_dir="$aur_dir/$1"
+  git -C "$pkg_dir" fetch
+  local current_ver="$(git -C "$pkg_dir" rev-parse HEAD)"
+  local next_ver="$(git -C "$pkg_dir" rev-parse @{u})"
+
+  # Build and install package if needed
+  if [[ "$current_ver" == "$next_ver" ]]; then
+    echo "$1 is up to date."
+  else
+    git -C "$pkg_dir" merge FETCH_HEAD
+    (cd "$pkg_dir" && makepkg -si --noconfirm)
+  fi
+
+  # Clean files
+  git -C "$pkg_dir" clean -fdx
+}
+
+# Change working directory
+cd "$aur_dir"
+
+# Update all packages by default
+if [[ $# -eq 0 ]]; then
+  pkgs=(*/)
+else
+  pkgs=("$@")
+fi
+pkgs=("${pkgs[@]%/}")
+
+# List all packages to check
+echo 'AUR packages to update:'
+for pkg in "${pkgs[@]}"; do
+  echo "- $pkg"
+done
+
+# Update
+read -n 1 -p 'Continue? [Y/n] '
+case "$REPLY" in
+  Y|y)
+    echo '' ;&
+  '')
+    for pkg in "${pkgs[@]}"; do
+      update_pkg "$pkg"
+    done ;;
+  *)
+    echo '' ;;
+esac

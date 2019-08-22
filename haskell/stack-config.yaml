@@ -1,0 +1,5 @@
+templates:
+  params:
+    author-name: "Pengji Zhang"
+    author-email: "me@pengjiz.com"
+    github-username: "pengjiz"

@@ -1,0 +1,63 @@
+#!/usr/bin/python3
+
+import psutil as ps
+from enum import Enum
+
+
+class Level(Enum):
+    NORMAL = 1
+    WARN = 2
+    ALERT = 3
+
+
+# Settings
+
+## Icon
+ICON = "<span font='FontAwesome 10'>\uf2db</span>"
+
+## Templates
+TMPLS = {
+    Level.NORMAL: ICON + " {:.1f}%",
+    Level.WARN: ICON + " <span foreground='#ffcc66'>{:.1f}%</span>",
+    Level.ALERT: ICON + " <span foreground='#f2777a'>{:.1f}%</span>"
+}
+
+## Thresholds
+THRESHOLDS = {
+    85: Level.ALERT,
+    50: Level.WARN
+}
+
+## Update interval
+UPDATE_INTERVAL = 10
+
+
+# Get information
+
+def get_raw():
+    """Get the current CPU usage and level."""
+    percent = ps.cpu_percent(interval=UPDATE_INTERVAL)
+
+    for threshold, level in THRESHOLDS.items():
+        if percent > threshold:
+            return [level, percent]
+    return [Level.NORMAL, percent]
+
+
+# Get formatted string
+
+def get_output():
+    """Get a string for CPU usage."""
+    level, percent = get_raw()
+    tmpl = TMPLS.get(level)
+    return tmpl.format(percent)
+
+
+# Print
+
+if __name__ == "__main__":
+    try:
+        while True:
+            print(get_output(), flush=True)
+    except KeyboardInterrupt:
+        pass

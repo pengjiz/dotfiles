@@ -1,0 +1,14 @@
+Host emil2
+  HostName emil2.heinz.cmu.edu
+  Port 22
+  User hzn
+
+Host mac
+  HostName mac.heinz.cmu.edu
+  Port 22
+  User hzn
+
+Host macpc
+  HostName 128.2.82.59
+  Port 22
+  User pengjz

@@ -1,0 +1,7 @@
+# Include other configuration files
+# NOTE: Should be at the top of this file
+Include config.d/*
+
+# Global configuration
+Host *
+  AddKeysToAgent yes

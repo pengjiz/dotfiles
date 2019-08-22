@@ -1,0 +1,70 @@
+#!/usr/bin/python3
+
+import psutil as ps
+from enum import Enum
+
+
+class Level(Enum):
+    NORMAL = 1
+    WARN = 2
+    ALERT = 3
+
+
+# Settings
+
+## Monitoring path
+MONITOR_PATH = "/home/"
+
+## Icon
+ICON = "<span font='FontAwesome 10'>\uf1c0</span>"
+
+## Templates
+TMPLS = {
+    Level.NORMAL: ICON + " {:.1f}G",
+    Level.WARN: ICON + " <span foreground='#ffcc66'>{:.1f}G</span>",
+    Level.ALERT: ICON + " <span foreground='#f2777a'>{:.1f}G</span>"
+}
+
+## Thresholds
+THRESHOLDS = {
+    5: Level.WARN,
+    1: Level.ALERT
+}
+
+
+# Helpers
+
+def convert_bytes(num):
+    """Convert bytes to gigabytes."""
+    return num / 1024 ** 3
+
+
+# Get information
+
+def get_raw():
+    """Get the available disk space and level of usage."""
+    info = ps.disk_usage(MONITOR_PATH)
+    avail = convert_bytes(info.free)
+
+    for threshold, level in THRESHOLDS.items():
+        if avail < threshold:
+            return [level, avail]
+    return [Level.NORMAL, avail]
+
+
+# Get formatted string
+
+def get_output():
+    """Get a string for disk usage."""
+    level, avail = get_raw()
+    tmpl = TMPLS.get(level)
+    return tmpl.format(avail)
+
+
+# Print
+
+if __name__ == "__main__":
+    try:
+        print(get_output())
+    except KeyboardInterrupt:
+        pass

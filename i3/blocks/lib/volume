@@ -1,0 +1,77 @@
+#!/usr/bin/python3
+
+import re
+from subprocess import check_output
+from enum import Enum
+
+
+class State(Enum):
+    UNMUTED = 1
+    MUTED = 2
+
+
+# Settings
+
+## Templates
+TMPLS = {
+    State.UNMUTED: "<span font='FontAwesome 10'>\uf3b5</span> {}",
+    State.MUTED: "<span font='FontAwesome 10'>\uf6a9</span>"
+}
+
+## Patterns
+MUTE_PAT = re.compile(r"^\s*Mute: (yes|no)")
+VOL_PAT = re.compile(r"^\s*Volume: .* /\s* (\d+%)")
+
+
+# Helpers
+
+def get_state(lines):
+    """Check if the audio is muted."""
+    for line in lines:
+        result = MUTE_PAT.search(line)
+        if result and result.group(1) == 'yes':
+            return State.MUTED
+    return State.UNMUTED
+
+
+def extract_volume(lines):
+    """Extract the volume level."""
+    for line in lines:
+        result = VOL_PAT.search(line)
+        if result:
+            return result.group(1)
+    return None
+
+
+# Get information
+
+def get_raw():
+    """Get audio status."""
+    lines = (check_output(["pactl", "list", "sinks"])
+             .decode("utf-8")
+             .splitlines())
+    state = get_state(lines)
+
+    if state is State.MUTED:
+        return [state, None]
+
+    vol = extract_volume(lines)
+    return [state, vol]
+
+
+# Get formatted string
+
+def get_output():
+    """Get a string for volume."""
+    state, vol = get_raw()
+    tmpl = TMPLS.get(state)
+    return tmpl.format(vol)
+
+
+# Print
+
+if __name__ == "__main__":
+    try:
+        print(get_output())
+    except KeyboardInterrupt:
+        pass

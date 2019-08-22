@@ -1,0 +1,21 @@
+[submodule "dotbot"]
+	path = dotbot
+	url = https://github.com/anishathalye/dotbot.git
+[submodule "nvim/extras/start/delimitMate"]
+	path = nvim/extras/start/delimitMate
+	url = https://github.com/Raimondi/delimitMate.git
+[submodule "nvim/extras/start/vim-repeat"]
+	path = nvim/extras/start/vim-repeat
+	url = https://github.com/tpope/vim-repeat.git
+[submodule "nvim/extras/start/vim-surround"]
+	path = nvim/extras/start/vim-surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "nvim/extras/start/vim-commentary"]
+	path = nvim/extras/start/vim-commentary
+	url = https://github.com/tpope/vim-commentary.git
+[submodule "nvim/extras/start/vim-sneak"]
+	path = nvim/extras/start/vim-sneak
+	url = https://github.com/justinmk/vim-sneak.git
+[submodule "nvim/extras/start/editorconfig-vim"]
+	path = nvim/extras/start/editorconfig-vim
+	url = https://github.com/editorconfig/editorconfig-vim.git

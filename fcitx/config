@@ -1,0 +1,35 @@
+[Hotkey]
+TriggerKey=SUPER_\
+SwitchKey=L_SHIFT
+IMSwitchHotkey=CTRL_SHIFT
+ReloadConfig=
+VKSwitchKey=
+PuncSwitchKey=
+PrevPageKey=- UP
+NextPageKey== DOWN
+SaveAllKey=
+SwitchPreedit=
+PrevWord=SHIFT_TAB
+NextWord=TAB
+
+[Program]
+DelayStart=0
+ShareStateAmongWindow=No
+DefaultInputMethodState=Inactive
+
+[Output]
+HalfPuncAfterNumber=False
+RemindModeDisablePaging=True
+SendTextWhenSwitchEng=True
+CandidateWordNumber=5
+PhraseTips=True
+DontCommitPreeditWhenUnfocus=False
+
+[Appearance]
+ShowInputWindowAfterTriggering=True
+ShowInputWindowWhenFocusIn=True
+ShowInputWindowOnlyWhenActive=True
+ShowInputSpeed=False
+ShowVersion=False
+HideInputWindowWhenOnlyPreeditString=False
+HideInputWindowWhenOnlyOneCandidate=False

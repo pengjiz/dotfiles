@@ -1,0 +1,16 @@
+options(stringsAsFactors = FALSE)
+options(max.print = 100)
+options(menu.graphics = FALSE)
+options(browserNLdisabled = TRUE)
+options(deparse.max.lines = 2)
+
+options(devtools.path = "~/.local/share/R/dev")
+options(devtools.name = "Pengji Zhang")
+options(devtools.desc.author = 'person("Pengji", "Zhang", email = "me@pengjiz.com", role = c("aut", "cre"))')
+options(devtools.desc.license = "Unlimited")
+
+local({
+  r <- getOption("repos")
+  r["CRAN"] <- "https://cloud.r-project.org/"
+  options(repos = r)
+})

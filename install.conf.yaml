@@ -1,0 +1,104 @@
+---
+
+- clean:
+    - "~"
+    - "~/.local/bin"
+
+- defaults:
+    link:
+      force: true
+      create: true
+      relink: true
+
+- link:
+    # Shell
+    ~/.zshenv: shell/zsh/zshenv
+    ~/.zshrc: shell/zsh/zshrc
+    ~/.bashrc: shell/bash/bashrc
+
+    # SSH
+    ~/.ssh/config: ssh/config
+    ~/.ssh/config.d:
+      glob: true
+      path: ssh/config.d/*
+
+    # GnuPG
+    ~/.gnupg/gpg.conf: gnupg/gpg.conf
+    ~/.gnupg/gpg-agent.conf: gnupg/gpg-agent.conf
+
+    # Git
+    ~/.config/git/config: git/config
+    ~/.config/git/ignore: git/ignore
+
+    # Neovim
+    ~/.config/nvim/init.vim: nvim/init.vim
+    ~/.local/share/nvim/site/pack/extras: nvim/extras
+
+    # Xorg
+    ~/.xprofile: xorg/xprofile
+    ~/.Xresources: xorg/Xresources
+
+    # XDG
+    ~/.config/mimeapps.list: xdg/mimeapps.list
+
+    # GTK
+    ~/.gtkrc-2.0: gtk/gtk2rc
+    ~/.config/gtk-3.0/settings.ini: gtk/gtk3rc
+
+    # QT
+    ~/.config/Kvantum/kvantum.kvconfig: qt/kvantum.kvconfig
+
+    # i3
+    ~/.config/i3/config: i3/wm/config
+    ~/.config/i3blocks/config: i3/blocks/config
+    ~/.config/i3blocks/lib: i3/blocks/lib
+
+    # Redshift
+    ~/.config/redshift/redshift.conf: redshift/refshift.conf
+
+    # Dunst
+    ~/.config/dunst/dunstrc: dunst/dunstrc
+
+    # Rofi
+    ~/.config/rofi/config: rofi/config
+
+    # Fcitx
+    ~/.config/fcitx/config: fcitx/config
+    ~/.config/fcitx/rime/default.custom.yaml: fcitx/rime/default.custom.yaml
+    ~/.config/fcitx/addon:
+      glob: true
+      path: fcitx/addon/*
+    ~/.config/fcitx/conf:
+      glob: true
+      path: fcitx/conf/*
+
+    # R
+    ~/.Rprofile: r/Rprofile
+    ~/.Renviron: r/Renviron
+
+    # Python
+    ~/.condarc: python/condarc
+
+    # JavaScript
+    ~/.npmrc: javascript/npmrc
+
+    # Haskell
+    ~/.stack/config.yaml: haskell/stack-config.yaml
+
+    # LaTeX
+    ~/.config/latexmk/latexmkrc: latex/latexmkrc
+
+    # Local binaries
+    ~/.local/bin:
+      glob: true
+      path: bin/*
+
+- shell:
+    - description: "Create Zsh data directory"
+      command: "mkdir -p ~/.local/share/zsh"
+    - description: "Create Bash data directory"
+      command: "mkdir -p ~/.local/share/bash"
+    - description: "Copy Fcitx UI configuration"
+      command: "cp -f -t ~/.config/fcitx/conf seed/fcitx-classic-ui.config"
+
+...

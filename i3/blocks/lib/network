@@ -1,0 +1,125 @@
+#!/usr/bin/python3
+
+import psutil as ps
+import socket
+import time
+from enum import Enum
+
+
+class IFType(Enum):
+    WIFI = 1
+    WIRED = 2
+    OFFLINE = 3
+
+
+# Settings
+
+## Templates
+TMPLS = {
+    IFType.WIFI: ("<span font='FontAwesome 10'>\uf1eb</span> "
+                  "↓{:.1f}{}/s ↑{:.1f}{}/s"),
+    IFType.WIRED: ("<span font='FontAwesome 10'>\uf6ff</span> "
+                   "↓{:.1f}{}/s ↑{:.1f}{}/s"),
+    IFType.OFFLINE: "<span font='FontAwesome 10'>\uf06a</span>"
+}
+
+## Prefixes for internet interfaces
+INET_IF_PREFIXES = {
+    "wl": IFType.WIFI,
+    "en": IFType.WIRED
+}
+
+## Internet addresses
+INET_ADDRS = [socket.AF_INET, socket.AF_INET6]
+
+## IO speed update interval
+UPDATE_INTERVAL = 10
+
+
+# Helpers
+
+def get_if_type(if_name):
+    """Get the type of an interface."""
+    for prefix, if_type in INET_IF_PREFIXES.items():
+        if if_name.startswith(prefix):
+            return if_type
+    return IFType.OFFLINE
+
+
+## TODO: Find a more reliable way?
+def is_inet_conn(addrs):
+    """Test if the addresses contains an internet address."""
+    for addr in addrs:
+        if addr.family in INET_ADDRS:
+            return True
+    return False
+
+
+def convert_bytes(num):
+    """Convert bytes to a human-readable form."""
+    units = {1024 ** 2: "M",
+             1024: "K"}
+
+    for base, unit in units.items():
+        result = num / base
+        if result >= 0.1:
+            return [result, unit]
+
+    return [num, "B"]
+
+
+# Get information
+
+def get_speed(if_name):
+    """Get the IO speed of an interface."""
+    last_counters = ps.net_io_counters(pernic=True)
+    last = last_counters.get(if_name)
+    time.sleep(UPDATE_INTERVAL)
+    this_counters = ps.net_io_counters(pernic=True)
+    this = this_counters.get(if_name)
+
+    if this and last:
+        return {
+            "in": convert_bytes((this.bytes_recv - last.bytes_recv) /
+                                UPDATE_INTERVAL),
+            "out": convert_bytes((this.bytes_sent - last.bytes_sent) /
+                                 UPDATE_INTERVAL)
+        }
+    return None
+
+
+def get_raw():
+    """Get the current internet connection type and speed."""
+    addrs = ps.net_if_addrs()
+
+    for if_name, addrs in addrs.items():
+        if_type = get_if_type(if_name)
+        if if_type is not IFType.OFFLINE and is_inet_conn(addrs):
+            return [if_type, get_speed(if_name)]
+
+    # Rest for a while when offline
+    time.sleep(UPDATE_INTERVAL)
+    return [IFType.OFFLINE, None]
+
+
+# Get formatted string
+
+def get_output():
+    """Get a string for the internet type and speed."""
+    if_type, spds = get_raw()
+    tmpl = TMPLS.get(if_type)
+    in_spd = spds.get("in") if spds else [0, "B"]
+    out_spd = spds.get("out") if spds else [0, "B"]
+    return tmpl.format(*in_spd, *out_spd)
+
+
+# Print
+
+if __name__ == "__main__":
+    try:
+        # Rest for a while
+        time.sleep(5)
+        while True:
+            print(get_output(), flush=True)
+    except KeyboardInterrupt:
+        pass

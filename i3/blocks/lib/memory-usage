@@ -1,0 +1,67 @@
+#!/usr/bin/python3
+
+import psutil as ps
+from enum import Enum
+
+
+class Level(Enum):
+    NORMAL = 1
+    WARN = 2
+    ALERT = 3
+
+
+# Settings
+## Icon
+ICON = "<span font='FontAwesome 10'>\uf538</span>"
+
+## Templates
+TMPLS = {
+    Level.NORMAL: ICON + " {:.1f}G/{:.1f}G",
+    Level.WARN: ICON + " <span foreground='#ffcc66'>{:.1f}G</span>/{:.1f}G",
+    Level.ALERT: ICON + "  <span foreground='#f2777a'>{:.1f}G</span>/{:.1f}G"
+}
+
+## Thresholds
+THRESHOLDS = {
+    0.5: Level.ALERT,
+    1: Level.WARN
+}
+
+
+# Helpers
+
+def convert_bytes(num):
+    """Convert bytes to gigabytes."""
+    return num / 1024 ** 3
+
+
+# Get information
+
+def get_raw():
+    """Get available memory, total memory, and level of usage."""
+    info = ps.virtual_memory()
+    total = convert_bytes(info.total)
+    avail = convert_bytes(info.available)
+
+    for threshold, level in THRESHOLDS.items():
+        if avail < threshold:
+            return [level, avail, total]
+    return [Level.NORMAL, avail, total]
+
+
+# Get formatted string
+
+def get_output():
+    """Get a string for memory usage."""
+    level, avail, total = get_raw()
+    tmpl = TMPLS.get(level)
+    return tmpl.format(avail, total)
+
+
+# Print
+
+if __name__ == "__main__":
+    try:
+        print(get_output())
+    except KeyboardInterrupt:
+        pass

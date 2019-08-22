@@ -1,0 +1,4 @@
+rofi.theme: Arc-Dark
+rofi.font: DejaVu Sans 11
+rofi.modi: drun,window
+rofi.combi-modi: combi

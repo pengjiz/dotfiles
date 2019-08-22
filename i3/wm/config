@@ -1,0 +1,165 @@
+# Base
+set $mod Mod4
+font pango:DejaVu Sans 11
+floating_modifier $mod
+floating_maximum_size 0 x 0
+set $wallpaper /usr/share/backgrounds/archlinux/archlinux-luminous-uber.jpg
+
+# Colors
+client.focused          #3f4452 #3f4453 #ffffff #3f4453 #3f4453
+client.focused_inactive #2b2e37 #2b2e37 #bac3cf #2b2e37 #2b2e37
+client.unfocused        #2b2e37 #2b2e37 #bac3cf #2b2e37 #2b2e37
+client.urgent           #cc6666 #cc6666 #bac3cf #cc6666 #cc6666
+client.background       #2b2e37
+
+# Borders
+default_border pixel 1
+default_floating_border pixel 1
+hide_edge_borders smart
+bindsym $mod+Shift+n border normal 1
+bindsym $mod+Shift+m border pixel 1
+
+# Applications
+bindsym $mod+Shift+q kill
+bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+x exec --no-startup-id rofi -show drun
+bindsym $mod+o exec --no-startup-id rofi -show window
+bindsym $mod+p exec --no-startup-id passmenu
+bindsym $mod+e exec emacs
+bindsym XF86AudioMute exec --no-startup-id volume mute
+bindsym XF86AudioRaiseVolume exec --no-startup-id volume up
+bindsym XF86AudioLowerVolume exec --no-startup-id volume down
+bindsym --release Print exec --no-startup-id screenshot screen
+bindsym --release $mod+Print exec --no-startup-id screenshot area
+bindsym --release $mod+Shift+Print exec --no-startup-id screenshot window
+
+for_window [class="(?i)emacs"] focus, border normal 1
+for_window [class="(?i)fcitx-config-gtk3"] floating enable
+for_window [class="(?i)nm-connection-editor"] floating enable
+for_window [class="(?i)pavucontrol"] floating enable
+for_window [class="(?i)arandr"] floating enable
+for_window [class="(?i)qt5ct"] floating enable
+for_window [class="(?i)r_x11"] floating enable
+for_window [class="(?i)gnuplot_"] floating enable
+for_window [class="(?i)matplotlib"] floating enable
+
+# Change focus
+focus_follows_mouse no
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+n focus parent
+bindsym $mod+m focus child
+bindsym $mod+i focus mode_toggle
+bindsym $mod+u [urgent="latest"] focus
+
+# Move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# Scratchpad
+bindsym $mod+minus scratchpad show
+bindsym $mod+Shift+minus move scratchpad
+
+# Layout
+bindsym $mod+Shift+s split v;exec notify-send 'Split window below'
+bindsym $mod+Shift+v split h;exec notify-send 'Split window right'
+bindsym $mod+Shift+f fullscreen toggle
+bindsym $mod+Shift+w floating toggle
+bindsym $mod+Shift+t layout toggle tabbed split
+
+# Workspace
+set $ws1 1
+set $ws2 2
+set $ws3 3
+set $ws4 4
+set $ws5 5
+set $ws6 6
+set $ws7 7
+set $ws8 8
+set $ws9 9
+set $ws10 10
+
+assign [class="(?i)emacs"] $ws2
+assign [class="(?i)firefox"] $ws3
+assign [class="(?i)evince"] $ws4
+
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+bindsym $mod+Shift+1 move container to workspace $ws1; workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2; workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3; workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4; workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5; workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6; workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7; workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8; workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9; workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10; workspace $ws10
+
+workspace_auto_back_and_forth yes
+bindsym $mod+space workspace back_and_forth
+bindsym $mod+Shift+space move container to workspace back_and_forth; workspace back_and_forth
+
+# Resize window
+set $mode_resize (h) narrower, (j) shorter, (k) taller (l) wider
+mode "$mode_resize" {
+  bindsym h resize shrink width 5 px or 5 ppt
+  bindsym j resize shrink height 5 px or 5 ppt
+  bindsym k resize grow height 5 px or 5 ppt
+  bindsym l resize grow width 5 px or 5 ppt
+
+  bindsym Control+g mode "default"
+  bindsym Escape mode "default"
+}
+bindsym $mod+Shift+r mode "$mode_resize"
+
+# Exit
+set $locker i3lock -n -c 3f4452
+set $mode_system System (l) lock, (Shift+r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+  bindsym l exec --no-startup-id $locker, mode "default"
+  bindsym Shift+r exec --no-startup-id systemctl reboot, mode "default"
+  bindsym Shift+s exec --no-startup-id systemctl poweroff, mode "default"
+
+  bindsym Control+g mode "default"
+  bindsym Escape mode "default"
+}
+bindsym $mod+Shift+e mode "$mode_system"
+
+# Autostart applications
+exec --no-startup-id xset dpms 900 1800 3600
+exec --no-startup-id xss-lock -- $locker
+exec --no-startup-id feh --no-fehbg --bg-fill $wallpaper
+exec --no-startup-id fcitx -r
+exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent
+exec --no-startup-id redshift
+
+# Bar
+bar {
+  i3bar_command i3bar
+  status_command i3blocks
+  position bottom
+  strip_workspace_numbers yes
+
+  colors {
+    background #3f4453
+    statusline #ffffff
+    separator  #2b2e37
+    focused_workspace #5294e2 #5294e2 #ffffff
+    urgent_workspace  #cc6666 #cc6666 #ffffff
+    binding_mode      #5294e2 #5294e2 #ffffff
+  }
+}

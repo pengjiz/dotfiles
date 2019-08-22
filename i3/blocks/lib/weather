@@ -1,0 +1,68 @@
+#!/usr/bin/python3
+
+import urllib.request as r
+import time
+
+# Settings
+
+## Request
+## NOTE: use : as a separator between elements
+REQ = r.Request("https://wttr.in/Pittsburgh?m&format=%c:%t:%h",
+                headers={"User=Agent": "python-requests"})
+
+## Max number of retries
+MAX_RETRY = 5
+
+## Interval between retries
+RETRY_INTERVAL = 20
+
+## Template
+TMPL = "<span font='Noto Color Emoji 10'>{}</span> {} {}"
+
+
+# Get information
+
+def get_raw():
+    """Get weather information."""
+    num_retry = 0
+
+    while num_retry < MAX_RETRY:
+        try:
+            res = r.urlopen(REQ, timeout=3)
+            lines = res.read().decode().splitlines()
+            # The response is possible to be empty
+            if len(lines) > 0:
+                return lines[0].split(":")
+        except r.URLError:
+            # When the request fails
+            pass
+
+        # Retry when something is wrong
+        num_retry += 1
+        time.sleep(RETRY_INTERVAL)
+
+    return None
+
+
+# Get formatted string
+
+def get_output():
+    """Get a string for weather."""
+    weather = get_raw()
+
+    if weather:
+        return TMPL.format(*weather)
+    return None
+
+
+# Print
+
+if __name__ == "__main__":
+    try:
+        # Rest for a while
+        time.sleep(5)
+        output = get_output()
+        if output:
+            print(output)
+    except KeyboardInterrupt:
+        pass

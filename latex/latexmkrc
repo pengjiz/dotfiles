@@ -1,0 +1,7 @@
+# Use lualatex by default
+$pdf_mode = 4;
+
+# Additional generated extensions
+push @generated_exts, "nav";
+push @generated_exts, "snm";
+push @generated_exts, "vrb";

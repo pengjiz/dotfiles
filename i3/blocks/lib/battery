@@ -1,0 +1,76 @@
+#!/usr/bin/python3
+
+import psutil as ps
+from enum import Enum
+
+
+class Level(Enum):
+    CHARGING = 1
+    NORMAL = 2
+    WARN = 3
+    ALERT = 4
+
+
+# Settings
+
+## Templates
+TMPLS = {
+    Level.CHARGING: "<span font='FontAwesome 10'>\uf1e6</span> {}%",
+    Level.NORMAL: "<span font='FontAwesome 10'>\uf241</span> {}%",
+    Level.WARN: ("<span font='FontAwesome 10'>\uf243</span> "
+                 "<span foreground='#ffcc66'>{}%</span>"),
+    Level.ALERT: ("<span font='FontAwesome 10'>\uf244</span> "
+                 "<span foreground='#f2777a'>{}%</span>")
+}
+
+## Thresholds
+THRESHOLDS = {
+    10: Level.ALERT,
+    25: Level.WARN
+}
+
+
+# Get information
+
+def get_raw():
+    """Get the current battery level and percentage remaining."""
+    battery = ps.sensors_battery()
+
+    if not battery:
+        return None
+
+    plugged = battery.power_plugged
+    percent = int(battery.percent)
+
+    if plugged:
+        return [Level.CHARGING, percent]
+
+    for threshold, level in THRESHOLDS.items():
+        if percent < threshold:
+            return [level, percent]
+    return [Level.NORMAL, percent]
+
+
+# Get formatted string
+
+def get_output():
+    """Get a string for the battery status."""
+    raw = get_raw()
+
+    if not raw:
+        return None
+
+    level, percent = raw
+    tmpl = TMPLS.get(level)
+    return tmpl.format(percent)
+
+
+# Print
+
+if __name__ == "__main__":
+    try:
+        output = get_output()
+        if output:
+            print(output)
+    except KeyboardInterrupt:
+        pass
