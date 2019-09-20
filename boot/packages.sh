@@ -197,7 +197,7 @@ pkgs=(
 
 aur_pkgs=(
   'cask'
-  'joker'
+  'joker-bin'
   'miniconda3'
   'udunits'
 )
