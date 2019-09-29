@@ -83,6 +83,8 @@ pkgs=(
   # Browser
   'firefox'
   'firefox-i18n-en-us'
+  'firefox-ublock-origin'
+  'firefox-extension-https-everywhere'
   'evince'
   'libreoffice-still'
   'mupdf-tools'
