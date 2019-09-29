@@ -16,6 +16,9 @@ sudo cp "$current_dir/config/lightdm-gtk-greeter.conf" \
      '/etc/lightdm/lightdm-gtk-greeter.conf'
 sudo cp "$current_dir/config/30-touchpad.conf" \
      '/etc/X11/xorg.conf.d/30-touchpad.conf'
+sudo mkdir -p '/etc/pacman.d/hooks'
+sudo cp "$current_dir/config/pacman-update-mirrorlist.hook" \
+     '/etc/pacman.d/hooks/pacman-update-mirrorlist.hook'
 
 # Enable system services
 system_services=(

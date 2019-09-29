@@ -60,14 +60,14 @@ pkgs=(
   'pulseaudio-alsa'
   'pavucontrol'
 
-  # Themes
+  # Theme
   'arc-gtk-theme'
   'papirus-icon-theme'
   'archlinux-wallpaper'
   'qt5ct'
   'kvantum-qt5'
 
-  # Fonts
+  # Font
   'adobe-source-code-pro-fonts'
   'noto-fonts'
   'noto-fonts-cjk'
@@ -101,7 +101,7 @@ pkgs=(
   'imagemagick'
   'scrot'
 
-  # Utilities
+  # Utility
   'ansible'
   'atool'
   'docker'
@@ -109,6 +109,7 @@ pkgs=(
   'jq'
   'pass'
   'protobuf'
+  'reflector'
   'ripgrep'
   'rsync'
   'syncthing'
