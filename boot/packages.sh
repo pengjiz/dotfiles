@@ -85,8 +85,11 @@ pkgs=(
   'firefox-i18n-en-us'
   'firefox-ublock-origin'
   'firefox-extension-https-everywhere'
+
+  # Viewer
   'evince'
   'libreoffice-still'
+  'mpv'
   'mupdf-tools'
 
   # Fcitx
@@ -121,6 +124,7 @@ pkgs=(
   'words'
   'x86_energy_perf_policy'
   'xclip'
+  'youtube-dl'
 
   # C & C++
   'gdb'
