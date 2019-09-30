@@ -34,6 +34,9 @@
     ~/.config/nvim/init.vim: nvim/init.vim
     ~/.local/share/nvim/site/pack/extras: nvim/extras
 
+    # Ledger
+    ~/.ledgerrc: ledger/ledgerrc
+
     # Xorg
     ~/.xprofile: xorg/xprofile
     ~/.Xresources: xorg/Xresources

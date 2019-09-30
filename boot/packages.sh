@@ -110,6 +110,7 @@ pkgs=(
   'docker'
   'fd'
   'jq'
+  'ledger'
   'pass'
   'protobuf'
   'reflector'

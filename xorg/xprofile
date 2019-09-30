@@ -22,6 +22,10 @@ export QT_QPA_PLATFORMTHEME='qt5ct'
 # Z
 export _Z_DATA="$HOME/.local/share/z"
 
+# Ledger
+export LEDGER_FILE="$HOME/Sync/ledger/finances.ledger"
+export LEDGER_PRICE_DB="$HOME/Sync/ledger/pricedb.ledger"
+
 # Conda
 conda_path='/opt/miniconda3'
 conda_script="$conda_path/etc/profile.d/conda.sh"
