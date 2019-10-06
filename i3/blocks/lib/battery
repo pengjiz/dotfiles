@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import psutil as ps
+import time
 from enum import Enum
 
 
@@ -13,6 +14,18 @@ class Level(Enum):
 
 # Settings
 
+## Thresholds
+THRESHOLDS = {
+    10: Level.ALERT,
+    25: Level.WARN
+}
+
+## Max number of retries
+MAX_RETRY = 5
+
+## Interval between retries
+RETRY_INTERVAL = 2
+
 ## Templates
 TMPLS = {
     Level.CHARGING: "<span font='FontAwesome 10'>\uf1e6</span> {}%",
@@ -23,20 +36,25 @@ TMPLS = {
                  "<span foreground='#f2777a'>{}%</span>")
 }
 
-## Thresholds
-THRESHOLDS = {
-    10: Level.ALERT,
-    25: Level.WARN
-}
-
 
 # Get information
 
 def get_raw():
     """Get the current battery level and percentage remaining."""
-    battery = ps.sensors_battery()
+    battery = None
+    num_retry = 0
 
-    if not battery:
+    while num_retry <= MAX_RETRY:
+        # TODO: Find out why this gives nothing occasionally
+        battery = ps.sensors_battery()
+
+        if battery is not None:
+            break
+
+        num_retry += 1
+        time.sleep(RETRY_INTERVAL)
+
+    if battery is None:
         return None
 
     plugged = battery.power_plugged
