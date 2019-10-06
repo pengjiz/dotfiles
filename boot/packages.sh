@@ -170,6 +170,9 @@ pkgs=(
   'gcc-fortran'
   'r'
 
+  # Python
+  'python-black'
+
   # Racket
   'racket'
 
