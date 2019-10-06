@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import urllib.request as r
+import socket
 import time
 
 # Settings
@@ -33,8 +34,9 @@ def get_raw():
             # The response is possible to be empty
             if len(lines) > 0:
                 return lines[0].split(":")
-        except r.URLError:
-            # When the request fails
+        # NOTE: Occasionally the socket.timeout exception is not handled by
+        # urllib, so to be safer we catch both
+        except (r.URLError, socket.timeout):
             pass
 
         # Retry when something is wrong
