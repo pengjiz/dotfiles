@@ -11,6 +11,13 @@ class Level(Enum):
 
 
 # Settings
+
+## Thresholds
+THRESHOLDS = {
+    0.5: Level.ALERT,
+    1: Level.WARN
+}
+
 ## Icon
 ICON = "<span font='FontAwesome 10'>\uf538</span>"
 
@@ -19,12 +26,6 @@ TMPLS = {
     Level.NORMAL: ICON + " {:.1f}G/{:.1f}G",
     Level.WARN: ICON + " <span foreground='#ffcc66'>{:.1f}G</span>/{:.1f}G",
     Level.ALERT: ICON + "  <span foreground='#f2777a'>{:.1f}G</span>/{:.1f}G"
-}
-
-## Thresholds
-THRESHOLDS = {
-    0.5: Level.ALERT,
-    1: Level.WARN
 }
 
 

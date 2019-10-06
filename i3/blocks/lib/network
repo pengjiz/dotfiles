@@ -14,15 +14,6 @@ class IFType(Enum):
 
 # Settings
 
-## Templates
-TMPLS = {
-    IFType.WIFI: ("<span font='FontAwesome 10'>\uf1eb</span> "
-                  "↓{:.1f}{}/s ↑{:.1f}{}/s"),
-    IFType.WIRED: ("<span font='FontAwesome 10'>\uf6ff</span> "
-                   "↓{:.1f}{}/s ↑{:.1f}{}/s"),
-    IFType.OFFLINE: "<span font='FontAwesome 10'>\uf06a</span>"
-}
-
 ## Prefixes for internet interfaces
 INET_IF_PREFIXES = {
     "wl": IFType.WIFI,
@@ -34,6 +25,15 @@ INET_ADDRS = [socket.AF_INET, socket.AF_INET6]
 
 ## IO speed update interval
 UPDATE_INTERVAL = 10
+
+## Templates
+TMPLS = {
+    IFType.WIFI: ("<span font='FontAwesome 10'>\uf1eb</span> "
+                  "↓{:.1f}{}/s ↑{:.1f}{}/s"),
+    IFType.WIRED: ("<span font='FontAwesome 10'>\uf6ff</span> "
+                   "↓{:.1f}{}/s ↑{:.1f}{}/s"),
+    IFType.OFFLINE: "<span font='FontAwesome 10'>\uf06a</span>"
+}
 
 
 # Helpers

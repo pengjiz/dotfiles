@@ -15,6 +15,12 @@ class Level(Enum):
 ## Monitoring path
 MONITOR_PATH = "/home/"
 
+## Thresholds
+THRESHOLDS = {
+    5: Level.WARN,
+    1: Level.ALERT
+}
+
 ## Icon
 ICON = "<span font='FontAwesome 10'>\uf1c0</span>"
 
@@ -23,12 +29,6 @@ TMPLS = {
     Level.NORMAL: ICON + " {:.1f}G",
     Level.WARN: ICON + " <span foreground='#ffcc66'>{:.1f}G</span>",
     Level.ALERT: ICON + " <span foreground='#f2777a'>{:.1f}G</span>"
-}
-
-## Thresholds
-THRESHOLDS = {
-    5: Level.WARN,
-    1: Level.ALERT
 }
 
 

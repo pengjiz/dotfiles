@@ -14,17 +14,17 @@ class Level(Enum):
 
 # Settings
 
-## Thresholds
-THRESHOLDS = {
-    10: Level.ALERT,
-    25: Level.WARN
-}
-
 ## Max number of retries
 MAX_RETRY = 5
 
 ## Interval between retries
 RETRY_INTERVAL = 2
+
+## Thresholds
+THRESHOLDS = {
+    10: Level.ALERT,
+    25: Level.WARN
+}
 
 ## Templates
 TMPLS = {
