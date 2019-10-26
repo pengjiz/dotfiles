@@ -14,11 +14,8 @@ class Level(Enum):
 
 # Settings
 
-## Max number of retries
-MAX_RETRY = 5
-
-## Interval between retries
-RETRY_INTERVAL = 2
+## Battery status update interval
+UPDATE_INTERVAL = 60
 
 ## Thresholds
 THRESHOLDS = {
@@ -41,19 +38,8 @@ TMPLS = {
 
 def get_raw():
     """Get the current battery level and percentage remaining."""
-    battery = None
-    num_retry = 0
-
-    while num_retry <= MAX_RETRY:
-        # TODO: Find out why this gives nothing occasionally
-        battery = ps.sensors_battery()
-
-        if battery is not None:
-            break
-
-        num_retry += 1
-        time.sleep(RETRY_INTERVAL)
-
+    # TODO: Find out why this could fail when charging
+    battery = ps.sensors_battery()
     if battery is None:
         return None
 
@@ -74,8 +60,7 @@ def get_raw():
 def get_output():
     """Get a string for the battery status."""
     raw = get_raw()
-
-    if not raw:
+    if raw is None:
         return None
 
     level, percent = raw
@@ -87,8 +72,13 @@ def get_output():
 
 if __name__ == "__main__":
     try:
-        output = get_output()
-        if output:
-            print(output)
+        # NOTE: For some reason it may occasionally fail to get battery
+        # information when charging, in which case it should be better to just
+        # keep previous information
+        while True:
+            output = get_output()
+            if output:
+                print(output, flush=True)
+            time.sleep(UPDATE_INTERVAL)
     except KeyboardInterrupt:
         pass

@@ -23,7 +23,7 @@ markup=pango
 signal=1
 
 [battery]
-interval=60
+interval=persist
 markup=pango
 
 [time]
