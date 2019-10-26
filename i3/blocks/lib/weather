@@ -51,11 +51,10 @@ def get_raw():
 def get_output():
     """Get a string for weather."""
     weather = get_raw()
+    if weather is None:
+        return None
 
-    if weather:
-        return TMPL.format(*weather)
-
-    return None
+    return TMPL.format(*weather)
 
 
 # Print

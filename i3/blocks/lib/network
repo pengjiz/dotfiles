@@ -46,9 +46,9 @@ def get_if_type(if_name):
     return IFType.OFFLINE
 
 
-## TODO: Find a more reliable way?
 def is_inet_conn(addrs):
     """Test if the addresses contains an internet address."""
+    # TODO: Find a more reliable way
     for addr in addrs:
         if addr.family in INET_ADDRS:
             return True
