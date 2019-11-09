@@ -6,10 +6,16 @@ import time
 
 # Settings
 
+## Weather information elements
+ELEMENTS = ["%c", "%t", "%h"]
+
+## Separator between elements
+SEP = ":"
+
 ## Request
-## NOTE: Here : is a separator between elements.
-REQ = r.Request("https://wttr.in/Pittsburgh?m&format=%c:%t:%h",
-                headers={"User=Agent": "python-requests"})
+REQ = r.Request(
+    "https://wttr.in/Pittsburgh?m&format={}".format(SEP.join(ELEMENTS)),
+    headers={"User=Agent": "python-requests"})
 
 ## Max number of retries
 MAX_RETRY = 5
@@ -31,9 +37,14 @@ def get_raw():
         try:
             res = r.urlopen(REQ, timeout=3)
             lines = res.read().decode().splitlines()
-            # The response is possible to be empty.
-            if len(lines) > 0:
-                return lines[0].split(":")
+            results = lines[0].split(SEP)
+            # NOTE: List slices do not perform bound check, so here explicit
+            # indexing is used.
+            return [results[idx] for idx in range(len(ELEMENTS))]
+        # NOTE: The response may not always be in the desired format. In that
+        # case nothing should be returned.
+        except IndexError:
+            return None
         # NOTE: Occasionally the socket.timeout exception is not handled by
         # urllib, so to be safer we catch both.
         except (r.URLError, socket.timeout):
