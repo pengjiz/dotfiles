@@ -17,6 +17,9 @@ markup=pango
 interval=60
 markup=pango
 
+# TODO: Find a way to handle device switch. For example, when we plug in the
+# headphone we need to update the volume information as well. However, right now
+# that is not updated unless we click the bar or press the button.
 [volume]
 interval=once
 markup=pango

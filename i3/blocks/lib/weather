@@ -7,7 +7,7 @@ import time
 # Settings
 
 ## Request
-## NOTE: Here : is a separator between elements
+## NOTE: Here : is a separator between elements.
 REQ = r.Request("https://wttr.in/Pittsburgh?m&format=%c:%t:%h",
                 headers={"User=Agent": "python-requests"})
 
@@ -31,15 +31,14 @@ def get_raw():
         try:
             res = r.urlopen(REQ, timeout=3)
             lines = res.read().decode().splitlines()
-            # The response is possible to be empty
+            # The response is possible to be empty.
             if len(lines) > 0:
                 return lines[0].split(":")
         # NOTE: Occasionally the socket.timeout exception is not handled by
-        # urllib, so to be safer we catch both
+        # urllib, so to be safer we catch both.
         except (r.URLError, socket.timeout):
             pass
 
-        # Retry when something is wrong
         num_retry += 1
         time.sleep(RETRY_INTERVAL)
 
@@ -61,7 +60,6 @@ def get_output():
 
 if __name__ == "__main__":
     try:
-        # Rest for a while
         time.sleep(10)
         output = get_output()
         if output:

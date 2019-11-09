@@ -47,6 +47,7 @@ def extract_volume(lines):
 
 def get_raw():
     """Get audio status."""
+    # TODO: Find a more reliable way.
     lines = (check_output(["pactl", "list", "sinks"])
              .decode("utf-8")
              .splitlines())
