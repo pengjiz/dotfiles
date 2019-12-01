@@ -127,10 +127,12 @@ pkgs=(
   'xclip'
   'youtube-dl'
 
-  # C & C++
+  # Debugging
   'gdb'
   'ltrace'
   'valgrind'
+
+  # C & C++
   'cmake'
   'ctags'
   'gsl'
