@@ -179,6 +179,7 @@ pkgs=(
   # Rust
   'rustup'
   'rust-racer'
+  'diesel-cli'
 
   # Lua
   'lua'
