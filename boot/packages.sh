@@ -129,6 +129,8 @@ pkgs=(
 
   # C & C++
   'gdb'
+  'ltrace'
+  'valgrind'
   'cmake'
   'ctags'
   'gsl'
