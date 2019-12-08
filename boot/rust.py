@@ -10,7 +10,7 @@ TOOLCHAINS = ["stable"]
 # Setup toolchain
 def setup_toolchain(rustup, toolchain):
     """Install toolchain and essential components."""
-    check_call([rustup, "install", toolchain])
+    check_call([rustup, "toolchain", "install", toolchain])
 
     for component in ["rust-src", "rustfmt", "clippy"]:
         check_call([rustup, "component", "add",
