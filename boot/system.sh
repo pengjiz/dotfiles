@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Exit when error occurs
 set -e
 
 current_dir="$(dirname "$0")"

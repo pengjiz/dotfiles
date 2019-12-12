@@ -4,7 +4,7 @@ set -e
 
 aur_dir="$HOME/.local/aurpkg"
 
-update_pkg() {
+upgrade_pkg() {
   # Fetch from remote
   local pkg_dir="$aur_dir/$1"
   git -C "$pkg_dir" fetch
@@ -26,7 +26,7 @@ update_pkg() {
 # Change working directory
 cd "$aur_dir"
 
-# Update all packages by default
+# Upgrade all packages by default
 if [[ $# -eq 0 ]]; then
   pkgs=(*/)
 else
@@ -35,19 +35,19 @@ fi
 pkgs=("${pkgs[@]%/}")
 
 # List all packages to check
-echo 'AUR packages to update:'
+echo 'AUR packages to upgrade:'
 for pkg in "${pkgs[@]}"; do
   echo "- $pkg"
 done
 
-# Update
+# Upgrade
 read -n 1 -p 'Continue? [Y/n] '
 case "$REPLY" in
   Y|y)
     echo '' ;&
   '')
     for pkg in "${pkgs[@]}"; do
-      update_pkg "$pkg"
+      upgrade_pkg "$pkg"
     done ;;
   *)
     echo '' ;;

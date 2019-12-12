@@ -1,9 +1,6 @@
 #!/bin/bash
 
-# Exit when error occurs
 set -e
-
-# Preparation
 
 aur_url='https://aur.archlinux.org'
 aur_dir="$HOME/.local/aurpkg"
