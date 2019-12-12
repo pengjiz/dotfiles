@@ -19,6 +19,8 @@ sudo cp "$current_dir/config/30-touchpad.conf" \
 sudo mkdir -p '/etc/pacman.d/hooks'
 sudo cp "$current_dir/config/pacman-update-mirrorlist.hook" \
      '/etc/pacman.d/hooks/pacman-update-mirrorlist.hook'
+sudo cp "$current_dir/config/systemd-update-boot.hook" \
+     '/etc/pacman.d/hooks/systemd-update-boot.hook'
 
 # Enable system services
 system_services=(
