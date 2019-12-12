@@ -204,6 +204,7 @@ pkgs=(
   'hugo'
 
   # GIS
+  'libspatialite'
   'qgis'
   'python-gdal'
   'python-numpy'
