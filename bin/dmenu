@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rofi -dmenu -p 'select' "@$"
+rofi -dmenu -p 'select' "$@"

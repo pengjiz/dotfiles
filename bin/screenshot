@@ -2,22 +2,22 @@
 
 set -e
 
-SCREENSHOT_DIR="$HOME/Pictures/screenshots"
-FILENAME_FORMAT='%Y%m%d%H%M%S'
+file_dir="${SCREENSHOT_DIR:-$HOME/Pictures/screenshots}"
+name_format="${SCREENSHOT_NAME_FORMAT:-%Y%m%d%H%M%S}"
 
-mkdir -p "$SCREENSHOT_DIR"
+mkdir -p "$file_dir"
 
 case "$1" in
   # Capture the full screen
   screen)
-    scrot -z "$SCREENSHOT_DIR/screen-$FILENAME_FORMAT.png"
+    scrot -z "$file_dir/screen-$name_format.png"
     notify-send 'Screenshot' 'Screen captured' ;;
   # Capture a selected area
   area)
-    scrot -s -z "$SCREENSHOT_DIR/area-$FILENAME_FORMAT.png"
+    scrot -s -z "$file_dir/area-$name_format.png"
     notify-send 'Screenshot' 'Selected area captured' ;;
   # Capture the current window
   window)
-    scrot -u -z "$SCREENSHOT_DIR/window-$FILENAME_FORMAT.png"
+    scrot -u -z "$file_dir/window-$name_format.png"
     notify-send 'Screenshot' 'Focused window captured' ;;
 esac
