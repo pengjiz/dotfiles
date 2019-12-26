@@ -16,6 +16,9 @@
     ~/.zshrc: shell/zsh/zshrc
     ~/.bashrc: shell/bash/bashrc
 
+    # Pacman
+    ~/.config/pacman/makepkg.conf: pacman/makepkg.conf
+
     # SSH
     ~/.ssh/config: ssh/config
     ~/.ssh/config.d:
