@@ -34,7 +34,7 @@ export VISUAL="$EDITOR"
 
 ## Functions
 ### Make a directory and cd to it
-function take() {
+function take {
   mkdir -pv "$1" && cd "$1"
 }
 

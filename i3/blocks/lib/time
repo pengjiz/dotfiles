@@ -5,7 +5,7 @@ import datetime
 
 # Settings
 
-## Template
+# Template
 TMPL = "%H:%M %a %m-%d"
 
 

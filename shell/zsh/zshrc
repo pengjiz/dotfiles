@@ -33,19 +33,19 @@ setopt PROMPT_SUBST
 autoload -U colors && colors
 
 ### Current working directory
-prompt_pwd="%{$fg_bold[blue]%}%c"
+prompt_pwd="%{${fg_bold[blue]}%}%c"
 ### Last command status
-prompt_last_status="%(?:%{$fg[green]%}>:%{$fg_bold[red]%}>)%{$reset_color%}"
+prompt_last_status="%(?:%{${fg[green]}%}>:%{${fg_bold[red]}%}>)%{$reset_color%}"
 ### Git
-function _prompt_get_git_info() {
+function _prompt_get_git_info {
   local branch=''
   branch="$(command git symbolic-ref --short HEAD 2>/dev/null)" || \
     branch="$(command git rev-parse --short HEAD 2>/dev/null)"
 
   if [[ "$branch" ]]; then
-    branch="%{$fg_bold[magenta]%}@$branch"
+    branch="%{${fg_bold[magenta]}%}@$branch"
     if [[ "$(command git status --porcelain 2>/dev/null | tail -n1)" ]]; then
-      echo "$branch%{$fg_bold[yellow]%}*"
+      echo "$branch%{${fg_bold[yellow]}%}*"
     else
       echo "$branch"
     fi
@@ -80,7 +80,7 @@ export VISUAL="$EDITOR"
 
 ## Functions
 ### Make a directory and cd to it
-function take() {
+function take {
   mkdir -pv "$1" && cd "$1"
 }
 

@@ -12,16 +12,16 @@ class Level(Enum):
 
 # Settings
 
-## Thresholds
+# Thresholds
 THRESHOLDS = {
     0.5: Level.ALERT,
     1: Level.WARN
 }
 
-## Icon
+# Icon
 ICON = "<span font='FontAwesome 10'>\uf538</span>"
 
-## Templates
+# Templates
 TMPLS = {
     Level.NORMAL: ICON + " {:.1f}G/{:.1f}G",
     Level.WARN: ICON + " <span foreground='#ffcc66'>{:.1f}G</span>/{:.1f}G",

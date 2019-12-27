@@ -12,11 +12,11 @@ class State(Enum):
 
 # Settings
 
-## Patterns
+# Patterns
 MUTE_PAT = re.compile(r"^\s*Mute: (yes|no)")
 VOL_PAT = re.compile(r"^\s*Volume: .* /\s* (\d+%)")
 
-## Templates
+# Templates
 TMPLS = {
     State.UNMUTED: "<span font='FontAwesome 10'>\uf3b5</span> {}",
     State.MUTED: "<span font='FontAwesome 10'>\uf6a9</span>"

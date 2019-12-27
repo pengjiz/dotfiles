@@ -2,7 +2,7 @@
 
 set -e
 
-log() {
+function log {
   local color
   local prefix
   case "$1" in
@@ -18,8 +18,7 @@ log() {
       prefix='info'
       color='32' ;;
   esac
-
-  printf '\033[%sm%s:\033[0m %s \n' "$color" "$prefix" "$@"
+  echo -e "\033[${color}m$prefix:\033[0m $@"
 }
 
 setup_all='false'
@@ -38,11 +37,11 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-do_all() {
+function do_all {
   [[ "$setup_all" == 'false' ]] && return 1 || return 0
 }
 
-do_printer() {
+function do_printer {
   [[ "$setup_printer" == 'false' ]] && return 1 || return 0
 }
 

@@ -14,19 +14,19 @@ class IFType(Enum):
 
 # Settings
 
-## Prefixes for internet interfaces
+# Prefixes for internet interfaces
 INET_IF_PREFIXES = {
     "wl": IFType.WIFI,
     "en": IFType.WIRED
 }
 
-## Internet addresses
+# Internet addresses
 INET_ADDRS = [socket.AF_INET, socket.AF_INET6]
 
-## IO speed update interval
+# IO speed update interval
 UPDATE_INTERVAL = 10
 
-## Templates
+# Templates
 TMPLS = {
     IFType.WIFI: ("<span font='FontAwesome 10'>\uf1eb</span> "
                   "↓{:.1f}{}/s ↑{:.1f}{}/s"),
