@@ -10,7 +10,10 @@ local({
 })
 
 # Set user library
-# NOTE: Only consider the first one
+#
+# NOTE: R_LIBS_USER is similar to PATH and is a colon separated string of paths.
+# Here we only consider the first one which is similar to what builtin functions
+# does.
 user_libpath = path.expand(
   strsplit(Sys.getenv("R_LIBS_USER",
                       unset = "~/.local/lib/R/library"),

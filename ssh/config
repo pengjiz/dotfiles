@@ -1,5 +1,8 @@
-# Include other configuration files
-# NOTE: Should be at the top of this file
+# Include host specific configuration files
+#
+# NOTE: This should be at the top of this file otherwise the global options will
+# apply because only the first obtained value for each option will be used for
+# each host.
 Include config.d/*
 
 # Global configuration
