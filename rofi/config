@@ -1,4 +1,10 @@
+! Looking
 rofi.theme: Arc-Dark
 rofi.font: DejaVu Sans 11
-rofi.modi: drun,window
-rofi.combi-modi: combi
+
+! Default modi and combi
+rofi.combi-modi: window,drun
+rofi.modi: combi
+
+! Key bindings
+rofi.kb-screenshot:
