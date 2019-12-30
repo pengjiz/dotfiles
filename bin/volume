@@ -3,9 +3,19 @@
 set -e
 
 case "$1" in
-  up)   pactl set-sink-volume 0 +5%  ;;
-  down) pactl set-sink-volume 0 -5%  ;;
-  mute) pactl set-sink-mute 0 toggle ;;
+  # Volume up by 5
+  up)
+    pactl set-sink-volume 0 +5% ;;
+  # Volume down by 5
+  down)
+    pactl set-sink-volume 0 -5% ;;
+  # Toggle mute
+  mute)
+    pactl set-sink-mute 0 toggle ;;
+  # Unknown operation
+  *)
+    echo "Unknown operation $1"
+    exit 1 ;;
 esac
 
 # Refresh i3blocks
