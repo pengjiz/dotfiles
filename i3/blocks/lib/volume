@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import re
-from subprocess import check_output
+from subprocess import run, PIPE
 from enum import Enum
 
 
@@ -48,9 +48,8 @@ def extract_volume(lines):
 def get_raw():
     """Get audio status."""
     # TODO: Find a more reliable way.
-    lines = (check_output(["pactl", "list", "sinks"])
-             .decode("utf-8")
-             .splitlines())
+    lines = run(["pactl", "list", "sinks"], encoding="utf-8",
+                stdout=PIPE, check=True).stdout.splitlines()
     state = get_state(lines)
 
     if state is State.MUTED:
