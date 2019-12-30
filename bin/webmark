@@ -263,7 +263,7 @@ class Store:
         def fnc(key, value):
             return {"key": key,
                     "url": value.url,
-                    "tags": list(value.tags),
+                    "tags": sorted(list(value.tags)),
                     "score": value.score}
 
         def fnk(value):
