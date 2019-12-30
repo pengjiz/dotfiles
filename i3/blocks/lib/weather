@@ -35,9 +35,9 @@ def get_raw():
 
     while num_retry <= MAX_RETRY:
         try:
-            res = r.urlopen(REQ, timeout=3)
-            lines = res.read().decode().splitlines()
-            results = lines[0].split(SEP)
+            with r.urlopen(REQ, timeout=3) as f:
+                line = f.readline().decode("utf-8").rstrip()
+            results = line.split(SEP)
             # NOTE: List slices do not perform bound check, so here explicit
             # indexing is used.
             return [results[idx] for idx in range(len(ELEMENTS))]
