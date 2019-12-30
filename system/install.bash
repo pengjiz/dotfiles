@@ -367,6 +367,6 @@ if do_all; then
 fi
 
 if do_printer; then
-  sudo pacman -S --needed --noconfirm cups hplips
+  sudo pacman -S --needed --noconfirm cups hplip
   sudo systemctl enable org.cups.cupsd.socket
 fi
