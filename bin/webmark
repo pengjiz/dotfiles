@@ -1,0 +1,539 @@
+#!/usr/bin/python3
+
+import enum
+import json
+import os
+import re
+import sys
+import webbrowser
+from argparse import ArgumentParser
+from collections import defaultdict
+from pathlib import Path
+from shutil import get_terminal_size
+from subprocess import run, CalledProcessError
+
+
+# Constants
+
+KEY_PAT = re.compile(r"(?:[a-zA-Z.-]+/)*[a-zA-Z.-]+")
+COLOR_CODES = {
+    "black": 30,
+    "red": 31,
+    "green": 32,
+    "yellow": 33,
+    "blue": 34,
+    "magenta": 35,
+    "cyan": 36,
+    "white": 37,
+}
+
+
+class Action(enum.Enum):
+    """Action on a bookmark."""
+    Open = enum.auto()
+    Copy = enum.auto()
+    Cancel = enum.auto()
+
+
+# Exceptions
+
+class AppError(Exception):
+    """Error occurred in the application."""
+    def __init__(self, message):
+        super().__init__(message)
+
+    def __str__(self):
+        return self.args[0]
+
+
+class CommandError(Exception):
+    """Error occurred when running external commands."""
+    def __init__(self, message, code):
+        super().__init__(message, code)
+
+    def __str__(self):
+        message = self.args[0]
+        code = self.args[1]
+        return "{} (code {})".format(message, code)
+
+
+# Helpers
+
+def pad(items, convert=None, fmt=None, align="<"):
+    """Pad lines to the same length."""
+    lines = items
+    if convert is not None:
+        lines = [convert(l) for l in items]
+
+    lengths = [len(l) for l in lines]
+    width = max(lengths)
+    paddings = (" " * (width - length) for length in lengths)
+
+    if fmt is not None:
+        lines = (fmt(l) for l in items)
+
+    tmpl = "{line}{padding}"
+    if align == ">":
+        tmpl = "{padding}{line}"
+    return [tmpl.format(line=l, padding=p) for l, p in zip(lines, paddings)]
+
+
+def shorten(text, width, placeholder=""):
+    """Shorten text to a specific width."""
+    length = len(text)
+    if length > width:
+        return "{}{}".format(text[:width - len(placeholder)],
+                             placeholder)
+    return text
+
+
+def colorize(text, color, bold=False):
+    """Colorize text."""
+    color = COLOR_CODES[color]
+    if bold:
+        color = "{}:1".format(color)
+    return "\033[{}m{}\033[0m".format(color, text)
+
+
+def pango(text, **attributes):
+    """Markup text with Pango syntax."""
+    attributes = ["{}='{}'".format(k, v)
+                  for k, v in attributes.items()]
+    if len(attributes) > 0:
+        return "<span {}>{}</span>".format(" ".join(attributes), text)
+    return text
+
+
+def convolute(var):
+    """Transform between a list of dictionaries and a dictionary of lists."""
+    if isinstance(var, dict):
+        results = [dict(zip(var.keys(), v))
+                   for v in zip(*var.values())]
+        return results
+    else:
+        results = defaultdict(list)
+        for d in var:
+            for k, v in d.items():
+                results[k].append(v)
+        return results
+
+
+def rofi(items, actions):
+    """Run Rofi to show a menu of items."""
+    args = ["-no-custom", "-no-sort", "-markup-rows"]
+
+    codes = {}
+    for name, spec in actions.items():
+        key = spec.get("key", [])
+        args.extend(key)
+        override = spec.get("override")
+        if override:
+            args.extend([override, ""])
+        code = spec.get("code")
+        if code is not None:
+            codes[code] = name
+
+    process = run(["rofi", "-dmenu", "-p", "webmark", *args],
+                  input=os.linesep.join(items),
+                  capture_output=True, encoding="utf-8")
+    code = process.returncode
+    action = codes.get(code)
+    if action is None:
+        raise CommandError(process.stderr, code)
+    return action, process.stdout
+
+
+def xclip(text):
+    """Copy text to clipboard with xclip."""
+    args = ["-selection", "clipboard", "-in"]
+    try:
+        run(["xclip", *args], input=text,
+            encoding="utf-8").check_returncode()
+    except CalledProcessError as error:
+        raise CommandError("xclip failed", error.returncode)
+
+
+def get_default_file():
+    """Get the default store file."""
+    env_file = os.environ.get("WEBMARK_FILE")
+    if env_file is not None:
+        return Path(env_file)
+    return Path.home() / ".local" / "share" / "webmark.json"
+
+
+# Core
+
+class Bookmark:
+    """Bookmark for a website."""
+    __slots__ = ("url", "tags", "score")
+
+    def __init__(self, url, tags=None, score=0):
+        if tags is None:
+            tags = []
+        self.url = url
+        self.tags = set(tags)
+        self.score = score
+
+
+class Store:
+    """Store of bookmarks."""
+    __slots__ = ("config", "bookmarks")
+
+    def __init__(self, **config):
+        self.config = {}
+        self.config["decay"] = config.get("decay", 0.97)
+        self.config["incr"] = config.get("incr", 1)
+        self.bookmarks = {}
+
+    def save(self, f):
+        """Save store to a file."""
+        bookmarks = self.list_bookmarks()
+        data = {
+            "config": self.config,
+            "bookmarks": bookmarks
+        }
+
+        # NOTE: Directly writing to the file may destroy the original file when
+        # error occurs. So we first serialize the data to a string and then
+        # manually write the string to the file.
+        #
+        # TODO: Find a better way.
+        lines = json.dumps(data, indent=2)
+        f.write(lines)
+
+    @classmethod
+    def load(cls, f):
+        """Load a store from file."""
+        data = json.load(f)
+        config = data.get("config", {})
+        store = cls(**config)
+
+        bookmarks = data.get("bookmarks")
+        if bookmarks is None:
+            return store
+
+        for bookmark in bookmarks:
+            key = bookmark.pop("key")
+            store.add_bookmark(key, **bookmark)
+        return store
+
+    def get_bookmark(self, key):
+        """Get the bookmark with the key."""
+        bookmark = self.bookmarks.get(key)
+        if bookmark is None:
+            raise AppError("no bookmark with key {}".format(key))
+        return bookmark
+
+    def check_key(self, key):
+        """Check if a key is valid for adding."""
+        if KEY_PAT.fullmatch(key) is None:
+            raise AppError("invalid key {}".format(key))
+        if self.bookmarks.get(key) is not None:
+            raise AppError("existing key {}".format(key))
+
+    def add_bookmark(self, key, url, tags=None, score=0):
+        """Add a new bookmark."""
+        self.check_key(key)
+        bookmark = Bookmark(url, tags, score)
+        self.bookmarks[key] = bookmark
+
+    def update_bookmark(self, key, **data):
+        """Update data of a bookmark."""
+        bookmark = self.get_bookmark(key)
+        if "tags" in data:
+            data["tags"] = set(data["tags"])
+        for name, value in data.items():
+            setattr(bookmark, name, value)
+
+    def move_bookmark(self, old_key, new_key):
+        """Move a bookmark to a new key."""
+        self.check_key(new_key)
+        bookmark = self.get_bookmark(old_key)
+        self.bookmarks[new_key] = bookmark
+        self.remove_bookmark(old_key)
+
+    def remove_bookmark(self, key):
+        """Remove a bookmark."""
+        if key not in self.bookmarks:
+            raise AppError("no bookmark with key {}".format(key))
+        del self.bookmarks[key]
+
+    def list_bookmarks(self, tags=None, min_score=0):
+        """Return all bookmarks as a list of dictionaries."""
+        def fnc(key, value):
+            return {"key": key,
+                    "url": value.url,
+                    "tags": list(value.tags),
+                    "score": value.score}
+
+        def fnk(value):
+            keep = value.score >= min_score
+            if tags is not None:
+                keep = keep and not value.tags.isdisjoint(tags)
+            return keep
+
+        bookmarks = ((k, v) for k, v in self.bookmarks.items() if fnk(v))
+        bookmarks = [fnc(k, v) for k, v in bookmarks]
+        if len(bookmarks) == 0:
+            raise AppError("no bookmarks found")
+        return bookmarks
+
+    def visit_bookmark(self, key, action_fn):
+        """Act on the bookmark URL with the given function."""
+        bookmark = self.get_bookmark(key)
+        # Decay all bookmark scores
+        for x in self.bookmarks.values():
+            x.score *= self.config["decay"]
+        # Increment the visited bookmark
+        bookmark.score += self.config["incr"]
+        return action_fn(bookmark.url)
+
+
+# Interface
+
+class App:
+    """Interface for working with bookmarks."""
+    def __init__(self):
+        self.store_path = None
+        self.fancy = True
+        self.width = 80
+        self.store = None
+
+    def _save_store(self):
+        """Save store back to the file."""
+        with self.store_path.open("w") as f:
+            self.store.save(f)
+
+    def _colorize(self, text, color, bold=False):
+        """Colorize text if appropriate."""
+        if not self.fancy:
+            return text
+        return colorize(text, color, bold)
+
+    def _pango(self, text, **attributes):
+        "Markup text if appropriate."
+        if not self.fancy:
+            return text
+        return pango(text, **attributes)
+
+    def _get_parser(self):
+        """Get an argument parser."""
+        parser = ArgumentParser(description="Manage bookmarks of websites")
+        # Global options
+        default_file = get_default_file()
+        parser.add_argument("-f", "--store-file", metavar="FILE", type=Path,
+                            default=default_file,
+                            help="bookmark store file")
+        parser.add_argument("--no-fancy", action="store_true",
+                            help="turn off fancy display")
+        terminal_width = get_terminal_size((80, 40)).columns
+        parser.add_argument("-w", "--width", type=int,
+                            default=terminal_width,
+                            help="width of output text")
+
+        # Subcommands
+        subparsers = parser.add_subparsers()
+
+        # Add
+        parser_add = subparsers.add_parser(
+            "add", description="Add a new bookmark")
+        parser_add.add_argument("key",
+                                help="key of the bookmark")
+        parser_add.add_argument("url",
+                                help="URL of the website")
+        parser_add.add_argument("-t", "--tags", metavar="TAG", nargs="*",
+                                help="tags of the bookmark")
+        parser_add.add_argument("-s", "--score", type=float,
+                                default=0,
+                                help="initial score of the bookmark")
+        parser_add.set_defaults(func=self.add)
+
+        # Update
+        parser_update = subparsers.add_parser(
+            "update", description="Update a bookmark")
+        parser_update.add_argument("key",
+                                   help="key of the bookmark")
+        parser_update.add_argument("-u", "--url",
+                                   help="new URL of the website")
+        parser_update.add_argument("-t", "--tags", metavar="TAG", nargs="*",
+                                   help="new tags of the website")
+        parser_update.add_argument("-s", "--score", type=float,
+                                   help="new score of the bookmark")
+        parser_update.set_defaults(func=self.update)
+
+        # Move
+        parser_move = subparsers.add_parser(
+            "move", description="Move bookmark to a new key")
+        parser_move.add_argument("old_key", metavar="from",
+                                 help="old key of the bookmark")
+        parser_move.add_argument("new_key", metavar="to",
+                                 help="new key of the bookmark")
+        parser_move.set_defaults(func=self.move)
+
+        # Remove
+        parser_remove = subparsers.add_parser(
+            "remove", description="Remove a bookmark")
+        parser_remove.add_argument("key",
+                                   help="key of the bookmark")
+        parser_remove.set_defaults(func=self.remove)
+
+        # List
+        parser_list = subparsers.add_parser(
+            "list", description="List bookmarks")
+        parser_list.add_argument("-t", "--tags", metavar="TAG", nargs="*",
+                                 help="desired tags of bookmarks")
+        parser_list.add_argument("-s", "--score", type=float,
+                                 default=0,
+                                 help="minimum score of bookmarks")
+        parser_list.set_defaults(func=self.list)
+
+        # Menu
+        parser_menu = subparsers.add_parser(
+            "menu", description="Browse bookmarks with a menu")
+        parser_menu.add_argument("-t", "--tags", metavar="TAG", nargs="*",
+                                 help="desired tags of bookmarks")
+        parser_menu.add_argument("-s", "--score", type=float,
+                                 default=0,
+                                 help="minimum score of bookmarks")
+        parser_menu.set_defaults(func=self.menu)
+        return parser
+
+    def add(self, args):
+        """Command for adding a bookmark."""
+        self.store.add_bookmark(key=args.key,
+                                url=args.url,
+                                tags=args.tags,
+                                score=args.score)
+        self._save_store()
+
+    def update(self, args):
+        """Command for updating a bookmark."""
+        data = {}
+        for name in ["url", "tags", "score"]:
+            value = getattr(args, name)
+            if value is not None:
+                data[name] = value
+        self.store.update_bookmark(args.key, **data)
+        self._save_store()
+
+    def move(self, args):
+        """Command for moving a bookmark."""
+        self.store.move_bookmark(old_key=args.old_key,
+                                 new_key=args.new_key)
+        self._save_store()
+
+    def remove(self, args):
+        """Command for removing a bookmark."""
+        self.store.remove_bookmark(args.key)
+        self._save_store()
+
+    def list(self, args):
+        """Command for listing all bookmarks."""
+        tmpl = "{key}  {score}  {tags}  {url}"
+        fmtspecs = {
+            # Right align scores and keep one decimal point
+            "score": {
+                "convert": lambda x: "{:.1f}".format(x),
+                "align": ">"
+            },
+            # Join all tags
+            "tags": {
+                "convert": lambda xs: "({})".format(", ".join(xs))
+            },
+            # Colorize keys
+            "key": {
+                "fmt": lambda x: self._colorize(x, "blue")
+            }
+        }
+
+        bookmarks = self.store.list_bookmarks(tags=args.tags,
+                                              min_score=args.score)
+        bookmarks = sorted(bookmarks, key=lambda x: (-x["score"], x["key"]))
+        bookmarks = convolute(bookmarks)
+
+        columns = {}
+        # There is no need to align URLs.
+        columns["url"] = bookmarks.pop("url")
+        for name, lines in bookmarks.items():
+            columns[name] = pad(lines, **fmtspecs.get(name, {}))
+
+        lines = convolute(columns)
+        lines = (tmpl.format(**l) for l in lines)
+        lines = (shorten(l, self.width) for l in lines)
+        print(os.linesep.join(lines))
+
+    def menu(self, args):
+        """Command for showing a menu and browsing selected bookmarks."""
+        def fmt_tags(tags):
+            if tags is None or len(tags) == 0:
+                return ""
+            else:
+                return "({})".format(self._pango(", ".join(tags),
+                                                 font_style="italic",
+                                                 font_size="small"))
+
+        actions = {
+            # Open the bookmarked URL with the browser
+            Action.Open: {
+                "code": 0,
+                "fn": webbrowser.open
+            },
+            # Copy the URL to the clipboard
+            Action.Copy: {
+                "code": 10,
+                "key": ("-kb-custom-1", "Control+Return,Alt+1"),
+                "override": "-kb-accept-custom",
+                "fn": xclip
+            },
+            # Do nothing
+            Action.Cancel: {
+                "code": 1
+            }
+        }
+
+        bookmarks = self.store.list_bookmarks(tags=args.tags,
+                                              min_score=args.score)
+        bookmarks = sorted(bookmarks, key=lambda x: (-x["score"], x["key"]))
+        bookmarks = convolute(bookmarks)
+
+        keys = bookmarks["key"]
+        tags = [fmt_tags(xs) for xs in bookmarks["tags"]]
+        items = ["{} {}".format(k, t) for k, t in zip(keys, tags)]
+
+        action, item = rofi(items, actions)
+        fn = actions.get(action, {}).get("fn")
+        if fn is None:
+            return
+        key = item.split(" ")[0]
+        self.store.visit_bookmark(key, fn)
+        self._save_store()
+
+    def run(self):
+        """Run the application."""
+        parser = self._get_parser()
+        args = parser.parse_args()
+
+        self.store_path = args.store_file
+        self.fancy = not args.no_fancy
+        self.width = args.width
+        if self.store_path.exists():
+            with open(self.store_path) as f:
+                self.store = Store.load(f)
+        else:
+            self.store = Store()
+
+        args.func(args)
+
+
+if __name__ == "__main__":
+    try:
+        app = App()
+        app.run()
+    except AppError as error:
+        sys.exit("App Error: {}".format(error))
+    except CommandError as error:
+        sys.exit("Command Error: {}".format(error))
+    except ValueError as error:
+        sys.exit("Error: {}".format(error))
+    except KeyboardInterrupt:
+        pass

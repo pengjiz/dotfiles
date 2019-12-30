@@ -26,6 +26,9 @@ export _Z_DATA="$HOME/.local/share/z"
 export LEDGER_FILE="$HOME/Sync/ledger/finances.ledger"
 export LEDGER_PRICE_DB="$HOME/Sync/ledger/pricedb.ledger"
 
+# Webmark
+export WEBMARK_FILE="$HOME/Sync/misc/webmark.json"
+
 # Conda
 conda_path='/opt/miniconda3'
 conda_script="$conda_path/etc/profile.d/conda.sh"
