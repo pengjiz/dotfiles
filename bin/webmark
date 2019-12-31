@@ -9,23 +9,29 @@ import webbrowser
 from argparse import ArgumentParser
 from collections import defaultdict
 from pathlib import Path
-from shutil import get_terminal_size
+from shutil import get_terminal_size, copyfileobj
+from tempfile import TemporaryFile
 from subprocess import run, CalledProcessError
 
 
 # Constants
 
+# Valid key pattern of a bookmark
 KEY_PAT = re.compile(r"(?:[a-zA-Z.-]+/)*[a-zA-Z.-]+")
-COLOR_CODES = {
-    "black": 30,
-    "red": 31,
-    "green": 32,
-    "yellow": 33,
-    "blue": 34,
-    "magenta": 35,
-    "cyan": 36,
-    "white": 37,
-}
+# Number of decimal points for scores
+SCORE_PREC = 2
+
+
+class Color(enum.Enum):
+    """ANSI color codes."""
+    Black = 30
+    Red = 31
+    Green = 32
+    Yellow = 33
+    Blue = 34
+    Megenta = 35
+    Cyan = 36
+    White = 37
 
 
 class Action(enum.Enum):
@@ -89,38 +95,40 @@ def shorten(text, width, placeholder=""):
 
 def colorize(text, color, bold=False):
     """Colorize text."""
-    color = COLOR_CODES[color]
+    color = color.value
     if bold:
         color = "{}:1".format(color)
     return "\033[{}m{}\033[0m".format(color, text)
 
 
-def pango(text, **attributes):
+def pango(text, **attrs):
     """Markup text with Pango syntax."""
-    attributes = ["{}='{}'".format(k, v)
-                  for k, v in attributes.items()]
-    if len(attributes) > 0:
-        return "<span {}>{}</span>".format(" ".join(attributes), text)
+    attrs = ["{}='{}'".format(k, v) for k, v in attrs.items()]
+    if len(attrs) > 0:
+        return "<span {}>{}</span>".format(" ".join(attrs), text)
     return text
 
 
 def convolute(var):
     """Transform between a list of dictionaries and a dictionary of lists."""
     if isinstance(var, dict):
-        results = [dict(zip(var.keys(), v))
-                   for v in zip(*var.values())]
+        results = [dict(zip(var.keys(), v)) for v in zip(*var.values())]
         return results
     else:
         results = defaultdict(list)
-        for d in var:
-            for k, v in d.items():
-                results[k].append(v)
+        for item in var:
+            for key, val in item.items():
+                results[key].append(val)
         return results
 
 
 def rofi(items, actions):
     """Run Rofi to show a menu of items."""
-    args = ["-no-custom", "-no-sort", "-markup-rows"]
+    args = ["-dmenu",
+            "-p", "webmark",
+            "-no-custom",
+            "-no-sort",
+            "-markup-rows"]
 
     codes = {}
     for name, spec in actions.items():
@@ -133,8 +141,7 @@ def rofi(items, actions):
         if code is not None:
             codes[code] = name
 
-    process = run(["rofi", "-dmenu", "-p", "webmark", *args],
-                  input=os.linesep.join(items),
+    process = run(["rofi", *args], input="\n".join(items),
                   capture_output=True, encoding="utf-8")
     code = process.returncode
     action = codes.get(code)
@@ -147,6 +154,12 @@ def xclip(text):
     """Copy text to clipboard with xclip."""
     args = ["-selection", "clipboard", "-in"]
     try:
+        # NOTE: Here we cannot check or capture the stdout/stderr due to how
+        # the subprocesses are handled.
+        #
+        # TODO: Find out a better way.
+        #
+        # TODO: Fix the incompatibility with Eshell.
         run(["xclip", *args], input=text,
             encoding="utf-8").check_returncode()
     except CalledProcessError as error:
@@ -165,14 +178,37 @@ def get_default_file():
 
 class Bookmark:
     """Bookmark for a website."""
-    __slots__ = ("url", "tags", "score")
+    __slots__ = ("url", "_tags", "_score")
 
     def __init__(self, url, tags=None, score=0):
+        # Internal variable for storing score and tags
+        self._score = 0
+        self._tags = set()
         if tags is None:
             tags = []
         self.url = url
-        self.tags = set(tags)
+        self.tags = tags
         self.score = score
+
+    @property
+    def score(self):
+        """Score of the bookmark."""
+        return self._score
+
+    @score.setter
+    def score(self, val):
+        """Set the score of the bookmark."""
+        self._score = round(val, SCORE_PREC)
+
+    @property
+    def tags(self):
+        """Tags of the bookmark."""
+        return self._tags
+
+    @tags.setter
+    def tags(self, val):
+        """Set the tags of the bookmark."""
+        self._tags = set(val)
 
 
 class Store:
@@ -185,26 +221,21 @@ class Store:
         self.config["incr"] = config.get("incr", 1)
         self.bookmarks = {}
 
-    def save(self, f):
+    def save(self, fp):
         """Save store to a file."""
         bookmarks = self.list_bookmarks()
         data = {
             "config": self.config,
             "bookmarks": bookmarks
         }
-
-        # NOTE: Directly writing to the file may destroy the original file when
-        # error occurs. So we first serialize the data to a string and then
-        # manually write the string to the file.
-        #
-        # TODO: Find a better way.
-        lines = json.dumps(data, indent=2)
-        f.write(lines)
+        json.dump(data, fp, indent=2)
+        # Add a final newline
+        fp.write("\n")
 
     @classmethod
-    def load(cls, f):
+    def load(cls, fp):
         """Load a store from file."""
-        data = json.load(f)
+        data = json.load(fp)
         config = data.get("config", {})
         store = cls(**config)
 
@@ -240,8 +271,6 @@ class Store:
     def update_bookmark(self, key, **data):
         """Update data of a bookmark."""
         bookmark = self.get_bookmark(key)
-        if "tags" in data:
-            data["tags"] = set(data["tags"])
         for name, value in data.items():
             setattr(bookmark, name, value)
 
@@ -260,33 +289,31 @@ class Store:
 
     def list_bookmarks(self, tags=None, min_score=0):
         """Return all bookmarks as a list of dictionaries."""
-        def fnc(key, value):
+        def convert(key, value):
             return {"key": key,
                     "url": value.url,
                     "tags": sorted(list(value.tags)),
                     "score": value.score}
 
-        def fnk(value):
+        def predicate(value):
             keep = value.score >= min_score
             if tags is not None:
                 keep = keep and not value.tags.isdisjoint(tags)
             return keep
 
-        bookmarks = ((k, v) for k, v in self.bookmarks.items() if fnk(v))
-        bookmarks = [fnc(k, v) for k, v in bookmarks]
-        if len(bookmarks) == 0:
-            raise AppError("no bookmarks found")
+        bookmarks = ((k, v) for k, v in self.bookmarks.items() if predicate(v))
+        bookmarks = [convert(k, v) for k, v in bookmarks]
         return bookmarks
 
-    def visit_bookmark(self, key, action_fn):
+    def visit_bookmark(self, key, act):
         """Act on the bookmark URL with the given function."""
-        bookmark = self.get_bookmark(key)
+        target = self.get_bookmark(key)
         # Decay all bookmark scores
-        for x in self.bookmarks.values():
-            x.score *= self.config["decay"]
+        for bookmark in self.bookmarks.values():
+            bookmark.score *= self.config["decay"]
         # Increment the visited bookmark
-        bookmark.score += self.config["incr"]
-        return action_fn(bookmark.url)
+        target.score += self.config["incr"]
+        return act(target.url)
 
 
 # Interface
@@ -301,8 +328,15 @@ class App:
 
     def _save_store(self):
         """Save store back to the file."""
-        with self.store_path.open("w") as f:
-            self.store.save(f)
+        # NOTE: Here we use a temporary file as a buffer before actually saving
+        # the contents to the target. If we directly save to the target file,
+        # its old contents will be truncated first and when error occurs we
+        # will lose data.
+        with TemporaryFile(mode="w+") as buf:
+            self.store.save(buf)
+            buf.seek(0)
+            with self.store_path.open("w") as fp:
+                copyfileobj(buf, fp)
 
     def _colorize(self, text, color, bold=False):
         """Colorize text if appropriate."""
@@ -326,7 +360,7 @@ class App:
                             help="bookmark store file")
         parser.add_argument("--no-fancy", action="store_true",
                             help="turn off fancy display")
-        terminal_width = get_terminal_size((80, 40)).columns
+        terminal_width = get_terminal_size().columns
         parser.add_argument("-w", "--width", type=int,
                             default=terminal_width,
                             help="width of output text")
@@ -442,12 +476,15 @@ class App:
             },
             # Colorize keys
             "key": {
-                "fmt": lambda x: self._colorize(x, "blue")
+                "fmt": lambda x: self._colorize(x, Color.Blue)
             }
         }
 
         bookmarks = self.store.list_bookmarks(tags=args.tags,
                                               min_score=args.score)
+        if len(bookmarks) == 0:
+            raise AppError("no bookmarks found")
+
         bookmarks = sorted(bookmarks, key=lambda x: (-x["score"], x["key"]))
         bookmarks = convolute(bookmarks)
 
@@ -460,7 +497,7 @@ class App:
         lines = convolute(columns)
         lines = (tmpl.format(**l) for l in lines)
         lines = (shorten(l, self.width) for l in lines)
-        print(os.linesep.join(lines))
+        print("\n".join(lines))
 
     def menu(self, args):
         """Command for showing a menu and browsing selected bookmarks."""
@@ -468,22 +505,21 @@ class App:
             if tags is None or len(tags) == 0:
                 return ""
             else:
-                return "({})".format(self._pango(", ".join(tags),
-                                                 font_style="italic",
-                                                 font_size="small"))
+                return self._pango("({})".format(", ".join(tags)),
+                                   font_style="italic", font_size="small")
 
         actions = {
             # Open the bookmarked URL with the browser
             Action.Open: {
                 "code": 0,
-                "fn": webbrowser.open
+                "act": webbrowser.open
             },
             # Copy the URL to the clipboard
             Action.Copy: {
                 "code": 10,
                 "key": ("-kb-custom-1", "Control+Return,Alt+1"),
                 "override": "-kb-accept-custom",
-                "fn": xclip
+                "act": xclip
             },
             # Do nothing
             Action.Cancel: {
@@ -493,6 +529,9 @@ class App:
 
         bookmarks = self.store.list_bookmarks(tags=args.tags,
                                               min_score=args.score)
+        if len(bookmarks) == 0:
+            raise AppError("no bookmarks found")
+
         bookmarks = sorted(bookmarks, key=lambda x: (-x["score"], x["key"]))
         bookmarks = convolute(bookmarks)
 
@@ -501,11 +540,11 @@ class App:
         items = ["{} {}".format(k, t) for k, t in zip(keys, tags)]
 
         action, item = rofi(items, actions)
-        fn = actions.get(action, {}).get("fn")
-        if fn is None:
+        act = actions.get(action, {}).get("act")
+        if act is None:
             return
         key = item.split(" ")[0]
-        self.store.visit_bookmark(key, fn)
+        self.store.visit_bookmark(key, act)
         self._save_store()
 
     def run(self):
@@ -517,8 +556,8 @@ class App:
         self.fancy = not args.no_fancy
         self.width = args.width
         if self.store_path.exists():
-            with open(self.store_path) as f:
-                self.store = Store.load(f)
+            with open(self.store_path) as fp:
+                self.store = Store.load(fp)
         else:
             self.store = Store()
 
