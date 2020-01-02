@@ -341,6 +341,7 @@ system_services=(
   'systemd-timesyncd'
   'tlp'
   'tlp-sleep'
+  'fstrim.timer'
   'man-db.timer'
   'paccache.timer'
 )
