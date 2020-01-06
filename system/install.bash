@@ -354,6 +354,12 @@ user_services=(
 )
 systemctl --user enable "${user_services[@]}"
 
+if do_printer; then
+  log 'Setup printer'
+  sudo pacman -S --needed --noconfirm cups hplip
+  sudo systemctl enable org.cups.cupsd.socket
+fi
+
 if do_all; then
   log 'Install user configurations'
   (cd '..' && ./install.bash)
@@ -365,9 +371,4 @@ if do_all; then
 
   log 'Setup R'
   ./install-r.R
-fi
-
-if do_printer; then
-  sudo pacman -S --needed --noconfirm cups hplip
-  sudo systemctl enable org.cups.cupsd.socket
 fi
