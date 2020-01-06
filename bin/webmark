@@ -353,6 +353,7 @@ class App:
     def _get_parser(self):
         """Get an argument parser."""
         parser = ArgumentParser(description="Manage bookmarks of websites")
+
         # Global options
         default_file = get_default_file()
         parser.add_argument("-f", "--store-file", metavar="FILE", type=Path,
@@ -430,6 +431,7 @@ class App:
                                  default=0,
                                  help="minimum score of bookmarks")
         parser_menu.set_defaults(func=self.menu)
+
         return parser
 
     def add(self, args):
