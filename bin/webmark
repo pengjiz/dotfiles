@@ -46,18 +46,22 @@ class Action(enum.Enum):
 class AppError(Exception):
     """Error occurred in the application."""
     def __init__(self, message):
+        """Construct a new application error with message."""
         super().__init__(message)
 
     def __str__(self):
+        """Return the contained error message."""
         return self.args[0]
 
 
 class CommandError(Exception):
     """Error occurred when running external commands."""
     def __init__(self, message, code):
+        """Construct a new command error with message and return code."""
         super().__init__(message, code)
 
     def __str__(self):
+        """Format the error message and return code as a readable string."""
         message = self.args[0]
         code = self.args[1]
         return "{} (code {})".format(message, code)
@@ -181,6 +185,7 @@ class Bookmark:
     __slots__ = ("url", "_tags", "_score")
 
     def __init__(self, url, tags=None, score=0):
+        """Construct a new bookmark."""
         # Internal variable for storing score and tags
         self._score = 0
         self._tags = set()
@@ -216,6 +221,7 @@ class Store:
     __slots__ = ("config", "bookmarks")
 
     def __init__(self, **config):
+        """Construct a new empty bookmark store."""
         self.config = {}
         self.config["decay"] = config.get("decay", 0.97)
         self.config["incr"] = config.get("incr", 1)
@@ -321,6 +327,7 @@ class Store:
 class App:
     """Interface for working with bookmarks."""
     def __init__(self):
+        """Construct a new application."""
         self.store_path = None
         self.fancy = True
         self.width = 80
