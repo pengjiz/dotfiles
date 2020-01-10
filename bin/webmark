@@ -345,7 +345,7 @@ class App:
         return colorize(text, color, bold)
 
     def _pango(self, text, **attributes):
-        "Markup text if appropriate."
+        """Markup text if appropriate."""
         if not self.fancy:
             return text
         return pango(text, **attributes)
