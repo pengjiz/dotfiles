@@ -222,9 +222,12 @@ pkgs=(
   'texlive-core'
   'texlive-bibtexextra'
   'texlive-latexextra'
+  'texlive-science'
+  'texlive-publishers'
   'texlive-pictures'
   'texlive-fontsextra'
   'biber'
+  'minted'
   'ghostscript'
 
   # R
