@@ -22,6 +22,6 @@ case "$1" in
     notify-send 'Screenshot' 'Focused window captured' ;;
   # Unknown operation
   *)
-    echo "Unknown operation $1"
+    echo "Unknown operation $1" >&2
     exit 1 ;;
 esac

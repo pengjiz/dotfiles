@@ -14,7 +14,7 @@ case "$1" in
     pactl set-sink-mute 0 toggle ;;
   # Unknown operation
   *)
-    echo "Unknown operation $1"
+    echo "Unknown operation $1" >&2
     exit 1 ;;
 esac
 
