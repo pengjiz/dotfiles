@@ -87,15 +87,9 @@ pkgs=(
   # Display manager
   'lightdm'
   'lightdm-gtk-greeter'
-  'accountsservice'
 
   # Terminal
   'rxvt-unicode'
-  'rxvt-unicode-terminfo'
-
-  # Filesystem
-  'ntfs-3g'
-  'exfat-utils'
 
   # Shell
   'zsh'
@@ -164,6 +158,10 @@ pkgs=(
   'imagemagick'
   'scrot'
 
+  # Filesystem
+  'ntfs-3g'
+  'exfat-utils'
+
   # Utility
   'ansible'
   'atool'
@@ -203,7 +201,6 @@ pkgs=(
 
   # Clojure
   'clojure'
-  'rlwrap'
 
   # Haskell
   'ghc'
@@ -232,7 +229,6 @@ pkgs=(
 
   # R
   'r'
-  'gcc-fortran'
 
   # Python
   'flake8'
@@ -260,8 +256,6 @@ pkgs=(
   'languagetool'
   'hugo'
   'pandoc'
-  'pandoc-citeproc'
-  'pandoc-crossref'
   'pygmentize'
 
   # GIS
@@ -270,12 +264,31 @@ pkgs=(
   'proj'
   'libspatialite'
   'qgis'
+)
+sudo pacman --needed --noconfirm -S "${pkgs[@]}"
+
+log 'Install optional dependencies'
+optdeps=(
+  # lightdm
+  'accountsservice'
+
+  # clojure
+  'rlwrap'
+
+  # r
+  'gcc-fortran'
+
+  # pandoc
+  'pandoc-citeproc'
+  'pandoc-crossref'
+
+  # qgis
   'python-gdal'
   'python-numpy'
   'python-psycopg2'
   'python-owslib'
 )
-sudo pacman --needed --noconfirm -S "${pkgs[@]}"
+sudo pacman --needed --noconfirm -S --asdeps "${optdeps[@]}"
 
 log 'Install AUR packages'
 aurpkgs=(
@@ -298,7 +311,7 @@ if do_all; then
     (cd "$pkgdir" && makepkg -si --clean --config "$config" --noconfirm)
     unset pkgdir
   fi
-  aur sync --no-view --makepkg-conf "$config" "${aurpkgs[@]}"
+  aur sync --noview --makepkg-conf "$config" "${aurpkgs[@]}"
   unset config
   sudo pacman --needed --noconfirm -S "${aurpkgs[@]}"
 else
