@@ -349,6 +349,7 @@ sudo install -m644 'etc/systemd-update-boot.hook' \
 log 'Configure network'
 sudo install -m644 'etc/20-wireless.network' \
      '/etc/systemd/network/20-wireless.network'
+sudo install -m644 'etc/resolved.conf' '/etc/systemd/resolved.conf'
 
 log 'Enable system services'
 system_services=(
