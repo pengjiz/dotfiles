@@ -37,6 +37,7 @@ class Color(enum.Enum):
 class Action(enum.Enum):
     """Action on a bookmark."""
     Open = enum.auto()
+    Peek = enum.auto()
     Cancel = enum.auto()
 
 
@@ -294,14 +295,17 @@ class Store:
         bookmarks = [convert(k, v) for k, v in bookmarks]
         return bookmarks
 
-    def visit_bookmark(self, key, act):
+    def visit_bookmark(self, key, act, rescore=True):
         """Act on the bookmark URL with the given function."""
         target = self.get_bookmark(key)
-        # Decay all bookmark scores
-        for bookmark in self.bookmarks.values():
-            bookmark.score *= self.config["decay"]
-        # Increment the visited bookmark
-        target.score += self.config["incr"]
+
+        if rescore:
+            # Decay all bookmark scores
+            for bookmark in self.bookmarks.values():
+                bookmark.score *= self.config["decay"]
+            # Increment the visited bookmark
+            target.score += self.config["incr"]
+
         return act(target.url)
 
 
@@ -506,6 +510,14 @@ class App:
                 "code": 0,
                 "act": webbrowser.open
             },
+            # Open the URL but do not modify scores
+            Action.Peek: {
+                "code": 10,
+                "key": ("-kb-custom-1", "Control+Return,Alt+1"),
+                "override": "-kb-accept-custom",
+                "act": webbrowser.open,
+                "args": {"rescore": False}
+            },
             # Do nothing
             Action.Cancel: {
                 "code": 1
@@ -525,11 +537,13 @@ class App:
         items = ["{} {}".format(k, t) for k, t in zip(keys, tags)]
 
         action, item = rofi(items, actions)
-        act = actions.get(action, {}).get("act")
+        spec = actions.get(action, {})
+        act = spec.get("act")
         if act is None:
             return
         key = item.split(" ")[0]
-        self.store.visit_bookmark(key, act)
+        args = spec.get("args", {})
+        self.store.visit_bookmark(key, act, **args)
         self._save_store()
 
     def run(self):
