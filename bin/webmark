@@ -11,7 +11,7 @@ from collections import defaultdict
 from pathlib import Path
 from shutil import get_terminal_size, copyfileobj
 from tempfile import TemporaryFile
-from subprocess import run, CalledProcessError
+from subprocess import run
 
 
 # Constants
@@ -37,7 +37,6 @@ class Color(enum.Enum):
 class Action(enum.Enum):
     """Action on a bookmark."""
     Open = enum.auto()
-    Copy = enum.auto()
     Cancel = enum.auto()
 
 
@@ -152,22 +151,6 @@ def rofi(items, actions):
     if action is None:
         raise CommandError(process.stderr, code)
     return action, process.stdout
-
-
-def xclip(text):
-    """Copy text to clipboard with xclip."""
-    args = ["-selection", "clipboard", "-in"]
-    try:
-        # NOTE: Here we cannot check or capture the stdout/stderr due to how
-        # the subprocesses are handled.
-        #
-        # TODO: Find out a better way.
-        #
-        # TODO: Fix the incompatibility with Eshell.
-        run(["xclip", *args], input=text,
-            encoding="utf-8").check_returncode()
-    except CalledProcessError as error:
-        raise CommandError("xclip failed", error.returncode)
 
 
 def get_default_file():
@@ -522,13 +505,6 @@ class App:
             Action.Open: {
                 "code": 0,
                 "act": webbrowser.open
-            },
-            # Copy the URL to the clipboard
-            Action.Copy: {
-                "code": 10,
-                "key": ("-kb-custom-1", "Control+Return,Alt+1"),
-                "override": "-kb-accept-custom",
-                "act": xclip
             },
             # Do nothing
             Action.Cancel: {
