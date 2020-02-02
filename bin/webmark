@@ -121,8 +121,8 @@ def convolute(var):
     else:
         results = defaultdict(list)
         for item in var:
-            for key, val in item.items():
-                results[key].append(val)
+            for key, value in item.items():
+                results[key].append(value)
         return results
 
 
@@ -185,9 +185,9 @@ class Bookmark:
         return self._score
 
     @score.setter
-    def score(self, val):
+    def score(self, value):
         """Set the score of the bookmark."""
-        self._score = round(val, SCORE_PREC)
+        self._score = round(value, SCORE_PREC)
 
     @property
     def tags(self):
@@ -195,9 +195,9 @@ class Bookmark:
         return self._tags
 
     @tags.setter
-    def tags(self, val):
+    def tags(self, value):
         """Set the tags of the bookmark."""
-        self._tags = set(val)
+        self._tags = set(value)
 
 
 class Store:
@@ -298,6 +298,7 @@ class Store:
     def visit_bookmark(self, key, act, rescore=True):
         """Act on the bookmark URL with the given function."""
         target = self.get_bookmark(key)
+        result = act(target.url)
 
         if rescore:
             # Decay all bookmark scores
@@ -306,7 +307,7 @@ class Store:
             # Increment the visited bookmark
             target.score += self.config["incr"]
 
-        return act(target.url)
+        return result
 
 
 # Interface
