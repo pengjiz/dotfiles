@@ -18,7 +18,7 @@ function log {
       prefix='info'
       color='32' ;;
   esac
-  echo -e "\033[${color}m$prefix:\033[0m $@" >&2
+  echo -e "\033[${color}m$prefix:\033[0m $*" >&2
 }
 
 setup_all='false'
