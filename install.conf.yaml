@@ -12,9 +12,9 @@
 
 - link:
     # Shell
-    ~/.zshenv: shell/zsh/zshenv
-    ~/.zshrc: shell/zsh/zshrc
-    ~/.bashrc: shell/bash/bashrc
+    ~/.zshenv: shell/zsh/env.zsh
+    ~/.zshrc: shell/zsh/rc.zsh
+    ~/.bashrc: shell/bash/rc.bash
 
     # Pacman
     ~/.config/pacman/makepkg.conf: pacman/makepkg.conf
@@ -41,7 +41,7 @@
     ~/.ledgerrc: ledger/ledgerrc
 
     # Xorg
-    ~/.xprofile: xorg/xprofile
+    ~/.xprofile: xorg/xprofile.sh
     ~/.Xresources: xorg/Xresources
 
     # XDG
