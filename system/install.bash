@@ -188,6 +188,7 @@ pkgs=(
   'x86_energy_perf_policy'
   'xclip'
   'youtube-dl'
+  'yq'
 
   # Debugging
   'gdb'
