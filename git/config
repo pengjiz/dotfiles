@@ -5,6 +5,8 @@
 [status]
 	short = true
 	branch = true
+[diff]
+	mnemonicPrefix = true
 [log]
 	mailmap = true
 	abbrevCommit = true
@@ -22,7 +24,6 @@
 	fetchJobs = 0
 [alias]
 	s = status
-	sc = rev-parse --short HEAD
 	a = add
 	aa = add -A
 	b = branch
@@ -38,9 +39,10 @@
 	la = log --decorate --pretty=oneline --graph --all
 	m = merge
 	mf = merge --ff-only
+	r = rebase
+	ri = rebase -i
 	f = fetch
 	fa = fetch --all
 	p = push
 	pu = push -u
 	pf = push --force-with-lease
-	o = submodule
