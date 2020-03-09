@@ -261,7 +261,7 @@ pkgs=(
   'languagetool'
   'hugo'
   'pandoc'
-  'pygmentize'
+  'python-pygments'
 
   # GIS
   'gdal'
