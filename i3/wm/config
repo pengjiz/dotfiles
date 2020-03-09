@@ -121,9 +121,10 @@ mode "$mode_screenshot" {
   bindsym Escape mode "default"
 }
 
-set $mode_system System: (l) lock, (Shift+r) reboot, (Shift+s) shutdown
+set $mode_system System: (l) lock, (Shift+l) suspend, (Shift+r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
-  bindsym l exec --no-startup-id $locker; mode "default"
+  bindsym l exec --no-startup-id loginctl lock-session; mode "default"
+  bindsym Shift+l exec --no-startup-id systemctl suspend; mode "default"
   bindsym Shift+r exec --no-startup-id systemctl reboot; mode "default"
   bindsym Shift+s exec --no-startup-id systemctl poweroff; mode "default"
 
@@ -162,7 +163,7 @@ assign [class="(?i)evince"] $ws4
 exec --no-startup-id xset dpms 900 1800 3600
 exec --no-startup-id xss-lock -- $locker
 exec --no-startup-id feh --no-fehbg --bg-fill $wallpaper
-exec --no-startup-id fcitx -r
+exec --no-startup-id fcitx-autostart
 exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent
 exec --no-startup-id redshift
 
