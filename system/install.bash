@@ -370,6 +370,7 @@ sudo gpasswd -a "$USER" docker
 log 'Enable user services'
 user_services=(
   'syncthing'
+  'dunst'
 )
 systemctl --user enable "${user_services[@]}"
 
