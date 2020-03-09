@@ -19,7 +19,7 @@ separator_color = "#383c4a"
 font = DejaVu Sans 11
 line_height = 0
 markup = full
-format = "<b>%s</b>\n%b"
+format = "<b>%s</b>\n%b %p"
 alignment = left
 ignore_newline = no
 word_wrap = yes
@@ -34,8 +34,8 @@ browser = xdg-open
 [shortcuts]
 close = mod4+comma
 close_all = mod4+shift+comma
-history = mod4+grave
-context = mod4+period
+history = mod4+period
+context = mod4+grave
 
 [urgency_low]
 background = "#3e4350"
