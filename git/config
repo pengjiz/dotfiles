@@ -27,6 +27,7 @@
 	a = add
 	aa = add -A
 	b = branch
+	bs = checkout
 	ba = branch -a
 	bc = checkout -b
 	c = commit
@@ -35,8 +36,8 @@
 	cr = commit --amend
 	cf = commit --amend --no-edit
 	d = diff
-	l = log --decorate --pretty=oneline --graph
-	la = log --decorate --pretty=oneline --graph --all
+	l = log --pretty=oneline --graph
+	la = log --pretty=oneline --graph --all
 	m = merge
 	mf = merge --ff-only
 	r = rebase
