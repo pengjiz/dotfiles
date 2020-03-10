@@ -1,6 +1,6 @@
 [Hotkey]
 TriggerKey=SUPER_\
-SwitchKey=L_SHIFT
+SwitchKey=SHIFT Both
 IMSwitchHotkey=CTRL_SHIFT
 ReloadConfig=
 VKSwitchKey=
