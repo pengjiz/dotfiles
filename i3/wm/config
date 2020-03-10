@@ -137,9 +137,9 @@ bindsym $mod+x exec rofi -show drun
 bindsym $mod+s exec passmenu
 bindsym $mod+e exec emacs
 bindsym $mod+w exec webmark menu
-bindsym XF86AudioMute exec --no-startup-id volume mute
-bindsym XF86AudioRaiseVolume exec --no-startup-id volume up
-bindsym XF86AudioLowerVolume exec --no-startup-id volume down
+bindsym XF86AudioMute exec --no-startup-id volctl mute
+bindsym XF86AudioRaiseVolume exec --no-startup-id volctl up
+bindsym XF86AudioLowerVolume exec --no-startup-id volctl down
 bindsym Print mode "$mode_screenshot"
 bindsym $mod+Shift+q kill
 bindsym $mod+Shift+e mode "$mode_system"
