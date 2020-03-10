@@ -44,8 +44,4 @@ nnoremap <Leader>w :update<CR>
 " Switch state
 inoremap jk <Esc>
 cnoremap jk <C-C>
-xnoremap <Leader><Space> <Esc>
-
-" Search
-nnoremap <Leader><Space> :nohlsearch<CR>
 " }}}
