@@ -1,0 +1,6 @@
+[Match]
+Name=wl*
+SSID=CMU-SECURE
+
+[Network]
+DHCP=ipv4
