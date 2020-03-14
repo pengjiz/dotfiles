@@ -186,7 +186,6 @@ pkgs=(
   'udisks2'
   'unzip'
   'words'
-  'x86_energy_perf_policy'
   'xclip'
   'youtube-dl'
   'yq'
@@ -278,6 +277,9 @@ optdeps=(
   # lightdm
   'accountsservice'
 
+  # tlp
+  'x86_energy_perf_policy'
+
   # clojure
   'rlwrap'
 
@@ -362,7 +364,6 @@ system_services=(
   'lightdm'
   'systemd-timesyncd'
   'tlp'
-  'tlp-sleep'
   'fstrim.timer'
   'man-db.timer'
   'paccache.timer'
