@@ -206,6 +206,7 @@ pkgs=(
 
   # Haskell
   'ghc'
+  'ghc-static'
   'stack'
   'hindent'
   'hlint'
