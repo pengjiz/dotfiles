@@ -30,7 +30,7 @@ setopt AUTO_CD
 ### Expansion
 setopt PROMPT_SUBST
 ### Load colors
-autoload -U colors && colors
+autoload -Uz colors && colors
 
 ### Current working directory
 prompt_pwd="%{${fg_bold[blue]}%}%c"
