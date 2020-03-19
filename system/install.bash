@@ -171,6 +171,7 @@ pkgs=(
   'fd'
   'jq'
   'ledger'
+  'lsb-release'
   'man-db'
   'man-pages'
   'pacman-contrib'
