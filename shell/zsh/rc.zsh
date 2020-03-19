@@ -80,7 +80,7 @@ export VISUAL="$EDITOR"
 
 ## Functions
 ### Make a directory and cd to it
-function take {
+function mkcd {
   mkdir -pv "$1" && cd "$1"
 }
 
