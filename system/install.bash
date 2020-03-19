@@ -198,6 +198,7 @@ pkgs=(
   # C & C++
   'cmake'
   'ctags'
+  'doxygen'
   'gsl'
   'eigen'
 
