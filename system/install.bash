@@ -166,6 +166,7 @@ pkgs=(
   # Utility
   'ansible'
   'atool'
+  'bc'
   'bind-tools'
   'docker'
   'fd'
