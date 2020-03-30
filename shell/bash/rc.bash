@@ -1,4 +1,4 @@
-# Options
+# Option
 
 ## Glob
 shopt -s globstar
@@ -21,26 +21,26 @@ shopt -s autocd
 ## Prompt
 PS1='\W > '
 
-## Keys
+## Key binding
 set -o emacs
 
-# Commands
+# Command
 
 ## Environment
 export EDITOR='nvim'
 export VISUAL="$EDITOR"
 export AUR_PAGER='nvim'
 
-## Plugins
+## Plugin
 [[ -r '/usr/share/z/z.sh' ]] && . '/usr/share/z/z.sh'
 
-## Functions
+## Function
 ### Make a directory and cd to it
 function mkcd {
   mkdir -pv "$1" && cd "$1"
 }
 
-## Aliases
+## Alias
 alias l='ls -AlhF --color=auto'
 alias g='git'
 alias vim='nvim'

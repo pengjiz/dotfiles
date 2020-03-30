@@ -3,9 +3,8 @@
 import datetime
 
 
-# Settings
+# Setting
 
-# Template
 TMPL = "%H:%M %a %m-%d"
 
 

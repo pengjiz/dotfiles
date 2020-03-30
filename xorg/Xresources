@@ -1,44 +1,34 @@
-! Colors
+! Color
 
-!! Colors are from the tomorrow color scheme. The dark colors are from the night
-!! variant, while the light colors are (mostly) from the eighties variant.
 *background:  #1d1f21
 *foreground:  #c5c8c6
 *cursorColor: #cc6666
 
-!! black dark/light
 *color0:      #1d1f21
 *color8:      #373b41
 
-!! red dark/light
 *color1:      #cc6666
 *color9:      #f2777a
 
-!! green dark/light
 *color2:      #b5bd68
 *color10:     #99cc99
 
-!! yellow dark/light
 *color3:      #de835f
 *color11:     #f0c674
 
-!! blue dark/light
 *color4:      #81a2be
 *color12:     #6699cc
 
-!! magenta dark/light
 *color5:      #b294bb
 *color13:     #cc99cc
 
-!! cyan dark/light
 *color6:      #8abeb7
 *color14:     #66cccc
 
-!! white dark/light
 *color7:      #969896
 *color15:     #c5c8c6
 
-! XFT font
+! Xft font
 
 Xft.dpi: 96
 Xft.antialias: true
@@ -52,7 +42,7 @@ Xft.rgba: rgb
 
 Xcursor.theme: default
 
-! URxvt
+! rxvt-unicode
 
 URxvt.background: [100]#1d1f21
 URxvt.depth: 32

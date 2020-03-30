@@ -14,7 +14,7 @@ from tempfile import TemporaryFile
 from subprocess import run
 
 
-# Constants
+# Constant
 
 # Valid key pattern of a bookmark
 KEY_PAT = re.compile(r"(?:[a-zA-Z.-]+/)*[a-zA-Z.-]+")
@@ -41,7 +41,7 @@ class Action(enum.Enum):
     Cancel = enum.auto()
 
 
-# Exceptions
+# Exception
 
 class AppError(Exception):
     """Error occurred in the application."""
@@ -67,7 +67,7 @@ class CommandError(Exception):
         return "{} (code {})".format(message, code)
 
 
-# Helpers
+# Helper
 
 def pad(items, convert=None, fmt=None, align="<"):
     """Pad lines to the same length."""

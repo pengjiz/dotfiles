@@ -1,4 +1,4 @@
-# Options
+# Option
 
 ## Input
 setopt INTERACTIVE_COMMENTS
@@ -58,7 +58,7 @@ unset prompt_pwd
 unset prompt_last_status
 unset prompt_git_info
 
-## Keys
+## Key binding
 bindkey -e
 
 ## Completion
@@ -67,25 +67,25 @@ setopt COMPLETE_IN_WORD
 zstyle ':completion:*' menu select
 bindkey '^[[Z' reverse-menu-complete
 
-# Commands
+# Command
 
 ## Environment
 export EDITOR='nvim'
 export VISUAL="$EDITOR"
 export AUR_PAGER='nvim'
 
-## Plugins
+## Plugin
 [[ -r '/usr/share/z/z.sh' ]] && . '/usr/share/z/z.sh'
 [[ -r '/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh' ]] \
   && . '/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh'
 
-## Functions
+## Function
 ### Make a directory and cd to it
 function mkcd {
   mkdir -pv "$1" && cd "$1"
 }
 
-## Aliases
+## Alias
 alias l='ls -AlhF --color=auto'
 alias g='git'
 alias vi='nvim'

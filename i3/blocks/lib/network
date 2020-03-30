@@ -12,21 +12,16 @@ class IFType(Enum):
     OFFLINE = 3
 
 
-# Settings
+# Setting
 
-# Prefixes for internet interfaces
 INET_IF_PREFIXES = {
     "wl": IFType.WIFI,
     "en": IFType.WIRED
 }
-
-# Internet addresses
 INET_ADDRS = [socket.AF_INET, socket.AF_INET6]
 
-# IO speed update interval
 UPDATE_INTERVAL = 10
 
-# Templates
 TMPLS = {
     IFType.WIFI: ("<span font='FontAwesome 10'>\uf1eb</span> "
                   "↓{:.1f}{}/s ↑{:.1f}{}/s"),
@@ -36,7 +31,7 @@ TMPLS = {
 }
 
 
-# Helpers
+# Helper
 
 def get_if_type(if_name):
     """Get the type of an interface."""

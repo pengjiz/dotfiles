@@ -1,7 +1,7 @@
-# Use lualatex by default
+# Generate PDF with LuaLaTeX
 $pdf_mode = 4;
 
-# Additional generated extensions
+# Generated file extension
 push @generated_exts, "nav";
 push @generated_exts, "snm";
 push @generated_exts, "vrb";

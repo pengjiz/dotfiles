@@ -10,21 +10,16 @@ class Level(Enum):
     ALERT = 3
 
 
-# Settings
+# Setting
 
-# Update interval
 UPDATE_INTERVAL = 10
 
-# Thresholds
 THRESHOLDS = {
     85: Level.ALERT,
     50: Level.WARN
 }
 
-# Icon
 ICON = "<span font='FontAwesome 10'>\uf2db</span>"
-
-# Templates
 TMPLS = {
     Level.NORMAL: ICON + " {:.1f}%",
     Level.WARN: ICON + " <span foreground='#ffcc66'>{:.1f}%</span>",

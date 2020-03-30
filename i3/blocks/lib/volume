@@ -10,20 +10,18 @@ class State(Enum):
     MUTED = 2
 
 
-# Settings
+# Setting
 
-# Patterns
 MUTE_PAT = re.compile(r"^\s*Mute: (yes|no)")
 VOL_PAT = re.compile(r"^\s*Volume: .* /\s* (\d+%)")
 
-# Templates
 TMPLS = {
     State.UNMUTED: "<span font='FontAwesome 10'>\uf3b5</span> {}",
     State.MUTED: "<span font='FontAwesome 10'>\uf6a9</span>"
 }
 
 
-# Helpers
+# Helper
 
 def get_state(lines):
     """Check if the audio is muted."""

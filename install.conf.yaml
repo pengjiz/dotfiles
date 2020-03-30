@@ -98,7 +98,7 @@
     # LaTeX
     ~/.config/latexmk/latexmkrc: latex/latexmkrc
 
-    # Local binaries
+    # Local binary
     ~/.local/bin:
       glob: true
       path: bin/*

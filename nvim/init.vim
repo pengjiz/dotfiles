@@ -1,4 +1,4 @@
-" {{{ Buffers, files, windows
+" {{{ Buffer, file, and window
 set hidden
 set autoread
 set autowrite
@@ -33,7 +33,7 @@ let g:sneak#map_netrw = 0
 let g:netrw_home = $HOME.'/.local/share/nvim/netrw'
 " }}}
 
-" {{{ Key bindings
+" {{{ Key binding
 let mapleader = ' '
 let maplocalleader = ' '
 

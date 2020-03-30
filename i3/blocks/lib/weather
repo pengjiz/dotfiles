@@ -4,26 +4,17 @@ import urllib.request as r
 import socket
 import time
 
-# Settings
+# Setting
 
-# Weather information elements
 ELEMENTS = ["%c", "%t", "%h"]
-
-# Separator between elements
 SEP = ":"
-
-# Request
 REQ = r.Request(
     "https://wttr.in/Pittsburgh?m&format={}".format(SEP.join(ELEMENTS)),
     headers={"User=Agent": "python-requests"})
 
-# Max number of retries
 MAX_RETRY = 5
-
-# Interval between retries
 RETRY_INTERVAL = 30
 
-# Template
 TMPL = "<span font='Noto Color Emoji 10'>{}</span> {} {}"
 
 

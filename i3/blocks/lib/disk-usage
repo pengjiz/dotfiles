@@ -10,21 +10,16 @@ class Level(Enum):
     ALERT = 3
 
 
-# Settings
+# Setting
 
-# Monitoring path
 MONITOR_PATH = "/home/"
 
-# Thresholds
 THRESHOLDS = {
     5: Level.WARN,
     1: Level.ALERT
 }
 
-# Icon
 ICON = "<span font='FontAwesome 10'>\uf1c0</span>"
-
-# Templates
 TMPLS = {
     Level.NORMAL: ICON + " {:.1f}G",
     Level.WARN: ICON + " <span foreground='#ffcc66'>{:.1f}G</span>",
@@ -32,7 +27,7 @@ TMPLS = {
 }
 
 
-# Helpers
+# Helper
 
 def convert_bytes(num):
     """Convert bytes to gigabytes."""

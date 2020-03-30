@@ -12,18 +12,15 @@ class Level(Enum):
     ALERT = 4
 
 
-# Settings
+# Setting
 
-# Battery status update interval
 UPDATE_INTERVAL = 60
 
-# Thresholds
 THRESHOLDS = {
     10: Level.ALERT,
     25: Level.WARN
 }
 
-# Templates
 TMPLS = {
     Level.CHARGING: "<span font='FontAwesome 10'>\uf1e6</span> {}%",
     Level.NORMAL: "<span font='FontAwesome 10'>\uf241</span> {}%",

@@ -2,7 +2,7 @@
 export NAME='Pengji Zhang'
 export EMAIL='me@pengjiz.com'
 
-# Default applications
+# Default application
 export EDITOR='nano'
 export VISUAL="$EDITOR"
 export BROWSER='xdg-open'
@@ -19,7 +19,7 @@ eval "$(ssh-agent)"
 # QT theme
 export QT_QPA_PLATFORMTHEME='qt5ct'
 
-# Z
+# z
 export _Z_DATA="$HOME/.local/share/z"
 
 # Ledger
@@ -54,7 +54,7 @@ if [ -x "$(command -v rustup)" ]; then
   unset rust_src
 fi
 
-# Local binaries
+# Local binary
 local_bin="$HOME/.local/bin"
 if [ -d "$local_bin" ]; then
   export PATH="$local_bin:$PATH"
