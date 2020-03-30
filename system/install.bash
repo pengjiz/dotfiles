@@ -175,6 +175,7 @@ pkgs=(
   'lsb-release'
   'man-db'
   'man-pages'
+  'openbsd-netcat'
   'pacman-contrib'
   'pass'
   'protobuf'
