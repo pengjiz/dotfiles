@@ -13,7 +13,6 @@ HISTFILESIZE=10000
 HISTTIMEFORMAT='%F %T '
 HISTCONTROL='ignorespace'
 shopt -s histappend
-set +o histexpand
 
 ## Directory navigation
 shopt -s autocd

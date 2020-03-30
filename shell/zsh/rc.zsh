@@ -5,37 +5,36 @@ setopt INTERACTIVE_COMMENTS
 setopt RC_QUOTES
 
 ## Redirect
-setopt NO_CLOBBER
 setopt APPEND_CREATE
+unsetopt CLOBBER
 
 ## History
 HISTFILE="$HOME/.local/share/zsh/history"
 HISTSIZE=2000
 SAVEHIST=10000
-unsetopt BANG_HIST
-unsetopt FLOW_CONTROL
+setopt BANG_HIST
 setopt EXTENDED_HISTORY
-setopt APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_SPACE
 setopt HIST_REDUCE_BLANKS
+unsetopt FLOW_CONTROL
 
 ## Directory navigation
+setopt AUTO_CD
 setopt AUTO_PUSHD
 setopt PUSHD_MINUS
 setopt CHASE_LINKS
-setopt AUTO_CD
 
 ## Prompt
-### Expansion
 setopt PROMPT_SUBST
-### Load colors
 autoload -Uz colors && colors
 
 ### Current working directory
 prompt_pwd="%{${fg_bold[blue]}%}%c"
+
 ### Last command status
 prompt_last_status="%(?:%{${fg[green]}%}>:%{${fg_bold[red]}%}>)%{$reset_color%}"
+
 ### Git
 function _prompt_get_git_info {
   local branch=''
@@ -52,6 +51,7 @@ function _prompt_get_git_info {
   fi
 }
 prompt_git_info='$(_prompt_get_git_info)'
+
 ### Set prompt
 PROMPT="$prompt_pwd$prompt_git_info $prompt_last_status "
 unset prompt_pwd
