@@ -29,6 +29,7 @@ set -o emacs
 ## Environment
 export EDITOR='nvim'
 export VISUAL="$EDITOR"
+export AUR_PAGER='nvim'
 
 ## Plugins
 [[ -r '/usr/share/z/z.sh' ]] && . '/usr/share/z/z.sh'
