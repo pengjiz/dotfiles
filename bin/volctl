@@ -18,5 +18,6 @@ case "$1" in
     exit 1 ;;
 esac
 
-# Refresh i3blocks
+# Refresh volume block on status bar, which uses i3blocks. The signal is defined
+# in the configuration of i3blocks.
 pgrep i3blocks && pkill -SIGRTMIN+1 i3blocks
