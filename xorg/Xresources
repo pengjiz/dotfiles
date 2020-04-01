@@ -44,16 +44,20 @@ Xcursor.theme: default
 
 ! rxvt-unicode
 
-URxvt.background: [100]#1d1f21
 URxvt.depth: 32
+URxvt.background: [100]#1d1f21
 URxvt.font: xft:Source Code Pro-12,xft:Noto Sans CJK TC,xft:DejaVu Sans
-URxvt.cursorBlink: true
 URxvt.scrollBar: false
 URxvt.saveLines: 5000
-URxvt.url-launcher: xdg-open
 URxvt.iso14755: false
-URxvt.mouseWheelScrollPage: false
-URxvt.keysym.Shift-Control-V: eval:paste_clipboard
-URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
-URxvt.perl-ext-common: default,matcher
+URxvt.iso14755_52: false
+URxvt.url-launcher: xdg-open
+URxvt.perl-ext-common: default,matcher,-option-popup,-selection-popup
+
 URxvt.matcher.button: C-1
+URxvt.keysym.Control-Meta-c: builtin-string:
+URxvt.keysym.Control-Meta-v: builtin-string:
+URxvt.keysym.Meta-s: builtin-string:
+URxvt.keysym.Control-Shift-C: eval:selection_to_clipboard
+URxvt.keysym.Control-Shift-V: eval:paste_clipboard
+URxvt.keysym.Control-Shift-F: searchable-scrollback:start
