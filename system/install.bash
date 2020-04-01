@@ -80,6 +80,7 @@ pkgs=(
   'xorg-xset'
   'xorg-xprop'
   'xorg-xwininfo'
+  'xorg-xev'
   'xf86-video-fbdev'
   'xf86-video-vesa'
   'arandr'
