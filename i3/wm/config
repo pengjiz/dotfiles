@@ -1,7 +1,7 @@
 # Base
 set $mod Mod4
 set $wallpaper /usr/share/backgrounds/archlinux/archlinux-luminous-uber.jpg
-set $locker i3lock -n -c 3f4452
+set $locker screenlock
 set $ws1 1
 set $ws2 2
 set $ws3 3
@@ -163,7 +163,7 @@ assign [class="(?i)evince"] $ws4
 
 # Autostart
 exec --no-startup-id xset dpms 900 1800 3600
-exec --no-startup-id xss-lock -- $locker
+exec --no-startup-id xss-lock -l -- $locker
 exec --no-startup-id feh --no-fehbg --bg-fill $wallpaper
 exec --no-startup-id fcitx-autostart
 exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent
