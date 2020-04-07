@@ -9,7 +9,7 @@ notify-send 'DUNST_COMMAND_PAUSE'
 #
 # NOTE: Here we cannot fork. Otherwise we cannot use it with xss-lock, or
 # correctly resume notifications as desired.
-i3lock -n -c '3f4452'
+i3lock -n "$@"
 
 # Resume notifications after unlocking
 notify-send 'DUNST_COMMAND_RESUME'
