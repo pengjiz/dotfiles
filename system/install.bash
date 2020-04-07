@@ -180,6 +180,7 @@ pkgs=(
   'pacman-contrib'
   'pass'
   'protobuf'
+  'pwgen'
   'reflector'
   'ripgrep'
   'rsync'
