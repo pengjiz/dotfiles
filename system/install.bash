@@ -22,14 +22,10 @@ function log {
 }
 
 setup_all='false'
-setup_printer='false'
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --all)
       setup_all='true'
-      shift 1 ;;
-    --printer)
-      setup_printer='true'
       shift 1 ;;
     *)
       log --error "Unknown argument $1"
@@ -39,10 +35,6 @@ done
 
 function do_all {
   [[ "$setup_all" == 'false' ]] && return 1 || return 0
-}
-
-function do_printer {
-  [[ "$setup_printer" == 'false' ]] && return 1 || return 0
 }
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -115,6 +107,11 @@ pkgs=(
   'pulseaudio'
   'pulseaudio-alsa'
   'pavucontrol'
+
+  # Printing
+  'cups'
+  'cups-pdf'
+  'hplip'
 
   # Theme
   'arc-gtk-theme'
@@ -374,6 +371,7 @@ system_services=(
   'fstrim.timer'
   'man-db.timer'
   'paccache.timer'
+  'org.cups.cupsd.socket'
 )
 sudo systemctl enable "${system_services[@]}"
 sudo gpasswd -a "$USER" docker
@@ -384,12 +382,6 @@ user_services=(
   'dunst'
 )
 systemctl --user enable "${user_services[@]}"
-
-if do_printer; then
-  log 'Setup printer'
-  sudo pacman -S --needed --noconfirm cups hplip
-  sudo systemctl enable org.cups.cupsd.socket
-fi
 
 if do_all; then
   log 'Install user configurations'
