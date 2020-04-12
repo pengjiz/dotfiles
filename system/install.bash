@@ -212,7 +212,6 @@ pkgs=(
   'ghc'
   'ghc-static'
   'stack'
-  'hindent'
   'hlint'
 
   # Idris
