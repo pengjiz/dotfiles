@@ -42,21 +42,22 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 log 'Prepare local AUR repository'
 repodir='/srv/pkgrepo'
 aurdir="$repodir/aur"
-aurdb="$aurdir/aur.db.tar.xz"
+aurdb="$aurdir/aur.db.tar.gz"
 sudo install -d "$repodir"
-# NOTE: Here we need to create a pkgr group and add the user to the group
-# beforehand. Otherwise the group membership is not effective unless we login
-# again.
-if ! groups "$USER" | grep -q '\bpkgr\b'; then
-  log --error "User $USER not in pkgr group"
-  exit 1
-fi
 sudo install -m2775 -g pkgr -d "$aurdir"
 sudo setfacl -d -m g:pkgr:rwx "$aurdir"
 sudo setfacl -m g:pkgr:rwx "$aurdir"
 if [[ ! -f "$aurdb" ]]; then
   log 'Initialize empty AUR package database'
   sudo repo-add "$aurdb"
+fi
+
+# NOTE: Here we need to create a pkgr group and add the user to the group
+# beforehand. Otherwise the group membership is not effective unless we login
+# again, so we cannot manipulate the AUR repository immediately.
+if ! groups "$USER" | grep -q '\bpkgr\b'; then
+  log --error "User $USER not in pkgr group"
+  exit 1
 fi
 
 log 'Configure pacman'
