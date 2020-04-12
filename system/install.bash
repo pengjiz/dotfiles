@@ -306,7 +306,7 @@ log 'Install AUR packages'
 aurpkgs=(
   'aurutils'
   'cask'
-  'joker-bin'
+  'clj-kondo-bin'
   'miniconda3'
   'udunits'
 )
