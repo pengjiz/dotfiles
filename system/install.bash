@@ -210,6 +210,7 @@ pkgs=(
   'ghc-static'
   'stack'
   'hlint'
+  'stylish-haskell'
 
   # Idris
   'idris'
@@ -218,6 +219,7 @@ pkgs=(
   'nodejs'
   'npm'
   'ts-node'
+  'prettier'
 
   # LaTeX
   'texlive-core'
