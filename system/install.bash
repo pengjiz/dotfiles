@@ -164,13 +164,11 @@ pkgs=(
   'exfat-utils'
 
   # Utility
-  'ansible'
   'atool'
   'bc'
   'bind-tools'
   'docker'
   'fd'
-  'jq'
   'ledger'
   'lsb-release'
   'man-db'
@@ -178,7 +176,6 @@ pkgs=(
   'openbsd-netcat'
   'pacman-contrib'
   'pass'
-  'protobuf'
   'pwgen'
   'reflector'
   'ripgrep'
@@ -192,7 +189,6 @@ pkgs=(
   'words'
   'xclip'
   'youtube-dl'
-  'yq'
 
   # Debugging
   'gdb'
@@ -218,11 +214,9 @@ pkgs=(
   # Idris
   'idris'
 
-  # JavaScript
+  # Web
   'nodejs'
   'npm'
-
-  # TypeScript
   'ts-node'
 
   # LaTeX
@@ -267,6 +261,14 @@ pkgs=(
   'hugo'
   'pandoc'
   'python-pygments'
+
+  # Ansible
+  'ansible'
+
+  # Data
+  'protobuf'
+  'jq'
+  'yq'
 
   # GIS
   'gdal'
