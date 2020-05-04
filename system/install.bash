@@ -264,11 +264,13 @@ pkgs=(
 
   # Ansible
   'ansible'
+  'ansible-lint'
 
   # Data
   'protobuf'
   'jq'
   'yq'
+  'yamllint'
 
   # GIS
   'gdal'
