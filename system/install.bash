@@ -91,6 +91,7 @@ pkgs=(
   'zsh-autosuggestions'
   'openssh'
   'shellcheck'
+  'shfmt'
 
   # Desktop
   'i3-wm'
