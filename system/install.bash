@@ -195,6 +195,9 @@ pkgs=(
   'ltrace'
   'valgrind'
 
+  # Assembler
+  'nasm'
+
   # C & C++
   'cmake'
   'ctags'
