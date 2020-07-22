@@ -166,7 +166,7 @@ pkgs=(
   # Utility
   'atool'
   'bc'
-  'bind-tools'
+  'bind'
   'docker'
   'fd'
   'ledger'
