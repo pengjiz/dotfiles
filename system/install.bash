@@ -315,7 +315,6 @@ sudo pacman --needed --noconfirm -S --asdeps "${optdeps[@]}"
 log 'Install AUR packages'
 aurpkgs=(
   'aurutils'
-  'cask'
   'clj-kondo-bin'
   'miniconda3'
   'udunits'
