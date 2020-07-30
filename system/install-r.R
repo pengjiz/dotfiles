@@ -12,11 +12,9 @@ local({
 # Set user library
 #
 # NOTE: R_LIBS_USER is similar to PATH and is a colon separated string of paths.
-# Here we only consider the first one which is similar to what builtin functions
-# does.
+# Here we only consider the first one which is similar to builtin functions.
 user_libpath = path.expand(
-  strsplit(Sys.getenv("R_LIBS_USER",
-                      unset = "~/.local/lib/R/library"),
+  strsplit(Sys.getenv("R_LIBS_USER", unset = "~/.local/lib/R/library"),
            ":")[[1]])
 if(!dir.exists(user_libpath)) {
   dir.create(user_libpath, recursive = TRUE)
@@ -30,5 +28,4 @@ packages = c("lintr",
              "tidyverse",
              "sf",
              "lwgeom")
-install.packages(packages,
-                 lib = user_libpath)
+install.packages(packages, lib = user_libpath)

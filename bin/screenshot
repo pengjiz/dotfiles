@@ -13,7 +13,7 @@ case "$1" in
   screen)
     scrot -z "$file_dir/screen-$name_format.png"
     notify-send 'Screenshot' 'Screen captured' ;;
-  # Capture a selected area
+  # Capture the selected area
   area)
     scrot -s -z "$file_dir/area-$name_format.png"
     notify-send 'Screenshot' 'Selected area captured' ;;

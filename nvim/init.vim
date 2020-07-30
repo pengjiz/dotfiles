@@ -30,7 +30,7 @@ let g:sneak#map_netrw = 0
 
 " {{{ Misc
 " File explorer
-let g:netrw_home = $HOME.'/.local/share/nvim/netrw'
+let g:netrw_home = stdpath('data').'/netrw'
 " }}}
 
 " {{{ Key binding
