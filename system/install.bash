@@ -383,6 +383,7 @@ system_services=(
   'fstrim.timer'
   'man-db.timer'
   'paccache.timer'
+  'reflector.timer'
   'org.cups.cupsd.socket'
 )
 sudo systemctl enable "${system_services[@]}"
