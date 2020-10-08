@@ -167,7 +167,6 @@ pkgs=(
   'atool'
   'bc'
   'bind'
-  'docker'
   'fd'
   'ledger'
   'lsb-release'
@@ -376,7 +375,6 @@ sudo install -m644 'etc/resolved.conf' '/etc/systemd/resolved.conf'
 
 log 'Enable system services'
 system_services=(
-  'docker'
   'lightdm'
   'systemd-timesyncd'
   'tlp'
@@ -387,7 +385,6 @@ system_services=(
   'org.cups.cupsd.socket'
 )
 sudo systemctl enable "${system_services[@]}"
-sudo gpasswd -a "$USER" docker
 
 log 'Enable user services'
 user_services=(
