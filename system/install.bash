@@ -357,6 +357,9 @@ log 'Configure LightDM'
 sudo install -m644 'etc/lightdm-gtk-greeter.conf' \
      '/etc/lightdm/lightdm-gtk-greeter.conf'
 
+log 'Configure reflector'
+sudo install -m644 'etc/reflector.conf' '/etc/xdg/reflector/reflector.conf'
+
 log 'Install pacman hooks'
 sudo install -d '/etc/pacman.d/hooks'
 sudo install -m644 'etc/pacman-update-mirrorlist.hook' \
