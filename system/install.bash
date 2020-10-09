@@ -325,8 +325,6 @@ if do_all; then
   if [[ ! -x "$(command -v aur)" ]]; then
     log --warn 'aurutils not installed'
     log 'Install aurutils'
-    log 'Import PGP key for aurutils'
-    gpg --recv-keys 'DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A'
     pkgdir='/tmp/aurutils'
     git clone 'https://aur.archlinux.org/aurutils.git' "$pkgdir"
     (cd "$pkgdir" && makepkg -si --clean --config "$config" --noconfirm)
