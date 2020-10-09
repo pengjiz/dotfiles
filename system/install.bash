@@ -146,7 +146,7 @@ pkgs=(
   'mpv'
   'mupdf-tools'
 
-  # Fcitx
+  # Input method
   'fcitx-configtool'
   'fcitx-im'
   'fcitx-mozc'
@@ -158,37 +158,45 @@ pkgs=(
   'imagemagick'
   'scrot'
 
-  # Filesystem
+  # File transfer
   'ntfs-3g'
   'exfat-utils'
-
-  # Utility
-  'arch-install-scripts'
-  'atool'
-  'bc'
-  'bind'
-  'fd'
-  'ledger'
-  'lsb-release'
-  'man-db'
-  'man-pages'
-  'openbsd-netcat'
-  'pacman-contrib'
-  'pass'
-  'pwgen'
-  'reflector'
-  'ripgrep'
+  'udisks2'
   'rsync'
   'syncthing'
+
+  # Help
+  'man-db'
+  'man-pages'
   'tldr'
+
+  # System
+  'arch-install-scripts'
+  'pacman-contrib'
+  'reflector'
+  'lsb-release'
   'tlp'
-  'trash-cli'
-  'udisks2'
+
+  # Password
+  'pass'
+  'pwgen'
+
+  # Network
+  'bind'
+  'openbsd-netcat'
   'ufw'
+
+  # Utility
+  'atool'
   'unzip'
-  'words'
+  'fd'
+  'ripgrep'
+  'bc'
+  'ledger'
   'xclip'
+  'trash-cli'
   'youtube-dl'
+  'words'
 
   # Debugging
   'gdb'
