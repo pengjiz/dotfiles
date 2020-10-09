@@ -164,6 +164,7 @@ pkgs=(
   'exfat-utils'
 
   # Utility
+  'arch-install-scripts'
   'atool'
   'bc'
   'bind'
