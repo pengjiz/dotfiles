@@ -113,7 +113,6 @@ pkgs=(
   # Printing
   'cups'
   'cups-pdf'
-  'hplip'
 
   # Theme
   'arc-gtk-theme'
