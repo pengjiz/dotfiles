@@ -184,6 +184,7 @@ pkgs=(
   'tlp'
   'trash-cli'
   'udisks2'
+  'ufw'
   'unzip'
   'words'
   'xclip'
@@ -372,12 +373,18 @@ sudo install -m644 'etc/19-wireless-cmu.network' \
 sudo install -m644 'etc/20-wireless.network' \
      '/etc/systemd/network/20-wireless.network'
 sudo install -m644 'etc/resolved.conf' '/etc/systemd/resolved.conf'
+sudo ufw default deny
+sudo ufw allow syncthing
+if do_all; then
+  sudo ufw enable
+fi
 
 log 'Enable system services'
 system_services=(
   'lightdm'
   'systemd-timesyncd'
   'tlp'
+  'ufw'
   'fstrim.timer'
   'man-db.timer'
   'paccache.timer'
