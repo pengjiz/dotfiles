@@ -309,7 +309,6 @@ optdeps=(
   'gcc-fortran'
 
   # pandoc
-  'pandoc-citeproc'
   'pandoc-crossref'
 
   # qgis
