@@ -273,6 +273,7 @@ pkgs=(
   'languagetool'
   'hugo'
   'pandoc'
+  'pandoc-crossref'
   'python-pygments'
 
   # Ansible
@@ -307,9 +308,6 @@ optdeps=(
 
   # r
   'gcc-fortran'
-
-  # pandoc
-  'pandoc-crossref'
 
   # qgis
   'python-gdal'
