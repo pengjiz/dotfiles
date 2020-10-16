@@ -29,15 +29,6 @@ export LEDGER_PRICE_DB="$HOME/Sync/ledger/pricedb.ledger"
 # Webmark
 export WEBMARK_FILE="$HOME/Sync/misc/webmark.json"
 
-# Conda
-conda_path='/opt/miniconda3'
-conda_script="$conda_path/etc/profile.d/conda.sh"
-if [ -f "$conda_script" ] && [ -r "$conda_script" ]; then
-  . "$conda_script"
-fi
-unset conda_path
-unset conda_script
-
 # Rust cargo
 cargo_bin="$HOME/.cargo/bin"
 if [ -d "$cargo_bin" ]; then
