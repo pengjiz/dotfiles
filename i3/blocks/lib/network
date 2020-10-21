@@ -92,8 +92,6 @@ def get_raw():
         if if_type is not IFType.OFFLINE and is_inet_conn(addrs):
             return [if_type, get_speed(if_name)]
 
-    # NOTE: Rest for a while when offline. Otherwise the script will keep
-    # running frequently.
     time.sleep(UPDATE_INTERVAL)
     return [IFType.OFFLINE, None]
 

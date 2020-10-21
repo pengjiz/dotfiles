@@ -7,7 +7,7 @@ notify-send 'DUNST_COMMAND_PAUSE'
 
 # Lock screen with i3lock
 #
-# NOTE: Here we cannot fork. Otherwise we cannot use it with xss-lock, or
+# NOTE: Here we cannot fork. Otherwise we cannot use it with xss-lock or
 # correctly resume notifications as desired.
 i3lock -n "$@"
 

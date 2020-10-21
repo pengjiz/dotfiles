@@ -73,19 +73,20 @@ def pad(items, convert=None, fmt=None, align="<"):
     """Pad lines to the same length."""
     lines = items
     if convert is not None:
-        lines = [convert(l) for l in items]
+        lines = [convert(item) for item in items]
 
-    lengths = [len(l) for l in lines]
+    lengths = [len(line) for line in lines]
     width = max(lengths)
     paddings = (" " * (width - length) for length in lengths)
 
     if fmt is not None:
-        lines = (fmt(l) for l in items)
+        lines = (fmt(item) for item in items)
 
     tmpl = "{line}{padding}"
     if align == ">":
         tmpl = "{padding}{line}"
-    return [tmpl.format(line=l, padding=p) for l, p in zip(lines, paddings)]
+    return [tmpl.format(line=line, padding=padding)
+            for line, padding in zip(lines, paddings)]
 
 
 def shorten(text, width, placeholder=""):
@@ -107,7 +108,7 @@ def colorize(text, color, bold=False):
 
 def pango(text, **attrs):
     """Markup text with Pango syntax."""
-    attrs = ["{}='{}'".format(k, v) for k, v in attrs.items()]
+    attrs = ["{}='{}'".format(key, value) for key, value in attrs.items()]
     if len(attrs) > 0:
         return "<span {}>{}</span>".format(" ".join(attrs), text)
     return text
@@ -116,7 +117,8 @@ def pango(text, **attrs):
 def convolute(var):
     """Transform between a list of dictionaries and a dictionary of lists."""
     if isinstance(var, dict):
-        results = [dict(zip(var.keys(), v)) for v in zip(*var.values())]
+        results = [dict(zip(var.keys(), value))
+                   for value in zip(*var.values())]
         return results
     else:
         results = defaultdict(list)
@@ -291,8 +293,10 @@ class Store:
                 keep = keep and not value.tags.isdisjoint(tags)
             return keep
 
-        bookmarks = ((k, v) for k, v in self.bookmarks.items() if predicate(v))
-        bookmarks = [convert(k, v) for k, v in bookmarks]
+        bookmarks = ((key, value)
+                     for key, value in self.bookmarks.items()
+                     if predicate(value))
+        bookmarks = [convert(key, value) for key, value in bookmarks]
         return bookmarks
 
     def visit_bookmark(self, key, act, rescore=True):
@@ -301,10 +305,8 @@ class Store:
         result = act(target.url)
 
         if rescore:
-            # Decay all bookmark scores
             for bookmark in self.bookmarks.values():
                 bookmark.score *= self.config["decay"]
-            # Increment the visited bookmark
             target.score += self.config["incr"]
 
         return result
@@ -364,7 +366,6 @@ class App:
         # Subcommands
         subparsers = parser.add_subparsers()
 
-        # Add
         parser_add = subparsers.add_parser(
             "add", description="Add a new bookmark")
         parser_add.add_argument("key",
@@ -378,7 +379,6 @@ class App:
                                 help="initial score of the bookmark")
         parser_add.set_defaults(func=self.add)
 
-        # Update
         parser_update = subparsers.add_parser(
             "update", description="Update a bookmark")
         parser_update.add_argument("key",
@@ -391,7 +391,6 @@ class App:
                                    help="new score of the bookmark")
         parser_update.set_defaults(func=self.update)
 
-        # Move
         parser_move = subparsers.add_parser(
             "move", description="Move bookmark to a new key")
         parser_move.add_argument("old_key", metavar="from",
@@ -400,14 +399,12 @@ class App:
                                  help="new key of the bookmark")
         parser_move.set_defaults(func=self.move)
 
-        # Remove
         parser_remove = subparsers.add_parser(
             "remove", description="Remove a bookmark")
         parser_remove.add_argument("key",
                                    help="key of the bookmark")
         parser_remove.set_defaults(func=self.remove)
 
-        # List
         parser_list = subparsers.add_parser(
             "list", description="List bookmarks")
         parser_list.add_argument("-t", "--tags", metavar="TAG", nargs="*",
@@ -417,7 +414,6 @@ class App:
                                  help="minimum score of bookmarks")
         parser_list.set_defaults(func=self.list)
 
-        # Menu
         parser_menu = subparsers.add_parser(
             "menu", description="Browse bookmarks with a menu")
         parser_menu.add_argument("-t", "--tags", metavar="TAG", nargs="*",
@@ -492,8 +488,8 @@ class App:
             columns[name] = pad(lines, **fmtspecs.get(name, {}))
 
         lines = convolute(columns)
-        lines = (tmpl.format(**l) for l in lines)
-        lines = (shorten(l, self.width) for l in lines)
+        lines = (tmpl.format(**line) for line in lines)
+        lines = (shorten(line, self.width) for line in lines)
         print("\n".join(lines))
 
     def menu(self, args):
@@ -533,9 +529,8 @@ class App:
         bookmarks = sorted(bookmarks, key=lambda x: (-x["score"], x["key"]))
         bookmarks = convolute(bookmarks)
 
-        keys = bookmarks["key"]
-        tags = [fmt_tags(xs) for xs in bookmarks["tags"]]
-        items = ["{} {}".format(k, t) for k, t in zip(keys, tags)]
+        items = ["{} {}".format(key, fmt_tags(tags))
+                 for key, tags in zip(bookmarks["key"], bookmarks["tags"])]
 
         action, item = rofi(items, actions)
         spec = actions.get(action, {})

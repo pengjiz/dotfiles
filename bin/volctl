@@ -3,10 +3,10 @@
 set -e
 
 case "$1" in
-  # Volume up by 5
+  # Volume up
   up)
     pactl set-sink-volume 0 +5% ;;
-  # Volume down by 5
+  # Volume down
   down)
     pactl set-sink-volume 0 -5% ;;
   # Toggle mute
@@ -18,6 +18,6 @@ case "$1" in
     exit 1 ;;
 esac
 
-# Refresh volume block on status bar, which uses i3blocks. The signal is defined
-# in the configuration of i3blocks.
-pgrep i3blocks && pkill -SIGRTMIN+1 i3blocks
+# Refresh volume information on the status bar. The signal number is defined in
+# the configuration of i3block.
+pkill -x -u "$USER" -SIGRTMIN+1 i3blocks || true

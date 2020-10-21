@@ -35,7 +35,7 @@ TMPLS = {
 
 def get_raw():
     """Get the current battery level and percentage remaining."""
-    # TODO: Find out why this could fail when charging.
+    # TODO: Find out why this could often fail when charging.
     battery = ps.sensors_battery()
     if battery is None:
         return None
@@ -69,11 +69,10 @@ def get_output():
 
 if __name__ == "__main__":
     try:
-        # NOTE: For some reason it may occasionally fail to get battery
-        # information when charging, in which case it should be better to just
-        # keep previous information.
         while True:
             output = get_output()
+            # NOTE: When we fail to get the current battery state, it is better
+            # to just keep and show the previous information.
             if output:
                 print(output, flush=True)
             time.sleep(UPDATE_INTERVAL)

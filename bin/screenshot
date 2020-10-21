@@ -3,23 +3,22 @@
 set -e
 
 file_dir="${SCREENSHOT_DIR:-$HOME/Pictures/screenshots}"
-# Name format of the screenshot. Default format is the timestamp.
-name_format="${SCREENSHOT_NAME_FORMAT:-%Y%m%d%H%M%S}"
+timestamp_fmt="${SCREENSHOT_TSFMT:-%Y%m%d%H%M%S}"
 
 mkdir -p "$file_dir"
 
 case "$1" in
   # Capture the full screen
   screen)
-    scrot -z "$file_dir/screen-$name_format.png"
+    scrot -z "$file_dir/screen-$timestamp_fmt.png"
     notify-send 'Screenshot' 'Screen captured' ;;
   # Capture the selected area
   area)
-    scrot -s -z "$file_dir/area-$name_format.png"
+    scrot -s -z "$file_dir/area-$timestamp_fmt.png"
     notify-send 'Screenshot' 'Selected area captured' ;;
   # Capture the current window
   window)
-    scrot -u -z "$file_dir/window-$name_format.png"
+    scrot -u -z "$file_dir/window-$timestamp_fmt.png"
     notify-send 'Screenshot' 'Focused window captured' ;;
   # Unknown operation
   *)
