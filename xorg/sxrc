@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Input method
+export GTK_IM_MODULE='fcitx'
+export QT_IM_MODULE='fcitx'
+export XMODIFIERS='@im=fcitx'
+
+# QT theme
+export QT_QPA_PLATFORMTHEME='qt5ct'
+
+# Load resource file
+[ -f "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources"
+
+# Source provided scripts
+if [ -d '/etc/X11/xinit/xinitrc.d' ]; then
+  for script in /etc/X11/xinit/xinitrc.d/*; do
+    [ -x "$script" ] && [ ! -d "$script" ] && . "$script"
+  done
+  unset script
+fi
+
+# Start window manager
+exec i3

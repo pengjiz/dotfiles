@@ -76,6 +76,7 @@ pkgs=(
   'xorg-xev'
   'xf86-video-fbdev'
   'xf86-video-vesa'
+  'sx'
   'arandr'
 
   # Terminal

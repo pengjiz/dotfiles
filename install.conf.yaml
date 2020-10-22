@@ -13,6 +13,7 @@
 - link:
     # Shell
     ~/.zshenv: shell/zsh/env.zsh
+    ~/.zprofile: shell/zsh/profile.zsh
     ~/.zshrc: shell/zsh/rc.zsh
     ~/.bashrc: shell/bash/rc.bash
 
@@ -42,8 +43,8 @@
     ~/.ledgerrc: ledger/ledgerrc
 
     # Xorg
-    ~/.xprofile: xorg/xprofile.sh
     ~/.Xresources: xorg/Xresources
+    ~/.config/sx/sxrc: xorg/sxrc
 
     # XDG
     ~/.config/mimeapps.list: xdg/mimeapps.list
