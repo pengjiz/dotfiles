@@ -78,10 +78,6 @@ pkgs=(
   'xf86-video-vesa'
   'arandr'
 
-  # Display manager
-  'lightdm'
-  'lightdm-gtk-greeter'
-
   # Terminal
   'rxvt-unicode'
 
@@ -297,9 +293,6 @@ sudo pacman --needed --noconfirm -S "${pkgs[@]}"
 
 log 'Install optional dependencies'
 optdeps=(
-  # lightdm
-  'accountsservice'
-
   # tlp
   'x86_energy_perf_policy'
 
@@ -356,10 +349,6 @@ log 'Configure touchpad'
 sudo install -m644 'etc/30-touchpad.conf' \
      '/etc/X11/xorg.conf.d/30-touchpad.conf'
 
-log 'Configure LightDM'
-sudo install -m644 'etc/lightdm-gtk-greeter.conf' \
-     '/etc/lightdm/lightdm-gtk-greeter.conf'
-
 log 'Configure reflector'
 sudo install -m644 'etc/reflector.conf' '/etc/xdg/reflector/reflector.conf'
 
@@ -384,7 +373,6 @@ fi
 
 log 'Enable system services'
 system_services=(
-  'lightdm'
   'systemd-timesyncd'
   'tlp'
   'ufw'
