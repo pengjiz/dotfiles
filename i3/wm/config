@@ -1,6 +1,6 @@
 # Base
 set $mod Mod4
-set $wallpaper /usr/share/backgrounds/archlinux/archlinux-luminous-uber.jpg
+set $wallpaper /usr/share/backgrounds/archlinux/simple.png
 set $locker screenlock -c 3f4452
 set $ws1 1
 set $ws2 2
