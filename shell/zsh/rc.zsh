@@ -1,14 +1,12 @@
-# Option
-
-## Input
+# Input
 setopt INTERACTIVE_COMMENTS
 setopt RC_QUOTES
 
-## Redirect
+# Redirect
 setopt APPEND_CREATE
 unsetopt CLOBBER
 
-## History
+# History
 HISTFILE="$HOME/.local/share/zsh/history"
 HISTSIZE=2000
 SAVEHIST=10000
@@ -19,23 +17,15 @@ setopt HIST_IGNORE_SPACE
 setopt HIST_REDUCE_BLANKS
 unsetopt FLOW_CONTROL
 
-## Directory navigation
+# Directory navigation
 setopt AUTO_CD
 setopt AUTO_PUSHD
 setopt PUSHD_MINUS
 setopt CHASE_LINKS
 
-## Prompt
+# Prompt
 setopt PROMPT_SUBST
 autoload -Uz colors && colors
-
-### Current working directory
-prompt_pwd="%{${fg_bold[blue]}%}%c"
-
-### Last command status
-prompt_last_status="%(?:%{${fg[green]}%}>:%{${fg_bold[red]}%}>)%{$reset_color%}"
-
-### Git
 function _prompt_get_git_info {
   local branch=''
   branch="$(command git symbolic-ref --short HEAD 2>/dev/null)" || \
@@ -50,42 +40,47 @@ function _prompt_get_git_info {
     fi
   fi
 }
-prompt_git_info='$(_prompt_get_git_info)'
 
-### Set prompt
-PROMPT="$prompt_pwd$prompt_git_info $prompt_last_status "
-unset prompt_pwd
-unset prompt_last_status
-unset prompt_git_info
+function {
+  local directory="%{${fg_bold[blue]}%}%c"
+  local git_info='$(_prompt_get_git_info)'
+  local exit_code="%(?:%{${fg[green]}%}>:%{${fg_bold[red]}%}>)%{$reset_color%}"
+  PROMPT="$directory$git_info $exit_code "
+}
 
-## Key binding
+# Key binding
 bindkey -e
 
-## Completion
+# Completion
 autoload -Uz compinit && compinit -d "$HOME/.local/share/zsh/compdump"
 setopt COMPLETE_IN_WORD
 zstyle ':completion:*' menu select
 bindkey '^[[Z' reverse-menu-complete
 
-# Command
-
-## Environment
+# Environment
 export EDITOR='nvim'
 export VISUAL="$EDITOR"
 export AUR_PAGER='nvim'
 
-## Plugin
-[[ -r '/usr/share/z/z.sh' ]] && . '/usr/share/z/z.sh'
-[[ -r '/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh' ]] \
-  && . '/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh'
+# Plugin
+function {
+  local plugins=(
+    '/usr/share/z/z.sh'
+    '/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh'
+  )
 
-## Function
-### Make a directory and cd to it
+  local plugin=''
+  for plugin in "$plugins[@]"; do
+    [[ -f "$plugin" ]] && . "$plugin"
+  done
+}
+
+# Function
 function mkcd {
   mkdir -pv "$1" && cd "$1"
 }
 
-## Alias
+# Alias
 alias l='ls -AlhF --color=auto'
 alias g='git'
 alias vi='nvim'

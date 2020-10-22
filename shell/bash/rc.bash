@@ -1,12 +1,10 @@
-# Option
-
-## Glob
+# Glob
 shopt -s globstar
 
-## Redirect
+# Redirect
 set -o noclobber
 
-## History
+# History
 HISTFILE="$HOME/.local/share/bash/history"
 HISTSIZE=2000
 HISTFILESIZE=10000
@@ -14,32 +12,29 @@ HISTTIMEFORMAT='%F %T '
 HISTCONTROL='ignorespace'
 shopt -s histappend
 
-## Directory navigation
+# Directory navigation
 shopt -s autocd
 
-## Prompt
+# Prompt
 PS1='\W > '
 
-## Key binding
+# Key binding
 set -o emacs
 
-# Command
-
-## Environment
+# Environment
 export EDITOR='nvim'
 export VISUAL="$EDITOR"
 export AUR_PAGER='nvim'
 
-## Plugin
+# Plugin
 [[ -r '/usr/share/z/z.sh' ]] && . '/usr/share/z/z.sh'
 
-## Function
-### Make a directory and cd to it
+# Function
 function mkcd {
   mkdir -pv "$1" && cd "$1"
 }
 
-## Alias
+# Alias
 alias l='ls -AlhF --color=auto'
 alias g='git'
 alias vim='nvim'
