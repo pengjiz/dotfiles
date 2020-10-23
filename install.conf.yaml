@@ -68,7 +68,7 @@
     ~/.config/dunst/dunstrc: dunst/dunstrc
 
     # Rofi
-    ~/.config/rofi/config: rofi/config
+    ~/.config/rofi/config.rasi: rofi/config.rasi
 
     # Fcitx
     ~/.config/fcitx/config: fcitx/config
