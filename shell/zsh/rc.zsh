@@ -26,14 +26,14 @@ setopt CHASE_LINKS
 # Prompt
 setopt PROMPT_SUBST
 autoload -Uz colors && colors
-function _prompt_get_git_info {
+function _prompt_get_gitinfo {
   local branch=''
-  branch="$(command git symbolic-ref --short HEAD 2>/dev/null)" || \
-    branch="$(command git rev-parse --short HEAD 2>/dev/null)"
+  branch="$(git symbolic-ref --short HEAD 2>/dev/null)" || \
+    branch="$(git rev-parse --short HEAD 2>/dev/null)"
 
   if [[ "$branch" ]]; then
     branch="%{${fg_bold[magenta]}%}@$branch"
-    if [[ "$(command git status --porcelain 2>/dev/null | tail -n1)" ]]; then
+    if [[ "$(git status --porcelain 2>/dev/null | tail -n1)" ]]; then
       echo "$branch%{${fg_bold[yellow]}%}*"
     else
       echo "$branch"
@@ -43,9 +43,9 @@ function _prompt_get_git_info {
 
 function {
   local directory="%{${fg_bold[blue]}%}%c"
-  local git_info='$(_prompt_get_git_info)'
-  local exit_code="%(?:%{${fg[green]}%}>:%{${fg_bold[red]}%}>)%{$reset_color%}"
-  PROMPT="$directory$git_info $exit_code "
+  local gitinfo='$(_prompt_get_gitinfo)'
+  local cmdexit="%(?:%{${fg[green]}%}>:%{${fg_bold[red]}%}>)%{$reset_color%}"
+  PROMPT="$directory$gitinfo $cmdexit "
 }
 
 # Key binding

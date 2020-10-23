@@ -344,6 +344,7 @@ else
       log --warn "AUR package $pkg not in the repository"
     fi
   done
+  unset pkg
 fi
 
 log 'Configure touchpad'

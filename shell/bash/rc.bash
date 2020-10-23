@@ -27,7 +27,7 @@ export VISUAL="$EDITOR"
 export AUR_PAGER='nvim'
 
 # Plugin
-[[ -r '/usr/share/z/z.sh' ]] && . '/usr/share/z/z.sh'
+[[ -f '/usr/share/z/z.sh' ]] && . '/usr/share/z/z.sh'
 
 # Function
 function mkcd {
