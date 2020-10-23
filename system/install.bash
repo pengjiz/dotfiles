@@ -347,7 +347,8 @@ else
   unset pkg
 fi
 
-log 'Configure touchpad'
+log 'Configure Xorg'
+sudo install -m644 'etc/10-server.conf' '/etc/X11/xorg.conf.d/10-server.conf'
 sudo install -m644 'etc/30-touchpad.conf' \
      '/etc/X11/xorg.conf.d/30-touchpad.conf'
 
