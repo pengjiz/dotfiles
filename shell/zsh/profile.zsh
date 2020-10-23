@@ -9,7 +9,7 @@ export BROWSER='xdg-open'
 export TERMINAL='urxvt'
 
 # SSH agent
-[[ -z "$SSH_AUTH_SOCK" ]] && eval "$(ssh-agent -t 18000)"
+[[ -z "$SSH_AUTH_SOCK" ]] && eval "$(ssh-agent)"
 
 # z
 export _Z_DATA="$HOME/.local/share/z"
