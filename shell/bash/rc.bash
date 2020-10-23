@@ -21,11 +21,6 @@ PS1='\W > '
 # Key binding
 set -o emacs
 
-# Environment
-export EDITOR='nvim'
-export VISUAL="$EDITOR"
-export AUR_PAGER='nvim'
-
 # Plugin
 [[ -f '/usr/share/z/z.sh' ]] && . '/usr/share/z/z.sh'
 

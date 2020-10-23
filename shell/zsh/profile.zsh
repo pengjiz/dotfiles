@@ -3,10 +3,9 @@ export NAME='Pengji Zhang'
 export EMAIL='me@pengjiz.com'
 
 # Default application
-export EDITOR='nano'
+export EDITOR='nvim'
 export VISUAL="$EDITOR"
-export BROWSER='xdg-open'
-export TERMINAL='urxvt'
+export AUR_PAGER='nvim'
 
 # SSH agent
 [[ -z "$SSH_AUTH_SOCK" ]] && eval "$(ssh-agent)"

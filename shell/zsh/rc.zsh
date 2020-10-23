@@ -57,11 +57,6 @@ setopt COMPLETE_IN_WORD
 zstyle ':completion:*' menu select
 bindkey '^[[Z' reverse-menu-complete
 
-# Environment
-export EDITOR='nvim'
-export VISUAL="$EDITOR"
-export AUR_PAGER='nvim'
-
 # Plugin
 function {
   local plugins=(
