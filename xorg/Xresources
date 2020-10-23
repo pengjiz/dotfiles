@@ -1,5 +1,4 @@
 ! Color
-
 *background:  #1d1f21
 *foreground:  #c5c8c6
 *cursorColor: #cc6666
@@ -29,7 +28,6 @@
 *color15:     #c5c8c6
 
 ! Xft font
-
 Xft.dpi: 96
 Xft.antialias: true
 Xft.hinting: true
@@ -39,11 +37,9 @@ Xft.lcdfilter: lcddefault
 Xft.rgba: rgb
 
 ! Cursor
-
 Xcursor.theme: default
 
-! rxvt-unicode
-
+! Terminal
 URxvt.depth: 32
 URxvt.background: [100]#1d1f21
 URxvt.font: xft:Source Code Pro-12,xft:Noto Sans CJK TC,xft:DejaVu Sans

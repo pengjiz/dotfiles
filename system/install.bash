@@ -60,7 +60,7 @@ if ! groups "$USER" | grep -q '\bpkgr\b'; then
   exit 1
 fi
 
-log 'Configure pacman'
+log 'Prepare pacman'
 sudo install -m644 'etc/pacman.conf' '/etc/pacman.conf'
 sudo pacman -Syu --noconfirm
 
@@ -352,10 +352,8 @@ sudo install -m644 'etc/10-server.conf' '/etc/X11/xorg.conf.d/10-server.conf'
 sudo install -m644 'etc/30-touchpad.conf' \
      '/etc/X11/xorg.conf.d/30-touchpad.conf'
 
-log 'Configure reflector'
+log 'Configure pacman'
 sudo install -m644 'etc/reflector.conf' '/etc/xdg/reflector/reflector.conf'
-
-log 'Install pacman hooks'
 sudo install -d '/etc/pacman.d/hooks'
 sudo install -m644 'etc/pacman-update-mirrorlist.hook' \
      '/etc/pacman.d/hooks/pacman-update-mirrorlist.hook'

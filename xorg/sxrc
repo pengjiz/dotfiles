@@ -2,7 +2,7 @@
 
 # Logging
 logfile="$HOME/.local/share/sx/session.log"
-[ -e "$logfile" ] && mv -f "$logfile" "$logfile.old"
+[ -f "$logfile" ] && mv -f "$logfile" "$logfile.old"
 exec >"$logfile" 2>&1
 unset logfile
 

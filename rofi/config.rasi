@@ -1,12 +1,7 @@
 configuration {
-  // UI
   theme: "Arc-Dark";
   font: "DejaVu Sans 11";
-
-  // Default modi and combi
   combi-modi: "window,drun";
   modi: "combi";
-
-  // Key binding
   kb-screenshot: "";
 }
