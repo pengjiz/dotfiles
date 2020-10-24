@@ -8,3 +8,7 @@ Include config.d/*
 # Global configuration
 Host *
   AddKeysToAgent 18000
+  # NOTE: Sometimes NAT may drop inactive connections and setting this option to
+  # an appropriate value will prevent that.
+  ServerAliveInterval 30
+  ServerAliveCountMax 6
