@@ -9,8 +9,6 @@ set splitbelow
 
 " Buffer and file
 set hidden
-set autoread
-set autowrite
 let g:netrw_home = stdpath('data').'/netrw'
 
 " Search
@@ -22,7 +20,3 @@ if executable('rg')
   set grepprg=rg\ -S\ --vimgrep\ --no-heading
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
-
-" Key binding
-inoremap jk <Esc>
-cnoremap jk <C-C>
