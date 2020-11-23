@@ -135,7 +135,6 @@ pkgs=(
   'firefox'
   'firefox-i18n-en-us'
   'firefox-ublock-origin'
-  'firefox-extension-https-everywhere'
 
   # Viewer
   'evince'
