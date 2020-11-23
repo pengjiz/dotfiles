@@ -5,13 +5,13 @@ set -e
 case "$1" in
   # Volume up
   up)
-    pactl set-sink-volume 0 +5% ;;
+    pactl set-sink-volume @DEFAULT_SINK@ +5% ;;
   # Volume down
   down)
-    pactl set-sink-volume 0 -5% ;;
+    pactl set-sink-volume @DEFAULT_SINK@ -5% ;;
   # Toggle mute
   mute)
-    pactl set-sink-mute 0 toggle ;;
+    pactl set-sink-mute @DEFAULT_SINK@ toggle ;;
   # Unknown operation
   *)
     echo "Unknown operation $1" >&2
