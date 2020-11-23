@@ -380,7 +380,7 @@ system_services=(
   'man-db.timer'
   'paccache.timer'
   'reflector.timer'
-  'org.cups.cupsd.socket'
+  'cups.socket'
 )
 sudo systemctl enable "${system_services[@]}"
 
