@@ -105,7 +105,6 @@ pkgs=(
   # Audio
   'pulseaudio'
   'pulseaudio-alsa'
-  'pavucontrol'
 
   # Printing
   'cups'
