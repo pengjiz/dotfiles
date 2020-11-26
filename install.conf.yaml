@@ -37,7 +37,6 @@
 
     # Neovim
     ~/.config/nvim/init.vim: nvim/init.vim
-    ~/.local/share/nvim/site/pack/extras: nvim/extras
 
     # Ledger
     ~/.ledgerrc: ledger/ledgerrc
