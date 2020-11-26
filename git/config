@@ -11,11 +11,15 @@
 	mailmap = true
 	abbrevCommit = true
 [merge]
-	log = true
 	conflictStyle = diff3
+	log = true
+	tool = nvimdiff
+[mergetool]
+	prompt = false
+	keepBackup = false
 [rebase]
-	autoSquash = true
 	autoStash = true
+	autoSquash = true
 [remote]
 	pushDefault = origin
 [fetch]
