@@ -300,12 +300,6 @@ optdeps=(
 
   # r
   'gcc-fortran'
-
-  # qgis
-  'python-gdal'
-  'python-numpy'
-  'python-psycopg2'
-  'python-owslib'
 )
 sudo pacman --needed --noconfirm -S --asdeps "${optdeps[@]}"
 
