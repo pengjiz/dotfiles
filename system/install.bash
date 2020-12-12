@@ -295,6 +295,9 @@ optdeps=(
   # tlp
   'x86_energy_perf_policy'
 
+  # pinentry
+  'gtk2'
+
   # clojure
   'rlwrap'
 
