@@ -32,5 +32,5 @@ function mkcd {
 # Alias
 alias l='ls -AlhF --color=auto'
 alias g='git'
-alias vim='nvim'
 alias vi='nvim'
+alias vim='nvim'

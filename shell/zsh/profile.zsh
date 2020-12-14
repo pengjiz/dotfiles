@@ -26,7 +26,7 @@ function {
   [[ -d "$directory" ]] && path=("$directory" "$path[@]")
 
   if [[ -x "$(command -v rustc)" ]]; then
-    directory="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+    directory="$(rustc --print sysroot)/lib/rustlib/src/rust/library"
     [[ -d "$directory" ]] && export RUST_SRC_PATH="$directory"
   fi
 }
