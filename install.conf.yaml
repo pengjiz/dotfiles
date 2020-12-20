@@ -61,7 +61,7 @@
     ~/.config/i3blocks/lib: i3/blocks/lib
 
     # Redshift
-    ~/.config/redshift/redshift.conf: redshift/refshift.conf
+    ~/.config/redshift/redshift.conf: redshift/redshift.conf
 
     # Dunst
     ~/.config/dunst/dunstrc: dunst/dunstrc
