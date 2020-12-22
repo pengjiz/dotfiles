@@ -1,14 +1,13 @@
----
-
-- clean:
-    - "~"
-    - "~/.local/bin"
-
 - defaults:
     link:
-      force: true
       create: true
       relink: true
+
+- clean:
+    - "~/.ssh/config.d"
+    - "~/.config/fcitx/addon"
+    - "~/.config/fcitx/conf"
+    - "~/.local/bin"
 
 - link:
     # Shell
@@ -104,12 +103,9 @@
       glob: true
       path: bin/*
 
-- shell:
-    - description: "Create Zsh data directory"
-      command: "mkdir -p ~/.local/share/zsh"
-    - description: "Create Bash data directory"
-      command: "mkdir -p ~/.local/share/bash"
-    - description: "Copy Fcitx UI configuration"
-      command: "cp -f -t ~/.config/fcitx/conf seed/fcitx-classic-ui.config"
+- create:
+    - "~/.local/share/zsh"
+    - "~/.local/share/bash"
 
-...
+- shell:
+    - "cp -f -t ~/.config/fcitx/conf seed/fcitx-classic-ui.config"
