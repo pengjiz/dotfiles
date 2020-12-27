@@ -27,5 +27,6 @@ packages = c("lintr",
              "rmarkdown",
              "tidyverse",
              "sf",
-             "lwgeom")
+             "lwgeom",
+             "RSQLite")
 install.packages(packages, lib = user_libpath)
