@@ -21,7 +21,6 @@ if (!dir.exists(user_libpath)) {
 
 # Install packages
 packages <- c("lintr",
-              "devtools",
               "rmarkdown",
               "tidyverse",
               "sf",

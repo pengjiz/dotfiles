@@ -7,10 +7,3 @@ local({
 })
 
 options(lintr.cache_directory = "~/.local/share/R/lintr")
-options(devtools.path = "~/.local/share/R/dev")
-options(usethis.full_name = "Pengji Zhang")
-options(usethis.description = list(
-  `Authors@R` = 'person("Pengji", "Zhang", email = "me@pengjiz.com",
-                        role = c("aut", "cre"))',
-  License = "Unlimited"
-))
