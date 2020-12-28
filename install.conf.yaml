@@ -106,6 +106,7 @@
 - create:
     - "~/.local/share/zsh"
     - "~/.local/share/bash"
+    - "~/.local/share/R"
 
 - shell:
     - "cp -f -t ~/.config/fcitx/conf seed/fcitx-classic-ui.config"
