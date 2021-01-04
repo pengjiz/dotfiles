@@ -141,12 +141,6 @@ pkgs=(
   'mpv'
   'mupdf-tools'
 
-  # Input method
-  'fcitx-configtool'
-  'fcitx-im'
-  'fcitx-mozc'
-  'fcitx-rime'
-
   # Image
   'graphviz'
   'gnuplot'

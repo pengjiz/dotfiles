@@ -5,8 +5,6 @@
 
 - clean:
     - "~/.ssh/config.d"
-    - "~/.config/fcitx/addon"
-    - "~/.config/fcitx/conf"
     - "~/.local/bin"
 
 - link:
@@ -68,16 +66,6 @@
     # Rofi
     ~/.config/rofi/config.rasi: rofi/config.rasi
 
-    # Fcitx
-    ~/.config/fcitx/config: fcitx/config
-    ~/.config/fcitx/rime/default.custom.yaml: fcitx/rime/default.custom.yaml
-    ~/.config/fcitx/addon:
-      glob: true
-      path: fcitx/addon/*
-    ~/.config/fcitx/conf:
-      glob: true
-      path: fcitx/conf/*
-
     # mpv
     ~/.config/mpv/mpv.conf: mpv/mpv.conf
     ~/.config/mpv/input.conf: mpv/input.conf
@@ -107,6 +95,3 @@
     - "~/.local/share/zsh"
     - "~/.local/share/bash"
     - "~/.local/share/R"
-
-- shell:
-    - "cp -f -t ~/.config/fcitx/conf seed/fcitx-classic-ui.config"

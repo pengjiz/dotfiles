@@ -145,7 +145,6 @@ bindsym $mod+Shift+q kill
 bindsym $mod+Shift+e mode "$mode_system"
 
 for_window [class="(?i)emacs"] focus, border normal 1
-for_window [class="(?i)fcitx-config-gtk3"] floating enable
 for_window [class="(?i)pavucontrol"] floating enable
 for_window [class="(?i)mpv"] floating enable
 for_window [class="(?i)arandr"] floating enable
@@ -165,7 +164,6 @@ assign [class="(?i)evince"] $ws4
 exec --no-startup-id xset dpms 900 1800 3600
 exec --no-startup-id xss-lock -l -- $locker
 exec --no-startup-id feh --no-fehbg --bg-fill $wallpaper
-exec --no-startup-id fcitx-autostart
 exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent
 exec --no-startup-id redshift
 

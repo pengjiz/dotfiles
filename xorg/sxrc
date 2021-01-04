@@ -10,11 +10,6 @@ unset logfile
 export TERMINAL='urxvt'
 export BROWSER='xdg-open'
 
-# Input method
-export GTK_IM_MODULE='fcitx'
-export QT_IM_MODULE='fcitx'
-export XMODIFIERS='@im=fcitx'
-
 # QT theme
 export QT_QPA_PLATFORMTHEME='qt5ct'
 
