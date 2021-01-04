@@ -169,10 +169,8 @@ exec --no-startup-id redshift
 
 # Bar
 bar {
-  i3bar_command i3bar
   status_command i3blocks
   position bottom
-  strip_workspace_numbers yes
 
   colors {
     background #3f4453
