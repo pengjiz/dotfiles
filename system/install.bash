@@ -126,7 +126,6 @@ pkgs=(
   'otf-font-awesome'
 
   # Editor
-  'editorconfig-core-c'
   'emacs'
   'neovim'
 
