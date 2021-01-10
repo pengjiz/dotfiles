@@ -350,8 +350,6 @@ sudo install -m644 'etc/systemd-update-boot.hook' \
      '/etc/pacman.d/hooks/systemd-update-boot.hook'
 
 log 'Configure network'
-sudo install -m644 'etc/19-wireless-cmu.network' \
-     '/etc/systemd/network/19-wireless-cmu.network'
 sudo install -m644 'etc/20-wireless.network' \
      '/etc/systemd/network/20-wireless.network'
 sudo install -m644 'etc/resolved.conf' '/etc/systemd/resolved.conf'
