@@ -5,7 +5,7 @@ import datetime
 
 # Setting
 
-TMPL = "%a %Y-%m-%d %H:%M"
+TMPL = "%Y-%m-%d %a %H:%M"
 
 
 # Get formatted string
