@@ -147,8 +147,6 @@ pkgs=(
   'scrot'
 
   # File transfer
-  'ntfs-3g'
-  'exfat-utils'
   'udisks2'
   'rsync'
   'syncthing'
