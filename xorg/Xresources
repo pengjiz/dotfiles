@@ -36,9 +36,6 @@ Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 Xft.rgba: rgb
 
-! Cursor
-Xcursor.theme: default
-
 ! Terminal
 URxvt.depth: 32
 URxvt.background: [100]#1d1f21
