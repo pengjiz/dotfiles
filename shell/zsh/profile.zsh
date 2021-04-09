@@ -5,6 +5,7 @@ export EMAIL='me@pengjiz.com'
 # Default application
 export EDITOR='nvim'
 export VISUAL="$EDITOR"
+export DIFFPROG='nvim -d'
 export AUR_PAGER='nvim'
 
 # SSH agent
