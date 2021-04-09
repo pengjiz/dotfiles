@@ -185,6 +185,7 @@ pkgs=(
   'ltrace'
   'strace'
   'valgrind'
+  'lsof'
 
   # Assembler
   'nasm'
