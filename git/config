@@ -2,6 +2,8 @@
 	name = Pengji Zhang
 	email = me@pengjiz.com
 	useConfigOnly = true
+[init]
+	defaultBranch = main
 [status]
 	short = true
 	branch = true
