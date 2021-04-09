@@ -40,6 +40,10 @@ function do_all {
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 log 'Prepare local AUR repository'
+if ! groups "$USER" | grep -q '\bpkgr\b'; then
+  log --error "User $USER not in pkgr group"
+  exit 1
+fi
 repodir='/srv/pkgrepo'
 aurdir="$repodir/aur"
 aurdb="$aurdir/aur.db.tar.gz"
@@ -50,14 +54,6 @@ sudo setfacl -m g:pkgr:rwx "$aurdir"
 if [[ ! -f "$aurdb" ]]; then
   log 'Initialize empty AUR package database'
   sudo repo-add "$aurdb"
-fi
-
-# NOTE: Here we need to create a pkgr group and add the user to the group
-# beforehand. Otherwise the group membership is not effective unless we login
-# again, so we cannot manipulate the AUR repository immediately.
-if ! groups "$USER" | grep -q '\bpkgr\b'; then
-  log --error "User $USER not in pkgr group"
-  exit 1
 fi
 
 log 'Prepare pacman'
@@ -254,7 +250,7 @@ pkgs=(
   'aspell-en'
   'hunspell'
   'hunspell-de'
-  'hunspell-en_US'
+  'hunspell-en_us'
   'proselint'
   'languagetool'
   'hugo'
@@ -349,7 +345,8 @@ sudo install -m644 'etc/systemd-update-boot.hook' \
 log 'Configure network'
 sudo install -m644 'etc/20-wireless.network' \
      '/etc/systemd/network/20-wireless.network'
-sudo install -m644 'etc/resolved.conf' '/etc/systemd/resolved.conf'
+sudo install -d '/etc/systemd/resolved.conf.d'
+sudo install -m644 'etc/20-dns.conf' '/etc/systemd/resolved.conf.d/20-dns.conf'
 sudo ufw default deny
 sudo ufw allow syncthing
 if do_all; then
