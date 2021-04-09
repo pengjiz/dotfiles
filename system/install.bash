@@ -183,6 +183,7 @@ pkgs=(
   # Debugging
   'gdb'
   'ltrace'
+  'strace'
   'valgrind'
 
   # Assembler
