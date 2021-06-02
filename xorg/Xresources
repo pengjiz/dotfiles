@@ -1,31 +1,31 @@
 ! Color
-*background:  #1d1f21
-*foreground:  #c5c8c6
-*cursorColor: #cc6666
+*background:  #000000
+*foreground:  #ffffff
+*cursorColor: #ffffff
 
-*color0:      #1d1f21
-*color8:      #373b41
+*color0:      #000000
+*color8:      #595959
 
-*color1:      #cc6666
-*color9:      #f2777a
+*color1:      #ff8059
+*color9:      #ef8b50
 
-*color2:      #b5bd68
-*color10:     #99cc99
+*color2:      #44bc44
+*color10:     #70b900
 
-*color3:      #de835f
-*color11:     #f0c674
+*color3:      #d0bc00
+*color11:     #c0c530
 
-*color4:      #81a2be
-*color12:     #6699cc
+*color4:      #2fafff
+*color12:     #79a8ff
 
-*color5:      #b294bb
-*color13:     #cc99cc
+*color5:      #feacd0
+*color13:     #f78fe7
 
-*color6:      #8abeb7
-*color14:     #66cccc
+*color6:      #00d3d0
+*color14:     #4ae2f0
 
-*color7:      #969896
-*color15:     #c5c8c6
+*color7:      #a6a6a6
+*color15:     #ffffff
 
 ! Xft font
 Xft.dpi: 96
@@ -37,8 +37,6 @@ Xft.lcdfilter: lcddefault
 Xft.rgba: rgb
 
 ! Terminal
-URxvt.depth: 32
-URxvt.background: [100]#1d1f21
 URxvt.font: xft:Source Code Pro-12,xft:Noto Sans CJK TC,xft:DejaVu Sans
 URxvt.scrollBar: false
 URxvt.saveLines: 5000
