@@ -1,53 +1,35 @@
 [global]
-# Display
 follow = mouse
 geometry = "400x5-20-40"
-indicate_hidden = yes
-show_age_threshold = 60
-idle_threshold = 120
-shrink = no
-transparency = 0
-notification_height = 0
+separator_height = 1
+separator_color = "#17191f"
 padding = 10
 horizontal_padding = 20
-sort = yes
-frame_width = 0
-frame_color = "#383c4a"
-separator_height = 1
-separator_color = "#383c4a"
-# Text
+text_icon_padding = 10
+word_wrap = true
 font = DejaVu Sans 11
-line_height = 0
 markup = full
-format = "<b>%s</b>\n%b %p"
-alignment = left
-ignore_newline = no
-word_wrap = yes
-# Icon
-icon_position = right
+format = "<b>%s</b> %p\n%b"
+show_age_threshold = 60
+progress_bar = false
+icon_position = left
 max_icon_size = 32
-icon_path = /usr/share/icons/Papirus/32x32/status/:/usr/share/icons/Papirus/32x32/devices/
-# Misc
+icon_path = /usr/share/icons/Papirus-Dark/32x32/status/:/usr/share/icons/Papirus-Dark/32x32/devices/
+idle_threshold = 120
 dmenu = rofi -dmenu -p dunst
 browser = xdg-open
 
-[shortcuts]
-close = mod4+comma
-close_all = mod4+shift+comma
-history = mod4+period
-context = mod4+grave
-
 [urgency_low]
-background = "#3e4350"
-foreground = "#7c818c"
+background = "#292c36"
+foreground = "#73d216"
 timeout = 10
 
 [urgency_normal]
-background = "#4b5162"
-foreground = "#ffffff"
+background = "#292c36"
+foreground = "#bac3cf"
 timeout = 15
 
 [urgency_critical]
-background = "#cc6666"
-foreground = "#ffffff"
+background = "#292c36"
+foreground = "#f27835"
 timeout = 0
