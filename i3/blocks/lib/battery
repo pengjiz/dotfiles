@@ -8,7 +8,7 @@ from enum import Enum
 class Level(Enum):
     CHARGING = 1
     NORMAL = 2
-    WARN = 3
+    WARNING = 3
     ALERT = 4
 
 
@@ -18,16 +18,16 @@ UPDATE_INTERVAL = 60
 
 THRESHOLDS = {
     10: Level.ALERT,
-    25: Level.WARN
+    25: Level.WARNING
 }
 
 TMPLS = {
     Level.CHARGING: "<span font='FontAwesome 10'>\uf1e6</span> {}%",
     Level.NORMAL: "<span font='FontAwesome 10'>\uf241</span> {}%",
-    Level.WARN: ("<span font='FontAwesome 10'>\uf243</span> "
-                 "<span foreground='#ffcc66'>{}%</span>"),
+    Level.WARNING: ("<span font='FontAwesome 10'>\uf243</span> "
+                    "<span foreground='#f27835'>{}%</span>"),
     Level.ALERT: ("<span font='FontAwesome 10'>\uf244</span> "
-                  "<span foreground='#f2777a'>{}%</span>")
+                  "<span foreground='#fc4138'>{}%</span>")
 }
 
 

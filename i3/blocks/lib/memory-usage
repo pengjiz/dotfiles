@@ -6,7 +6,7 @@ from enum import Enum
 
 class Level(Enum):
     NORMAL = 1
-    WARN = 2
+    WARNING = 2
     ALERT = 3
 
 
@@ -14,14 +14,14 @@ class Level(Enum):
 
 THRESHOLDS = {
     0.5: Level.ALERT,
-    1: Level.WARN
+    1: Level.WARNING
 }
 
 ICON = "<span font='FontAwesome 10'>\uf538</span>"
 TMPLS = {
     Level.NORMAL: ICON + " {:.1f}G/{:.1f}G",
-    Level.WARN: ICON + " <span foreground='#ffcc66'>{:.1f}G</span>/{:.1f}G",
-    Level.ALERT: ICON + "  <span foreground='#f2777a'>{:.1f}G</span>/{:.1f}G"
+    Level.WARNING: ICON + " <span foreground='#f27835'>{:.1f}G</span>/{:.1f}G",
+    Level.ALERT: ICON + "  <span foreground='#fc4138'>{:.1f}G</span>/{:.1f}G"
 }
 
 

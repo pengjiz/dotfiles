@@ -6,7 +6,7 @@ from enum import Enum
 
 class Level(Enum):
     NORMAL = 1
-    WARN = 2
+    WARNING = 2
     ALERT = 3
 
 
@@ -16,14 +16,14 @@ UPDATE_INTERVAL = 10
 
 THRESHOLDS = {
     85: Level.ALERT,
-    50: Level.WARN
+    50: Level.WARNING
 }
 
 ICON = "<span font='FontAwesome 10'>\uf2db</span>"
 TMPLS = {
     Level.NORMAL: ICON + " {:.1f}%",
-    Level.WARN: ICON + " <span foreground='#ffcc66'>{:.1f}%</span>",
-    Level.ALERT: ICON + " <span foreground='#f2777a'>{:.1f}%</span>"
+    Level.WARNING: ICON + " <span foreground='#f27835'>{:.1f}%</span>",
+    Level.ALERT: ICON + " <span foreground='#fc4138'>{:.1f}%</span>"
 }
 
 

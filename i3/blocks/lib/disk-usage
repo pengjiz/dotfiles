@@ -6,7 +6,7 @@ from enum import Enum
 
 class Level(Enum):
     NORMAL = 1
-    WARN = 2
+    WARNING = 2
     ALERT = 3
 
 
@@ -15,15 +15,15 @@ class Level(Enum):
 MONITOR_PATH = "/home/"
 
 THRESHOLDS = {
-    5: Level.WARN,
+    5: Level.WARNING,
     1: Level.ALERT
 }
 
 ICON = "<span font='FontAwesome 10'>\uf1c0</span>"
 TMPLS = {
     Level.NORMAL: ICON + " {:.1f}G",
-    Level.WARN: ICON + " <span foreground='#ffcc66'>{:.1f}G</span>",
-    Level.ALERT: ICON + " <span foreground='#f2777a'>{:.1f}G</span>"
+    Level.WARNING: ICON + " <span foreground='#f27835'>{:.1f}G</span>",
+    Level.ALERT: ICON + " <span foreground='#fc4138'>{:.1f}G</span>"
 }
 
 
