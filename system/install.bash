@@ -97,6 +97,7 @@ pkgs=(
   'libnotify'
   'redshift'
   'python-psutil'
+  'picom'
 
   # Audio
   'pulseaudio'

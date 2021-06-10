@@ -178,6 +178,7 @@ assign [class="(?i)evince"] $ws4
 # Autostart
 exec --no-startup-id xset dpms 900 1800 3600
 exec --no-startup-id xss-lock -l -- $locker
+exec --no-startup-id picom -b --config /dev/null
 exec --no-startup-id feh --no-fehbg --bg-fill $wallpaper
 exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent
 exec --no-startup-id redshift
