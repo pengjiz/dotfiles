@@ -1,6 +1,7 @@
 # Personal information
 export NAME='Pengji Zhang'
 export EMAIL='me@pengjiz.com'
+export PACKAGER='Pengji Zhang <me@pengjiz.com>'
 
 # Default application
 export EDITOR='nvim'
