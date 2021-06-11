@@ -21,11 +21,11 @@ function log {
   echo -e "\033[${color}m$prefix:\033[0m $*" >&2
 }
 
-setup_all='false'
+setup_all='no'
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --all)
-      setup_all='true'
+      setup_all='yes'
       shift 1 ;;
     *)
       log --error "Unknown argument $1"
@@ -34,7 +34,11 @@ while [[ $# -gt 0 ]]; do
 done
 
 function do_all {
-  [[ "$setup_all" == 'false' ]] && return 1 || return 0
+  if [[ "$setup_all" == 'no' ]]; then
+    return 1
+  else
+    return 0
+  fi
 }
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -62,6 +66,14 @@ sudo pacman -Syu --noconfirm
 
 log 'Install packages'
 pkgs=(
+  # Shell
+  'zsh'
+  'z'
+  'zsh-autosuggestions'
+  'openssh'
+  'shellcheck'
+  'shfmt'
+
   # Xorg
   'xorg-server'
   'xorg-xrandr'
@@ -75,29 +87,18 @@ pkgs=(
   'sx'
   'arandr'
 
-  # Terminal
-  'rxvt-unicode'
-
-  # Shell
-  'zsh'
-  'z'
-  'zsh-autosuggestions'
-  'openssh'
-  'shellcheck'
-  'shfmt'
-
   # Desktop
   'i3-wm'
-  'i3blocks'
   'i3lock'
   'xss-lock'
+  'i3blocks'
+  'python-psutil'
   'rofi'
   'dunst'
-  'feh'
   'libnotify'
-  'redshift'
-  'python-psutil'
   'picom'
+  'redshift'
+  'feh'
 
   # Audio
   'pulseaudio'
@@ -121,6 +122,9 @@ pkgs=(
   'noto-fonts-emoji'
   'ttf-dejavu'
   'otf-font-awesome'
+
+  # Terminal
+  'rxvt-unicode'
 
   # Editor
   'emacs'
@@ -307,18 +311,17 @@ aurpkgs=(
   'udunits'
 )
 
+export PACKAGER='Pengji Zhang <me@pengjiz.com>'
 if do_all; then
-  config="$(cd '../pacman' && pwd)/makepkg.conf"
   if [[ ! -x "$(command -v aur)" ]]; then
     log --warn 'aurutils not installed'
     log 'Install aurutils'
-    pkgdir='/tmp/aurutils'
-    git clone 'https://aur.archlinux.org/aurutils.git' "$pkgdir"
-    (cd "$pkgdir" && makepkg -si --clean --config "$config" --noconfirm)
+    pkgdir="$(mktemp -d)/aurutils"
+    git clone --depth 1 'https://aur.archlinux.org/aurutils.git' "$pkgdir"
+    (cd "$pkgdir" && makepkg -si --clean --noconfirm)
     unset pkgdir
   fi
-  aur sync --noview --makepkg-conf "$config" "${aurpkgs[@]}"
-  unset config
+  aur sync --noview "${aurpkgs[@]}"
   sudo pacman --needed --noconfirm -S "${aurpkgs[@]}"
 else
   if [[ ! -x "$(command -v aur)" ]]; then
@@ -380,7 +383,14 @@ user_services=(
 systemctl --user enable "${user_services[@]}"
 
 if do_all; then
-  log 'Install user configurations'
+  log 'Install dotfiles'
+  mvfile="$HOME/.bashrc"
+  if [[ -f "$mvfile" ]]; then
+    log --warn "Existing target $mvfile"
+    log "Rename $mvfile to $mvfile.old"
+    mv -f "$mvfile" "$mvfile.old"
+  fi
+  unset mvfile
   (cd '..' && ./install.bash)
 
   log 'Setup Rust'

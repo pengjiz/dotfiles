@@ -20,6 +20,7 @@ if (!dir.exists(user_libpath)) {
 .libPaths(user_libpath)
 
 # Install packages
+Sys.setenv(STRINGI_DISABLE_PKG_CONFIG = 1)
 packages <- c("lintr",
               "rmarkdown",
               "tidyverse",
