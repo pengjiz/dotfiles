@@ -212,9 +212,6 @@ pkgs=(
   'hlint'
   'stylish-haskell'
 
-  # Idris
-  'idris'
-
   # Web
   'nodejs'
   'npm'
