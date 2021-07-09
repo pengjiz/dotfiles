@@ -255,7 +255,6 @@ pkgs=(
   'hunspell'
   'hunspell-de'
   'hunspell-en_us'
-  'proselint'
   'languagetool'
   'hugo'
   'pandoc'
