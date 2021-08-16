@@ -124,7 +124,7 @@ pkgs=(
   'otf-font-awesome'
 
   # Terminal
-  'rxvt-unicode'
+  'xterm'
 
   # Editor
   'emacs'

@@ -7,7 +7,7 @@ exec >"$logfile" 2>&1
 unset logfile
 
 # Default application
-export TERMINAL='urxvt'
+export TERMINAL='xterm'
 export BROWSER='xdg-open'
 
 # QT theme
