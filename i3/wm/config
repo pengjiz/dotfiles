@@ -18,9 +18,9 @@ floating_modifier $mod
 floating_maximum_size 0 x 0
 
 # Color
-client.focused          #4b5162 #4b5162 #ffffff #4b5162 #4b5162
-client.focused_inactive #3e4350 #3e4350 #afb8c5 #3e4350 #3e4350
-client.unfocused        #3e4350 #3e4350 #7c818c #3e4350 #3e4350
+client.focused          #5294e2 #5294e2 #ffffff #5294e2 #5294e2
+client.focused_inactive #3f4453 #3f4453 #ffffff #3f4453 #3f4453
+client.unfocused        #2b2e37 #2b2e37 #bac3cf #2b2e37 #2b2e37
 client.urgent           #f27835 #f27835 #ffffff #f27835 #f27835
 client.placeholder      #404552 #404552 #d3dae3 #404552 #404552
 client.background       #404552
@@ -29,16 +29,6 @@ client.background       #404552
 default_border pixel 1
 default_floating_border pixel 1
 hide_edge_borders smart
-
-set $mode_border Border: (n) normal, (m) minimal
-mode "$mode_border" {
-  bindsym n border normal 1; mode "default"
-  bindsym m border pixel 1; mode "default"
-
-  bindsym Control+g mode "default"
-  bindsym Escape mode "default"
-}
-bindsym $mod+b mode "$mode_border"
 
 # Focus
 focus_follows_mouse no
@@ -49,6 +39,7 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 bindsym $mod+i focus mode_toggle
 bindsym $mod+p focus parent
+bindsym $mod+b focus child
 bindsym $mod+u [urgent="latest"] focus
 bindsym $mod+o exec rofi -show window
 
@@ -162,7 +153,7 @@ bindsym Print mode "$mode_screenshot"
 bindsym $mod+Shift+q kill
 bindsym $mod+Shift+e mode "$mode_system"
 
-for_window [class="(?i)emacs"] focus, border normal 1
+for_window [class="(?i)emacs"] focus
 for_window [class="(?i)mpv"] floating enable
 for_window [class="(?i)arandr"] floating enable
 for_window [class="(?i)qt5ct"] floating enable
