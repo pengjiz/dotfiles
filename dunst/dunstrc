@@ -1,12 +1,15 @@
 [global]
 follow = mouse
-geometry = "400x5-20-40"
+width = 400
+notification_limit = 5
+origin = bottom-right
+offset = 20x40
 separator_height = 1
 separator_color = "#17191f"
+frame_width = 0
 padding = 10
 horizontal_padding = 20
 text_icon_padding = 10
-word_wrap = true
 font = DejaVu Sans 11
 markup = full
 format = "<b>%s</b> %p\n%b"
