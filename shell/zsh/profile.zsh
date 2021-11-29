@@ -16,8 +16,13 @@ export AUR_PAGER='nvim'
 export _Z_DATA="$HOME/.local/share/z"
 
 # Ledger
-export LEDGER_FILE="$HOME/Sync/ledger/finances.ledger"
-export LEDGER_PRICE_DB="$HOME/Sync/ledger/pricedb.ledger"
+function {
+  local data="$HOME/Sync/ledger/finances.ledger"
+  [[ -f "$data" ]] && export LEDGER_FILE="$data"
+
+  data="$HOME/Sync/ledger/pricedb.ledger"
+  [[ -f "$data" ]] && export LEDGER_PRICE_DB="$data"
+}
 
 # Webmark
 export WEBMARK_FILE="$HOME/Sync/misc/webmark.json"
