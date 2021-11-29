@@ -1,7 +1,8 @@
 configuration {
-  theme: "Arc-Dark";
   font: "DejaVu Sans 11";
   combi-modi: "window,drun";
   modi: "combi";
   kb-screenshot: "";
 }
+
+@theme "Arc-Dark"
