@@ -182,7 +182,6 @@ pkgs=(
   'ledger'
   'xclip'
   'trash-cli'
-  'youtube-dl'
   'words'
 
   # Debugging
