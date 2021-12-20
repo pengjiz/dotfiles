@@ -178,6 +178,7 @@ pkgs=(
   'unzip'
   'fd'
   'ripgrep'
+  'ripgrep-all'
   'bc'
   'ledger'
   'xclip'
