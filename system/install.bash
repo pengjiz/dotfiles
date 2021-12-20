@@ -379,13 +379,6 @@ systemctl --user enable "${user_services[@]}"
 
 if do_all; then
   log 'Install dotfiles'
-  mvfile="$HOME/.bashrc"
-  if [[ -f "$mvfile" ]]; then
-    log --warn "Existing target $mvfile"
-    log "Rename $mvfile to $mvfile.old"
-    mv -f "$mvfile" "$mvfile.old"
-  fi
-  unset mvfile
   (cd '..' && ./install.bash)
 
   log 'Setup Rust'
