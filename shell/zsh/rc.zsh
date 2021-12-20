@@ -32,9 +32,9 @@ function _prompt_get_gitinfo {
     branch="$(git rev-parse --short HEAD 2>/dev/null)"
 
   if [[ "$branch" ]]; then
-    branch="%{${fg_bold[magenta]}%}@$branch"
+    branch="%{$fg_bold[magenta]%}@$branch"
     if [[ "$(git status --porcelain 2>/dev/null | tail -n1)" ]]; then
-      echo "$branch%{${fg_bold[yellow]}%}*"
+      echo "$branch%{$fg_bold[yellow]%}*"
     else
       echo "$branch"
     fi
@@ -42,9 +42,9 @@ function _prompt_get_gitinfo {
 }
 
 function {
-  local directory="%{${fg_bold[blue]}%}%c"
+  local directory="%{$fg_bold[blue]%}%c"
   local gitinfo='$(_prompt_get_gitinfo)'
-  local cmdexit="%(?:%{${fg[green]}%}>:%{${fg_bold[red]}%}>)%{$reset_color%}"
+  local cmdexit="%(?:%{$fg[green]%}>:%{$fg_bold[red]%}>)%{$reset_color%}"
   PROMPT="$directory$gitinfo $cmdexit "
 }
 

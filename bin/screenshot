@@ -2,23 +2,23 @@
 
 set -e
 
-file_dir="${SCREENSHOT_DIR:-$HOME/Pictures/screenshots}"
-timestamp_fmt="${SCREENSHOT_TSFMT:-%Y%m%d%H%M%S}"
+directory="${SCREENSHOT_DIRECTORY:-$HOME/Pictures/screenshots}"
+suffix="${SCREENSHOT_SUFFIX:-%Y%m%d%H%M%S}"
 
-mkdir -p "$file_dir"
+mkdir -p "$directory"
 
 case "$1" in
   # Capture the full screen
   screen)
-    scrot -z "$file_dir/screen-$timestamp_fmt.png"
+    scrot -z "$directory/screen-$suffix.png"
     notify-send 'Screenshot' 'Screen captured' ;;
   # Capture the selected area
   area)
-    scrot -s -z "$file_dir/area-$timestamp_fmt.png"
+    scrot -s -z "$directory/area-$suffix.png"
     notify-send 'Screenshot' 'Selected area captured' ;;
   # Capture the current window
   window)
-    scrot -u -z "$file_dir/window-$timestamp_fmt.png"
+    scrot -u -z "$directory/window-$suffix.png"
     notify-send 'Screenshot' 'Focused window captured' ;;
   # Unknown operation
   *)

@@ -3,8 +3,8 @@
 set -e
 
 function log {
-  local color
-  local prefix
+  local color=''
+  local prefix=''
   case "$1" in
     --error)
       color='31;1'
