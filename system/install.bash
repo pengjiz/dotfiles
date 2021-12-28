@@ -113,7 +113,7 @@ pkgs=(
   'papirus-icon-theme'
   'archlinux-wallpaper'
   'qt5ct'
-  'kvantum-qt5'
+  'kvantum'
 
   # Font
   'adobe-source-code-pro-fonts'
