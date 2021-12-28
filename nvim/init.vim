@@ -3,10 +3,6 @@ set list
 set expandtab
 set shiftwidth=2
 
-" Window
-set splitright
-set splitbelow
-
 " Buffer and file
 set hidden
 let g:netrw_home = stdpath('data').'/netrw'
@@ -15,6 +11,6 @@ let g:netrw_home = stdpath('data').'/netrw'
 set ignorecase
 set smartcase
 if executable('rg')
-  set grepprg=rg\ -S\ --vimgrep\ --no-heading
+  set grepprg=rg\ --vimgrep\ --no-heading
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
