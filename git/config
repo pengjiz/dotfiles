@@ -19,9 +19,6 @@
 [mergetool]
 	prompt = false
 	keepBackup = false
-[rebase]
-	autoStash = true
-	autoSquash = true
 [remote]
 	pushDefault = origin
 [fetch]
