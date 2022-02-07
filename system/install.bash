@@ -161,6 +161,8 @@ pkgs=(
   'arch-install-scripts'
   'pacman-contrib'
   'reflector'
+  'rebuild-detector'
+  'setconf'
   'lsb-release'
   'tlp'
 
