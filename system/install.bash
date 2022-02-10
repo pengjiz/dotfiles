@@ -360,25 +360,24 @@ if do_all; then
   sudo ufw enable
 fi
 
-log 'Enable system services'
-system_services=(
+log 'Enable system units'
+system_units=(
   'systemd-timesyncd'
   'tlp'
   'ufw'
   'fstrim.timer'
-  'man-db.timer'
   'paccache.timer'
   'reflector.timer'
   'cups.socket'
 )
-sudo systemctl enable "${system_services[@]}"
+sudo systemctl enable "${system_units[@]}"
 
-log 'Enable user services'
-user_services=(
+log 'Enable user units'
+user_units=(
   'syncthing'
   'dunst'
 )
-systemctl --user enable "${user_services[@]}"
+systemctl --user enable "${user_units[@]}"
 
 if do_all; then
   log 'Install dotfiles'
