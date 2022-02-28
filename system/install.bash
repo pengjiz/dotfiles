@@ -238,6 +238,7 @@ pkgs=(
   # Python
   'flake8'
   'python-black'
+  'python-pip'
 
   # Racket
   'racket'
