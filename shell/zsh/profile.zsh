@@ -31,11 +31,6 @@ export WEBMARK_FILE="$HOME/Sync/misc/webmark.json"
 function {
   local directory="$HOME/.cargo/bin"
   [[ -d "$directory" ]] && path=("$directory" "$path[@]")
-
-  if [[ -x "$(command -v rustc)" ]]; then
-    directory="$(rustc --print sysroot)/lib/rustlib/src/rust/library"
-    [[ -d "$directory" ]] && export RUST_SRC_PATH="$directory"
-  fi
 }
 
 # Local binary

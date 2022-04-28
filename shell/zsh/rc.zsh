@@ -31,9 +31,9 @@ function _prompt_get_gitinfo {
   branch="$(git symbolic-ref --short HEAD 2>/dev/null)" || \
     branch="$(git rev-parse --short HEAD 2>/dev/null)"
 
-  if [[ "$branch" ]]; then
+  if [[ -n "$branch" ]]; then
     branch="%{$fg_bold[magenta]%}@$branch"
-    if [[ "$(git status --porcelain 2>/dev/null | tail -n1)" ]]; then
+    if [[ -n "$(git status --porcelain 2>/dev/null | tail -n1)" ]]; then
       echo "$branch%{$fg_bold[yellow]%}*"
     else
       echo "$branch"
