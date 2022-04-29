@@ -6,7 +6,7 @@ from enum import Enum
 
 
 class Level(Enum):
-    CHARGING = 1
+    PLUGGED = 1
     NORMAL = 2
     WARNING = 3
     ALERT = 4
@@ -15,14 +15,12 @@ class Level(Enum):
 # Setting
 
 UPDATE_INTERVAL = 60
-
 THRESHOLDS = {
     10: Level.ALERT,
     25: Level.WARNING
 }
-
 TMPLS = {
-    Level.CHARGING: "<span font='FontAwesome 10'>\uf1e6</span> {}%",
+    Level.PLUGGED: "<span font='FontAwesome 10'>\uf1e6</span> {}%",
     Level.NORMAL: "<span font='FontAwesome 10'>\uf241</span> {}%",
     Level.WARNING: ("<span font='FontAwesome 10'>\uf243</span> "
                     "<span foreground='#f27835'>{}%</span>"),
@@ -31,35 +29,30 @@ TMPLS = {
 }
 
 
-# Get information
+# Core
 
 def get_raw():
     """Get the current battery level and percentage remaining."""
-    # TODO: Find out why this could often fail when charging.
+    # TODO: Find out why this could often fail when plugged.
     battery = ps.sensors_battery()
     if battery is None:
         return None
-
     plugged = battery.power_plugged
     percent = int(battery.percent)
 
     if plugged:
-        return [Level.CHARGING, percent]
-
+        return Level.PLUGGED, percent
     for threshold, level in THRESHOLDS.items():
         if percent < threshold:
-            return [level, percent]
-    return [Level.NORMAL, percent]
+            return level, percent
+    return Level.NORMAL, percent
 
-
-# Get formatted string
 
 def get_output():
-    """Get a string for the battery status."""
+    """Get a string for battery status."""
     raw = get_raw()
     if raw is None:
         return None
-
     level, percent = raw
     tmpl = TMPLS.get(level)
     return tmpl.format(percent)
@@ -71,8 +64,8 @@ if __name__ == "__main__":
     try:
         while True:
             output = get_output()
-            # NOTE: When we fail to get the current battery state, it is better
-            # to just keep and show the previous information.
+            # NOTE: When we fail to get the current battery status, it is
+            # better to just keep and show the previous information.
             if output:
                 print(output, flush=True)
             time.sleep(UPDATE_INTERVAL)

@@ -13,13 +13,11 @@ class Level(Enum):
 # Setting
 
 MONITOR_PATH = "/home/"
-
 THRESHOLDS = {
     5: Level.WARNING,
     1: Level.ALERT
 }
-
-ICON = "<span font='FontAwesome 10'>\uf1c0</span>"
+ICON = "<span font='FontAwesome 10'>\uf802</span>"
 TMPLS = {
     Level.NORMAL: ICON + " {:.1f}G",
     Level.WARNING: ICON + " <span foreground='#f27835'>{:.1f}G</span>",
@@ -34,20 +32,17 @@ def convert_bytes(num):
     return num / 1024 ** 3
 
 
-# Get information
+# Core
 
 def get_raw():
-    """Get the available disk space and level of usage."""
+    """Get the current disk usage level and available space."""
     info = ps.disk_usage(MONITOR_PATH)
     avail = convert_bytes(info.free)
-
     for threshold, level in THRESHOLDS.items():
         if avail < threshold:
-            return [level, avail]
-    return [Level.NORMAL, avail]
+            return level, avail
+    return Level.NORMAL, avail
 
-
-# Get formatted string
 
 def get_output():
     """Get a string for disk usage."""

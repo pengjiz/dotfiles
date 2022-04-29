@@ -8,10 +8,10 @@ import datetime
 TMPL = "%Y-%m-%d %a %H:%M"
 
 
-# Get formatted string
+# Core
 
 def get_output():
-    """Get current time and date."""
+    """Get a string for time."""
     return datetime.datetime.now().strftime(TMPL)
 
 

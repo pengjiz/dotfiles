@@ -16,7 +16,6 @@ THRESHOLDS = {
     0.5: Level.ALERT,
     1: Level.WARNING
 }
-
 ICON = "<span font='FontAwesome 10'>\uf538</span>"
 TMPLS = {
     Level.NORMAL: ICON + " {:.1f}G/{:.1f}G",
@@ -32,21 +31,18 @@ def convert_bytes(num):
     return num / 1024 ** 3
 
 
-# Get information
+# Core
 
 def get_raw():
-    """Get available memory, total memory, and level of usage."""
+    """Get the current memory usage information."""
     info = ps.virtual_memory()
     total = convert_bytes(info.total)
     avail = convert_bytes(info.available)
-
     for threshold, level in THRESHOLDS.items():
         if avail < threshold:
-            return [level, avail, total]
-    return [Level.NORMAL, avail, total]
+            return level, avail, total
+    return Level.NORMAL, avail, total
 
-
-# Get formatted string
 
 def get_output():
     """Get a string for memory usage."""

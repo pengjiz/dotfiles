@@ -5,31 +5,35 @@ from subprocess import run, PIPE
 from enum import Enum
 
 
-class State(Enum):
-    UNMUTED = 1
-    MUTED = 2
+class Level(Enum):
+    NORMAL = 1
+    LOW = 2
+    OFF = 3
+    MUTED = 4
 
 
 # Setting
 
 MUTE_PAT = re.compile(r"^\s*Mute: (yes|no)")
-VOL_PAT = re.compile(r"^\s*Volume: .* /\s* (\d+%)")
-
+VOL_PAT = re.compile(r"^\s*Volume: .* /\s* (\d+)%")
+THRESHOLD = 20
 TMPLS = {
-    State.UNMUTED: "<span font='FontAwesome 10'>\uf3b5</span> {}",
-    State.MUTED: "<span font='FontAwesome 10'>\uf6a9</span>"
+    Level.NORMAL: "<span font='FontAwesome 10'>\uf028</span> {}%",
+    Level.LOW: "<span font='FontAwesome 10'>\uf027</span> {}%",
+    Level.OFF: "<span font='FontAwesome 10'>\uf026</span> {}%",
+    Level.MUTED: "<span font='FontAwesome 10'>\uf6a9</span> {}%"
 }
 
 
 # Helper
 
-def get_state(lines):
-    """Check if the audio is muted."""
+def is_muted(lines):
+    """Check if the audio device is muted."""
     for line in lines:
         result = MUTE_PAT.search(line)
-        if result and result.group(1) == 'yes':
-            return State.MUTED
-    return State.UNMUTED
+        if result and result.group(1) == "yes":
+            return True
+    return False
 
 
 def extract_volume(lines):
@@ -37,31 +41,39 @@ def extract_volume(lines):
     for line in lines:
         result = VOL_PAT.search(line)
         if result:
-            return result.group(1)
+            return int(result.group(1))
     return None
 
 
-# Get information
+# Core
 
 def get_raw():
-    """Get audio status."""
+    """Get the current volume information."""
     # TODO: Find a more reliable way.
     lines = run(["pactl", "list", "sinks"], encoding="utf-8",
                 stdout=PIPE, check=True).stdout.splitlines()
-    state = get_state(lines)
-
-    if state is State.MUTED:
-        return [state, None]
-
     vol = extract_volume(lines)
-    return [state, vol]
+    if vol is None:
+        return None
+    if is_muted(lines):
+        return Level.MUTED, vol
 
+    state = None
+    if vol == 0:
+        state = Level.OFF
+    elif vol < THRESHOLD:
+        state = Level.LOW
+    else:
+        state = Level.NORMAL
+    return state, vol
 
-# Get formatted string
 
 def get_output():
     """Get a string for volume."""
-    state, vol = get_raw()
+    raw = get_raw()
+    if raw is None:
+        return None
+    state, vol = raw
     tmpl = TMPLS.get(state)
     return tmpl.format(vol)
 
@@ -70,6 +82,8 @@ def get_output():
 
 if __name__ == "__main__":
     try:
-        print(get_output())
+        output = get_output()
+        if output:
+            print(output)
     except KeyboardInterrupt:
         pass

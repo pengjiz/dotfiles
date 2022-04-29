@@ -6,7 +6,7 @@ import time
 from enum import Enum
 
 
-class IFType(Enum):
+class State(Enum):
     WIFI = 1
     WIRED = 2
     OFFLINE = 3
@@ -14,38 +14,37 @@ class IFType(Enum):
 
 # Setting
 
-INET_IF_PREFIXES = {
-    "wl": IFType.WIFI,
-    "en": IFType.WIRED
-}
-INET_ADDRS = [socket.AF_INET, socket.AF_INET6]
-
+MAX_RETRY = 10
+RETRY_INTERVAL = 1
 UPDATE_INTERVAL = 10
-
+PREFIXES = {
+    "wl": State.WIFI,
+    "en": State.WIRED
+}
+INET_AFS = [socket.AF_INET, socket.AF_INET6]
 TMPLS = {
-    IFType.WIFI: ("<span font='FontAwesome 10'>\uf1eb</span> "
+    State.WIFI: ("<span font='FontAwesome 10'>\uf1eb</span> "
+                 "↓{:.1f}{}/s ↑{:.1f}{}/s"),
+    State.WIRED: ("<span font='FontAwesome 10'>\uf6ff</span> "
                   "↓{:.1f}{}/s ↑{:.1f}{}/s"),
-    IFType.WIRED: ("<span font='FontAwesome 10'>\uf6ff</span> "
-                   "↓{:.1f}{}/s ↑{:.1f}{}/s"),
-    IFType.OFFLINE: "<span font='FontAwesome 10'>\uf06a</span>"
+    State.OFFLINE: "<span font='FontAwesome 10'>\uf127</span>"
 }
 
 
 # Helper
 
-def get_if_type(if_name):
-    """Get the type of an interface."""
-    for prefix, if_type in INET_IF_PREFIXES.items():
-        if if_name.startswith(prefix):
-            return if_type
-    return IFType.OFFLINE
+def get_device_state(name):
+    "Get the state for a device."
+    for prefix, state in PREFIXES.items():
+        if name.startswith(prefix):
+            return state
+    return State.OFFLINE
 
 
-def is_inet_conn(addrs):
+def has_inet_addr(addrs):
     """Test if the addresses contains an internet address."""
-    # TODO: Find a more reliable way.
     for addr in addrs:
-        if addr.family in INET_ADDRS:
+        if addr.family in INET_AFS:
             return True
     return False
 
@@ -54,24 +53,32 @@ def convert_bytes(num):
     """Convert bytes to a human-readable form."""
     units = {1024 ** 2: "M",
              1024: "K"}
-
     for base, unit in units.items():
         result = num / base
         if result >= 0.1:
-            return [result, unit]
+            return result, unit
+    return num, "B"
 
-    return [num, "B"]
+
+# Core
+
+def get_inet_device():
+    """Get the device with an internet connection."""
+    addrs = ps.net_if_addrs()
+    for name, addrs in addrs.items():
+        state = get_device_state(name)
+        if state is not State.OFFLINE and has_inet_addr(addrs):
+            return name, state
+    return None
 
 
-# Get information
-
-def get_speed(if_name):
-    """Get the IO speed of an interface."""
+def get_device_speed(name):
+    """Get the IO speed of a device."""
     last_counters = ps.net_io_counters(pernic=True)
-    last = last_counters.get(if_name)
+    last = last_counters.get(name)
     time.sleep(UPDATE_INTERVAL)
     this_counters = ps.net_io_counters(pernic=True)
-    this = this_counters.get(if_name)
+    this = this_counters.get(name)
 
     if this and last:
         return {
@@ -84,26 +91,21 @@ def get_speed(if_name):
 
 
 def get_raw():
-    """Get the current internet connection type and speed."""
-    addrs = ps.net_if_addrs()
-
-    for if_name, addrs in addrs.items():
-        if_type = get_if_type(if_name)
-        if if_type is not IFType.OFFLINE and is_inet_conn(addrs):
-            return [if_type, get_speed(if_name)]
-
+    """Get the current internet connection state and speed."""
+    device = get_inet_device()
+    if device:
+        name, state = device
+        return state, get_device_speed(name)
     time.sleep(UPDATE_INTERVAL)
-    return [IFType.OFFLINE, None]
+    return State.OFFLINE, None
 
-
-# Get formatted string
 
 def get_output():
-    """Get a string for the internet type and speed."""
-    if_type, spds = get_raw()
-    tmpl = TMPLS.get(if_type)
-    in_spd = spds.get("in") if spds else [0, "B"]
-    out_spd = spds.get("out") if spds else [0, "B"]
+    """Get a string for network status."""
+    state, spds = get_raw()
+    tmpl = TMPLS.get(state)
+    in_spd = spds.get("in") if spds else (0, "B")
+    out_spd = spds.get("out") if spds else (0, "B")
     return tmpl.format(*in_spd, *out_spd)
 
 
@@ -111,7 +113,15 @@ def get_output():
 
 if __name__ == "__main__":
     try:
-        time.sleep(5)
+        # NOTE: The connection may not be ready at the beginning so here we
+        # wait for a while.
+        num_retry = 0
+        while num_retry < MAX_RETRY:
+            if get_inet_device():
+                break
+            num_retry += 1
+            time.sleep(RETRY_INTERVAL)
+
         while True:
             print(get_output(), flush=True)
     except KeyboardInterrupt:

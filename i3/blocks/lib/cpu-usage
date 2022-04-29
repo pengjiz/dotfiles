@@ -13,12 +13,10 @@ class Level(Enum):
 # Setting
 
 UPDATE_INTERVAL = 10
-
 THRESHOLDS = {
     85: Level.ALERT,
     50: Level.WARNING
 }
-
 ICON = "<span font='FontAwesome 10'>\uf2db</span>"
 TMPLS = {
     Level.NORMAL: ICON + " {:.1f}%",
@@ -27,19 +25,16 @@ TMPLS = {
 }
 
 
-# Get information
+# Core
 
 def get_raw():
-    """Get the current CPU usage and level."""
+    """Get the current CPU usage level and percentage."""
     percent = ps.cpu_percent(interval=UPDATE_INTERVAL)
-
     for threshold, level in THRESHOLDS.items():
         if percent > threshold:
-            return [level, percent]
-    return [Level.NORMAL, percent]
+            return level, percent
+    return Level.NORMAL, percent
 
-
-# Get formatted string
 
 def get_output():
     """Get a string for CPU usage."""

@@ -56,10 +56,10 @@ bindsym $mod+Shift+minus move scratchpad
 # Resize
 set $mode_resize Resize: (h) narrower, (j) shorter, (k) taller, (l) wider
 mode "$mode_resize" {
-  bindsym h resize shrink width 5 px or 5 ppt
-  bindsym j resize shrink height 5 px or 5 ppt
-  bindsym k resize grow height 5 px or 5 ppt
-  bindsym l resize grow width 5 px or 5 ppt
+  bindsym h resize shrink width 20 px
+  bindsym j resize shrink height 20 px
+  bindsym k resize grow height 20 px
+  bindsym l resize grow width 20 px
 
   bindsym Control+g mode "default"
   bindsym Escape mode "default"
