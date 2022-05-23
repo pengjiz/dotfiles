@@ -66,6 +66,20 @@ sudo pacman -Syu --noconfirm
 
 log 'Install packages'
 pkgs=(
+  # System
+  'arch-install-scripts'
+  'pacman-contrib'
+  'reflector'
+  'rebuild-detector'
+  'setconf'
+  'lsb-release'
+  'tlp'
+  'ufw'
+  'pulseaudio'
+  'pulseaudio-alsa'
+  'cups'
+  'cups-pdf'
+
   # Shell
   'zsh'
   'z'
@@ -74,7 +88,7 @@ pkgs=(
   'shellcheck'
   'shfmt'
 
-  # Xorg
+  # Display
   'xorg-server'
   'xorg-xrandr'
   'xorg-xrdb'
@@ -97,23 +111,17 @@ pkgs=(
   'dunst'
   'libnotify'
   'picom'
+  'scrot'
   'redshift'
-  'feh'
-
-  # Audio
-  'pulseaudio'
-  'pulseaudio-alsa'
-
-  # Printing
-  'cups'
-  'cups-pdf'
+  'xclip'
 
   # Theme
-  'arc-gtk-theme'
-  'papirus-icon-theme'
+  'feh'
   'archlinux-wallpaper'
   'qt5ct'
   'kvantum'
+  'arc-gtk-theme'
+  'papirus-icon-theme'
 
   # Font
   'adobe-source-code-pro-fonts'
@@ -123,79 +131,60 @@ pkgs=(
   'ttf-dejavu'
   'otf-font-awesome'
 
-  # Terminal
+  # Basic
   'xterm'
-
-  # Editor
   'emacs'
   'neovim'
-
-  # Browser
   'firefox'
   'firefox-i18n-en-us'
   'firefox-ublock-origin'
 
-  # Viewer
+  # Media
+  'mpv'
   'evince'
   'libreoffice-still'
-  'mpv'
   'mupdf-tools'
-
-  # Image
-  'graphviz'
-  'gnuplot'
   'imagemagick'
-  'scrot'
 
-  # File transfer
+  # Utility
+  'pass'
+  'pwgen'
+  'ledger'
+  'bc'
+  'ripgrep'
+  'ripgrep-all'
+  'fd'
+  'atool'
+  'unzip'
   'udisks2'
   'rsync'
   'syncthing'
-
-  # Help
-  'man-db'
-  'man-pages'
-  'tldr'
-
-  # System
-  'arch-install-scripts'
-  'pacman-contrib'
-  'reflector'
-  'rebuild-detector'
-  'setconf'
-  'lsb-release'
-  'tlp'
-
-  # Password
-  'pass'
-  'pwgen'
-
-  # Network
-  'bind'
-  'openbsd-netcat'
-  'ufw'
-
-  # Utility
-  'atool'
-  'unzip'
-  'fd'
-  'ripgrep'
-  'ripgrep-all'
-  'bc'
-  'ledger'
-  'xclip'
   'trash-cli'
-  'words'
 
-  # Debugging
+  # Development
   'gdb'
   'ltrace'
   'strace'
   'valgrind'
   'lsof'
+  'bind'
+  'openbsd-netcat'
+  'libfaketime'
+  'qemu-desktop'
+  'ansible'
+  'ansible-lint'
+  'man-db'
+  'man-pages'
+  'tldr'
 
-  # Assembler
+  # Programming
+  'r'
+  'clojure'
+  'racket'
   'nasm'
+  'lua'
+  'graphviz'
+  'gnuplot'
 
   # C & C++
   'cmake'
@@ -204,8 +193,10 @@ pkgs=(
   'gsl'
   'eigen'
 
-  # Clojure
-  'clojure'
+  # Rust
+  'rustup'
+  'rust-racer'
+  'diesel-cli'
 
   # Haskell
   'ghc'
@@ -214,11 +205,30 @@ pkgs=(
   'hlint'
   'stylish-haskell'
 
+  # Python
+  'python-pip'
+  'flake8'
+  'python-black'
+
   # Web
   'nodejs'
-  'npm'
   'ts-node'
+  'npm'
   'prettier'
+
+  # Writing
+  'aspell'
+  'aspell-de'
+  'aspell-en'
+  'hunspell'
+  'hunspell-de'
+  'hunspell-en_us'
+  'languagetool'
+  'words'
+  'hugo'
+  'pandoc'
+  'pandoc-crossref'
+  'python-pygments'
 
   # LaTeX
   'texlive-core'
@@ -232,46 +242,12 @@ pkgs=(
   'minted'
   'ghostscript'
 
-  # R
-  'r'
-
-  # Python
-  'flake8'
-  'python-black'
-  'python-pip'
-
-  # Racket
-  'racket'
-
-  # Rust
-  'rustup'
-  'rust-racer'
-  'diesel-cli'
-
-  # Lua
-  'lua'
-
-  # Writing
-  'aspell'
-  'aspell-de'
-  'aspell-en'
-  'hunspell'
-  'hunspell-de'
-  'hunspell-en_us'
-  'languagetool'
-  'hugo'
-  'pandoc'
-  'pandoc-crossref'
-  'python-pygments'
-
-  # Ansible
-  'ansible'
-  'ansible-lint'
-
   # Data
-  'protobuf'
   'jq'
   'yq'
+  'htmlq'
+  'fq'
+  'protobuf'
   'yamllint'
 
   # GIS
@@ -287,16 +263,12 @@ log 'Install optional dependencies'
 optdeps=(
   # poppler
   'poppler-data'
-
   # tlp
   'x86_energy_perf_policy'
-
   # pinentry
   'gtk2'
-
   # clojure
   'rlwrap'
-
   # r
   'gcc-fortran'
 )
