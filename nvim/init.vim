@@ -1,13 +1,8 @@
-" Editing
 set list
 set expandtab
 set shiftwidth=2
-
-" Buffer and file
 set hidden
-let g:netrw_home = stdpath('data').'/netrw'
 
-" Search
 set ignorecase
 set smartcase
 if executable('rg')
