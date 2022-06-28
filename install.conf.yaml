@@ -91,4 +91,3 @@
 - create:
     - "~/.local/share/zsh"
     - "~/.local/share/bash"
-    - "~/.local/share/R"
