@@ -5,5 +5,3 @@ local({
   r["CRAN"] <- "https://cloud.r-project.org/"
   options(repos = r)
 })
-
-options(lintr.cache_directory = "~/.local/share/R/lintr")
