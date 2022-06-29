@@ -12,7 +12,7 @@ class Level(Enum):
 
 # Setting
 
-MONITOR_PATH = "/home/"
+TARGET = "/home/"
 THRESHOLDS = {
     5: Level.WARNING,
     1: Level.ALERT
@@ -36,7 +36,7 @@ def convert_bytes(num):
 
 def get_raw():
     """Get the current disk usage level and available space."""
-    info = ps.disk_usage(MONITOR_PATH)
+    info = ps.disk_usage(TARGET)
     avail = convert_bytes(info.free)
     for threshold, level in THRESHOLDS.items():
         if avail < threshold:

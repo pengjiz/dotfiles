@@ -17,8 +17,6 @@ markup=pango
 interval=60
 markup=pango
 
-# TODO: Refresh block when switching devices, for example, when we plug in a
-# headset. Right now volume block is not refreshed automatically in that case.
 [volume]
 interval=once
 markup=pango
@@ -28,8 +26,6 @@ signal=1
 interval=persist
 markup=pango
 
-# TODO: Refresh block when resuming from suspension. Right now it is not updated
-# immediately, so we will have the wrong time for a while.
 [time]
 interval=60
 

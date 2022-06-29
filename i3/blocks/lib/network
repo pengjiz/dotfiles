@@ -14,7 +14,7 @@ class State(Enum):
 
 # Setting
 
-MAX_RETRY = 10
+RETRY_LIMIT = 10
 RETRY_INTERVAL = 1
 UPDATE_INTERVAL = 10
 PREFIXES = {
@@ -115,11 +115,11 @@ if __name__ == "__main__":
     try:
         # NOTE: The connection may not be ready at the beginning so here we
         # wait for a while.
-        num_retry = 0
-        while num_retry < MAX_RETRY:
+        retry_num = 0
+        while retry_num < RETRY_LIMIT:
             if get_inet_device():
                 break
-            num_retry += 1
+            retry_num += 1
             time.sleep(RETRY_INTERVAL)
 
         while True:
