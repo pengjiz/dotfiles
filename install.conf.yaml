@@ -72,7 +72,7 @@
     ~/.Renviron: r/Renviron
 
     # Python
-    ~/.condarc: python/condarc
+    ~/.conda/condarc: python/condarc
 
     # JavaScript
     ~/.npmrc: javascript/npmrc

@@ -1,2 +1,1 @@
-envs_dirs:
-  - ~/.conda/envs
+envs_dirs: ["~/.conda/envs"]
