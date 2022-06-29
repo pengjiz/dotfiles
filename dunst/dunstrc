@@ -1,6 +1,5 @@
 [global]
-follow = mouse
-width = 400
+width = (400, 600)
 notification_limit = 5
 origin = bottom-right
 offset = 20x40
