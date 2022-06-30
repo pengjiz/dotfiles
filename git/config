@@ -41,7 +41,8 @@
 	cr = commit --amend
 	cf = commit --amend --no-edit
 	d = diff
-	l = log --pretty=oneline --graph
+	l = log
+	lo = log --pretty=oneline --graph
 	la = log --pretty=oneline --graph --all
 	m = merge
 	mf = merge --ff-only
