@@ -6,7 +6,7 @@ import os
 import re
 import sys
 import webbrowser
-from argparse import ArgumentParser
+from argparse import ArgumentParser, ArgumentError
 from collections import defaultdict
 from pathlib import Path
 from shutil import get_terminal_size, copyfileobj
@@ -349,7 +349,8 @@ class App:
 
     def _get_parser(self):
         """Get an argument parser."""
-        parser = ArgumentParser(description="Manage bookmarks of websites")
+        parser = ArgumentParser(description="Manage bookmarks of websites",
+                                exit_on_error=False)
 
         # Global options
         default_file = get_default_file()
@@ -560,14 +561,19 @@ class App:
 
 
 if __name__ == "__main__":
+    name = "webmark"
     try:
         app = App()
         app.run()
+    except ArgumentError as error:
+        print("{}: argument error: {}".format(name, error),
+              file=sys.stderr)
+        sys.exit(2)
     except AppError as error:
-        sys.exit("App Error: {}".format(error))
+        sys.exit("{}: app error: {}".format(name, error))
     except CommandError as error:
-        sys.exit("Command Error: {}".format(error))
-    except ValueError as error:
-        sys.exit("Error: {}".format(error))
+        sys.exit("{}: command error: {}".format(name, error))
+    except (ValueError, OSError) as error:
+        sys.exit("{}: error: {}".format(name, error))
     except KeyboardInterrupt:
         pass
