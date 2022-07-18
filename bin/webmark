@@ -6,7 +6,8 @@ import os
 import re
 import sys
 import webbrowser
-from argparse import ArgumentParser, ArgumentError
+from argparse import (ArgumentParser, ArgumentError,
+                      ArgumentDefaultsHelpFormatter)
 from collections import defaultdict
 from pathlib import Path
 from shutil import get_terminal_size, copyfileobj
@@ -349,8 +350,10 @@ class App:
 
     def _get_parser(self):
         """Get an argument parser."""
-        parser = ArgumentParser(description="Manage bookmarks of websites",
-                                exit_on_error=False)
+        parser = ArgumentParser(
+            description="Manage and use website bookmarks in a simple way.",
+            formatter_class=ArgumentDefaultsHelpFormatter,
+            exit_on_error=False)
 
         # Global options
         default_file = get_default_file()
@@ -358,70 +361,77 @@ class App:
                             default=default_file,
                             help="bookmark store file")
         parser.add_argument("--no-fancy", action="store_true",
-                            help="turn off fancy display")
+                            help="use plain output")
         terminal_width = get_terminal_size().columns
         parser.add_argument("-w", "--width", type=int,
                             default=terminal_width,
-                            help="width of output text")
+                            help="width limit for output")
 
         # Subcommands
-        subparsers = parser.add_subparsers(required=True)
+        subparsers = parser.add_subparsers(title="subcommands",
+                                           required=True)
 
         parser_add = subparsers.add_parser(
-            "add", description="Add a new bookmark")
+            "add", description="Add a new bookmark.",
+            formatter_class=ArgumentDefaultsHelpFormatter)
         parser_add.add_argument("key",
-                                help="key of the bookmark")
+                                help="bookmark key")
         parser_add.add_argument("url",
-                                help="URL of the website")
+                                help="website address")
         parser_add.add_argument("-t", "--tags", metavar="TAG", nargs="*",
-                                help="tags of the bookmark")
+                                help="bookmark tags")
         parser_add.add_argument("-s", "--score", type=float,
                                 default=0,
-                                help="initial score of the bookmark")
+                                help="initial bookmark score")
         parser_add.set_defaults(func=self.add)
 
         parser_update = subparsers.add_parser(
-            "update", description="Update a bookmark")
+            "update", description="Update a bookmark.",
+            formatter_class=ArgumentDefaultsHelpFormatter)
         parser_update.add_argument("key",
-                                   help="key of the bookmark")
+                                   help="bookmark key")
         parser_update.add_argument("-u", "--url",
-                                   help="new URL of the website")
+                                   help="new website address")
         parser_update.add_argument("-t", "--tags", metavar="TAG", nargs="*",
-                                   help="new tags of the website")
+                                   help="new bookmark tags")
         parser_update.add_argument("-s", "--score", type=float,
-                                   help="new score of the bookmark")
+                                   help="new bookmark score")
         parser_update.set_defaults(func=self.update)
 
         parser_move = subparsers.add_parser(
-            "move", description="Move bookmark to a new key")
+            "move", description="Move bookmark to a new key.",
+            formatter_class=ArgumentDefaultsHelpFormatter)
         parser_move.add_argument("old_key", metavar="from",
-                                 help="old key of the bookmark")
+                                 help="old bookmark key")
         parser_move.add_argument("new_key", metavar="to",
-                                 help="new key of the bookmark")
+                                 help="new bookmark key")
         parser_move.set_defaults(func=self.move)
 
         parser_remove = subparsers.add_parser(
-            "remove", description="Remove a bookmark")
+            "remove", description="Remove a bookmark.",
+            formatter_class=ArgumentDefaultsHelpFormatter)
         parser_remove.add_argument("key",
-                                   help="key of the bookmark")
+                                   help="bookmark key")
         parser_remove.set_defaults(func=self.remove)
 
         parser_list = subparsers.add_parser(
-            "list", description="List bookmarks")
+            "list", description="List bookmarks.",
+            formatter_class=ArgumentDefaultsHelpFormatter)
         parser_list.add_argument("-t", "--tags", metavar="TAG", nargs="*",
-                                 help="desired tags of bookmarks")
+                                 help="desired bookmark tags")
         parser_list.add_argument("-s", "--score", type=float,
                                  default=0,
-                                 help="minimum score of bookmarks")
+                                 help="minimum bookmark score")
         parser_list.set_defaults(func=self.list)
 
         parser_menu = subparsers.add_parser(
-            "menu", description="Browse bookmarks with a menu")
+            "menu", description="Browse bookmarks with a menu.",
+            formatter_class=ArgumentDefaultsHelpFormatter)
         parser_menu.add_argument("-t", "--tags", metavar="TAG", nargs="*",
-                                 help="desired tags of bookmarks")
+                                 help="desired bookmark tags")
         parser_menu.add_argument("-s", "--score", type=float,
                                  default=0,
-                                 help="minimum score of bookmarks")
+                                 help="minimum bookmark score")
         parser_menu.set_defaults(func=self.menu)
 
         return parser
