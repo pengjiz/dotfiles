@@ -1,7 +1,6 @@
 set list
 set expandtab
 set shiftwidth=2
-set hidden
 
 set ignorecase
 set smartcase
