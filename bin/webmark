@@ -6,19 +6,18 @@ import os
 import re
 import sys
 import webbrowser
-from argparse import (ArgumentParser, ArgumentError,
-                      ArgumentDefaultsHelpFormatter)
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from collections import defaultdict
 from pathlib import Path
 from shutil import get_terminal_size, copyfileobj
 from tempfile import TemporaryFile
-from subprocess import run
+from subprocess import run, CalledProcessError
 
 
 # Constant
 
 # Valid key pattern of a bookmark
-KEY_PAT = re.compile(r"(?:[a-zA-Z.-]+/)*[a-zA-Z.-]+")
+KEY_PAT = re.compile(r"(?:[a-zA-Z0-9._-]+/)*[a-zA-Z0-9._-]+")
 # Number of decimal points for scores
 SCORE_PREC = 2
 
@@ -44,28 +43,15 @@ class Action(enum.Enum):
 
 # Exception
 
-class AppError(Exception):
-    """Error occurred in the application."""
+class BookmarkError(Exception):
+    """Error related to bookmarks."""
     def __init__(self, message):
-        """Construct a new application error with message."""
+        """Construct a new bookmark error with message."""
         super().__init__(message)
 
     def __str__(self):
         """Return the contained error message."""
         return self.args[0]
-
-
-class CommandError(Exception):
-    """Error occurred when running external commands."""
-    def __init__(self, message, code):
-        """Construct a new command error with message and return code."""
-        super().__init__(message, code)
-
-    def __str__(self):
-        """Format the error message and return code as a readable string."""
-        message = self.args[0]
-        code = self.args[1]
-        return "{} (code {})".format(message, code)
 
 
 # Helper
@@ -150,10 +136,9 @@ def rofi(items, actions):
 
     process = run(["rofi", *args], input="\n".join(items),
                   capture_output=True, encoding="utf-8")
-    code = process.returncode
-    action = codes.get(code)
+    action = codes.get(process.returncode)
     if action is None:
-        raise CommandError(process.stderr, code)
+        process.check_returncode()
     return action, process.stdout
 
 
@@ -245,15 +230,15 @@ class Store:
         """Get the bookmark with the key."""
         bookmark = self.bookmarks.get(key)
         if bookmark is None:
-            raise AppError("no bookmark with key {}".format(key))
+            raise BookmarkError("no bookmark with key {}".format(key))
         return bookmark
 
     def check_key(self, key):
         """Check if a key is valid for adding."""
         if KEY_PAT.fullmatch(key) is None:
-            raise AppError("invalid key {}".format(key))
+            raise BookmarkError("invalid bookmark key {}".format(key))
         if self.bookmarks.get(key) is not None:
-            raise AppError("existing key {}".format(key))
+            raise BookmarkError("existing bookmark key {}".format(key))
 
     def add_bookmark(self, key, url, tags=None, score=0):
         """Add a new bookmark."""
@@ -277,11 +262,11 @@ class Store:
     def remove_bookmark(self, key):
         """Remove a bookmark."""
         if key not in self.bookmarks:
-            raise AppError("no bookmark with key {}".format(key))
+            raise BookmarkError("no bookmark with key {}".format(key))
         del self.bookmarks[key]
 
     def list_bookmarks(self, tags=None, min_score=0):
-        """Return all bookmarks as a list of dictionaries."""
+        """Return selected bookmarks."""
         def convert(key, value):
             return {"key": key,
                     "url": value.url,
@@ -290,7 +275,11 @@ class Store:
 
         def predicate(value):
             keep = value.score >= min_score
-            if tags is not None:
+            if tags is None:
+                return keep
+            if len(tags) == 0:
+                keep = keep and len(value.tags) == 0
+            else:
                 keep = keep and not value.tags.isdisjoint(tags)
             return keep
 
@@ -352,8 +341,7 @@ class App:
         """Get an argument parser."""
         parser = ArgumentParser(
             description="Manage and use website bookmarks in a simple way.",
-            formatter_class=ArgumentDefaultsHelpFormatter,
-            exit_on_error=False)
+            formatter_class=ArgumentDefaultsHelpFormatter)
 
         # Global options
         default_file = get_default_file()
@@ -466,7 +454,7 @@ class App:
         self._save_store()
 
     def list(self, args):
-        """Command for listing all bookmarks."""
+        """Command for listing selected bookmarks."""
         tmpl = "{key}  {score}  {tags}  {url}"
         fmtspecs = {
             # Right align scores and keep one decimal point
@@ -487,7 +475,7 @@ class App:
         bookmarks = self.store.list_bookmarks(tags=args.tags,
                                               min_score=args.score)
         if len(bookmarks) == 0:
-            raise AppError("no bookmarks found")
+            raise BookmarkError("no bookmarks found")
 
         bookmarks = sorted(bookmarks, key=lambda x: (-x["score"], x["key"]))
         bookmarks = convolute(bookmarks)
@@ -504,7 +492,7 @@ class App:
         print("\n".join(lines))
 
     def menu(self, args):
-        """Command for showing a menu and browsing selected bookmarks."""
+        """Command for browsing selected bookmarks with a menu."""
         def fmt_tags(tags):
             if tags is None or len(tags) == 0:
                 return ""
@@ -535,7 +523,7 @@ class App:
         bookmarks = self.store.list_bookmarks(tags=args.tags,
                                               min_score=args.score)
         if len(bookmarks) == 0:
-            raise AppError("no bookmarks found")
+            raise BookmarkError("no bookmarks found")
 
         bookmarks = sorted(bookmarks, key=lambda x: (-x["score"], x["key"]))
         bookmarks = convolute(bookmarks)
@@ -571,19 +559,10 @@ class App:
 
 
 if __name__ == "__main__":
-    name = "webmark"
     try:
         app = App()
         app.run()
-    except ArgumentError as error:
-        print("{}: argument error: {}".format(name, error),
-              file=sys.stderr)
-        sys.exit(2)
-    except AppError as error:
-        sys.exit("{}: app error: {}".format(name, error))
-    except CommandError as error:
-        sys.exit("{}: command error: {}".format(name, error))
-    except (ValueError, OSError) as error:
-        sys.exit("{}: error: {}".format(name, error))
+    except (BookmarkError, CalledProcessError, ValueError, OSError) as error:
+        sys.exit("webmark: error: {}".format(error))
     except KeyboardInterrupt:
         pass
