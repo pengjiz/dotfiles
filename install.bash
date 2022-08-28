@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 config='install.conf.yaml'
 base_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 directory="${SCREENSHOT_DIRECTORY:-$HOME/Pictures/screenshots}"
 suffix="${SCREENSHOT_SUFFIX:-%Y%m%d%H%M%S}"

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 # Pause notifications before locking
 dunstctl set-paused true
