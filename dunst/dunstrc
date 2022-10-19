@@ -1,5 +1,5 @@
 [global]
-width = (400, 600)
+width = 400
 notification_limit = 5
 origin = bottom-right
 offset = 20x40
