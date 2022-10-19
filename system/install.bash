@@ -173,30 +173,27 @@ pkgs=(
   'qemu-desktop'
   'ansible'
   'ansible-lint'
+  'ctags'
   'man-db'
   'man-pages'
   'tldr'
 
   # Programming
-  'r'
+  'nasm'
+  'rustup'
+  'diesel-cli'
   'clojure'
   'racket'
-  'nasm'
+  'r'
   'lua'
   'graphviz'
   'gnuplot'
 
   # C & C++
   'cmake'
-  'ctags'
   'doxygen'
   'gsl'
   'eigen'
-
-  # Rust
-  'rustup'
-  'rust-racer'
-  'diesel-cli'
 
   # Haskell
   'ghc'
