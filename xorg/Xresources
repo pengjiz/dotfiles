@@ -31,6 +31,7 @@ Xft.rgba: rgb
 XTerm.termName: xterm-256color
 XTerm.vt100.locale: false
 XTerm.vt100.utf8: true
+XTerm.cursorTheme: default
 XTerm.vt100.faceName: Source Code Pro
 XTerm.vt100.faceSize: 12
 XTerm.vt100.saveLines: 10000
