@@ -260,8 +260,6 @@ log 'Install optional dependencies'
 optdeps=(
   # poppler
   'poppler-data'
-  # tlp
-  'x86_energy_perf_policy'
   # pinentry
   'gtk2'
   # clojure
