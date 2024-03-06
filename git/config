@@ -19,8 +19,6 @@
 [mergetool]
 	prompt = false
 	keepBackup = false
-[remote]
-	pushDefault = origin
 [fetch]
 	prune = true
 [pull]
