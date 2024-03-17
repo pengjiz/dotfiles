@@ -67,11 +67,10 @@ sudo pacman -Syu --noconfirm
 log 'Install packages'
 pkgs=(
   # System
-  'arch-install-scripts'
   'pacman-contrib'
   'reflector'
   'rebuild-detector'
-  'setconf'
+  'devtools'
   'lsb-release'
   'tlp'
   'ufw'
@@ -223,7 +222,7 @@ pkgs=(
   'languagetool'
   'words'
   'hugo'
-  'pandoc'
+  'pandoc-cli'
   'pandoc-crossref'
   'python-pygments'
 
