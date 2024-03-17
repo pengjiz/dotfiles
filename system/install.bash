@@ -245,13 +245,6 @@ pkgs=(
   'fq'
   'protobuf'
   'yamllint'
-
-  # GIS
-  'gdal'
-  'geos'
-  'proj'
-  'libspatialite'
-  'qgis'
 )
 sudo pacman --needed --noconfirm -S "${pkgs[@]}"
 
