@@ -180,7 +180,7 @@ pkgs=(
   # Programming
   'nasm'
   'rustup'
-  'diesel-cli'
+  'gcc-fortran'
   'clojure'
   'racket'
   'r'
@@ -227,22 +227,18 @@ pkgs=(
   'python-pygments'
 
   # LaTeX
-  'texlive-core'
-  'texlive-bibtexextra'
-  'texlive-latexextra'
-  'texlive-science'
-  'texlive-publishers'
-  'texlive-pictures'
-  'texlive-fontsextra'
+  'texlive-meta'
+  'texlive-langenglish'
+  'texlive-langgerman'
+  'texlive-doc'
   'biber'
   'minted'
   'ghostscript'
 
   # Data
   'jq'
-  'yq'
-  'htmlq'
   'fq'
+  'htmlq'
   'protobuf'
   'yamllint'
 )
@@ -256,8 +252,6 @@ optdeps=(
   'gtk2'
   # clojure
   'rlwrap'
-  # r
-  'gcc-fortran'
 )
 sudo pacman --needed --noconfirm -S --asdeps "${optdeps[@]}"
 
