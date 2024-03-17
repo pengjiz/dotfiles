@@ -179,6 +179,7 @@ pkgs=(
 
   # Programming
   'nasm'
+  'zig'
   'rustup'
   'gcc-fortran'
   'clojure'
