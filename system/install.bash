@@ -143,6 +143,7 @@ pkgs=(
   'evince'
   'libreoffice-still'
   'mupdf-tools'
+  'tesseract-data-eng'
   'imagemagick'
 
   # Utility
