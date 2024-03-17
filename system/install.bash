@@ -223,6 +223,7 @@ pkgs=(
   'words'
   'hugo'
   'pandoc-cli'
+  'pandoc-plot'
   'pandoc-crossref'
   'python-pygments'
 
