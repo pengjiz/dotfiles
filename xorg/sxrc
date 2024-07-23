@@ -10,9 +10,6 @@ unset logfile
 export TERMINAL='xterm'
 export BROWSER='xdg-open'
 
-# QT theme
-export QT_QPA_PLATFORMTHEME='qt5ct'
-
 # Load resource file
 [ -f "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources"
 
